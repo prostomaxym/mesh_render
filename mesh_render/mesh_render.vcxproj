@@ -153,12 +153,14 @@
   <ItemGroup>
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

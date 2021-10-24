@@ -1,11 +1,11 @@
+#include <cmath>
 #include <Windows.h>
-
-#include <chrono>
 
 #include <glut.h>
 
 #include "Keyboard.h"
 #include "main.h"
+#include "Mesh.h"
 #include "Text.h"
 #include "Window.h"
 
@@ -20,38 +20,54 @@ const int kFullWidth = glutGet(GLUT_SCREEN_WIDTH) * DPIscale;  //fullscreen widt
 const int kFullHeight = glutGet(GLUT_SCREEN_HEIGHT) * DPIscale;  //fullscreen height resolution
 const int kWidth = 1280, kHeight = 720;  //default window resolution
 bool fullscreen = false;  //default screen mode
-int loopdelay = 0;  //delay between frames
-clock_t current_ticks, delta_ticks;
-clock_t fps = 0;
+
+int loopdelay = 1;  //delay between frames
+int current_ticks, delta_ticks;
+int fps = 0;  //fps counter
 
 Window window(kWidth, kHeight, "Mesh Render");
 Text ui;
+
+mesh meshCube;
+
+// Projection Matrix
+float fTheta = 0;
+float fNear;
+float fFar;
+float fFov;
+float fAspectRatio;
+float fFovRad;
+float fElapsedTime;
+
 
 int main()
 {
 	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
 
+	initProjectionMatrix(0.1f, 1000.0f, 90.0f);
+	meshCubeInit();
+
 	//GLut func initialization
 	glutDisplayFunc(render);
-	glutTimerFunc(0, gameloop, 0);
+	glutTimerFunc(loopdelay, gameloop, 0);
 	glutKeyboardUpFunc(ReleaseKeyHandler);
 
 	//Game loop
 	glutMainLoop();
 	return 0;
-	return 0;
 }
 
 void gameloop(int = 0)
 {
-	current_ticks = clock();
+	current_ticks = glutGet(GLUT_ELAPSED_TIME);
 	
 	update();
 	render();
 
-	delta_ticks = clock() - current_ticks; //the time, in ms, that took to render the scene
-	if (delta_ticks > 0)	fps = CLOCKS_PER_SEC / delta_ticks;
-	glutTimerFunc(0, gameloop, 0);
+	delta_ticks = glutGet(GLUT_ELAPSED_TIME) - current_ticks; //the time, in ms, that took to render the scene
+	if (delta_ticks > 0)	fps = 1000 / delta_ticks;
+
+	glutTimerFunc(loopdelay, gameloop, 0);
 }
 
 void render()
@@ -60,11 +76,81 @@ void render()
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	ui.drawFpsCounter(50, 50, fps);
+	meshCube.drawMesh(0.4f, 0.7f, 0.3f);
 
 	glFlush();
 }
 
 void update()
 {
+	updateRotationMatrix();
+}
 
+void initProjectionMatrix(float zNear, float zFar, float Fov)
+{
+	fNear = zNear;
+	fFar = zFar;
+	fFov = Fov;
+	fAspectRatio = (float)glutGet(GLUT_WINDOW_HEIGHT) / (float)glutGet(GLUT_WINDOW_WIDTH);
+	fFovRad = 1.0f / tanf(fFov * 0.5f / 180.0f * 3.14159f);
+
+	matProj.m[0][0] = fAspectRatio * fFovRad;
+	matProj.m[1][1] = fFovRad;
+	matProj.m[2][2] = fFar / (fFar - fNear);
+	matProj.m[3][2] = (-fFar * fNear) / (fFar - fNear);
+	matProj.m[2][3] = 1.0f;
+	matProj.m[3][3] = 0.0f;
+}
+
+void updateRotationMatrix()
+{
+	fElapsedTime = glutGet(GLUT_ELAPSED_TIME);
+	fTheta = 1.0f * fElapsedTime / 1000;
+	
+	// Rotation Z
+	matRotZ.m[0][0] = cosf(fTheta);
+	matRotZ.m[0][1] = sinf(fTheta);
+	matRotZ.m[1][0] = -sinf(fTheta);
+	matRotZ.m[1][1] = cosf(fTheta);
+	matRotZ.m[2][2] = 1;
+	matRotZ.m[3][3] = 1;
+
+	// Rotation X
+	matRotX.m[0][0] = 1;
+	matRotX.m[1][1] = cosf(fTheta * 0.5f);
+	matRotX.m[1][2] = sinf(fTheta * 0.5f);
+	matRotX.m[2][1] = -sinf(fTheta * 0.5f);
+	matRotX.m[2][2] = cosf(fTheta * 0.5f);
+	matRotX.m[3][3] = 1;
+}
+
+void meshCubeInit()
+{
+	meshCube.tris = {
+
+		// FRONT
+		{ 0.0f, 0.0f, 0.0f,    0.0f, 1.0f, 0.0f,    1.0f, 1.0f, 0.0f },
+		{ 0.0f, 0.0f, 0.0f,    1.0f, 1.0f, 0.0f,    1.0f, 0.0f, 0.0f },
+
+		// RIGHT                                                      
+		{ 1.0f, 0.0f, 0.0f,    1.0f, 1.0f, 0.0f,    1.0f, 1.0f, 1.0f },
+		{ 1.0f, 0.0f, 0.0f,    1.0f, 1.0f, 1.0f,    1.0f, 0.0f, 1.0f },
+
+		// BACK                                                     
+		{ 1.0f, 0.0f, 1.0f,    1.0f, 1.0f, 1.0f,    0.0f, 1.0f, 1.0f },
+		{ 1.0f, 0.0f, 1.0f,    0.0f, 1.0f, 1.0f,    0.0f, 0.0f, 1.0f },
+
+		// LEFT                                                      
+		{ 0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 1.0f,    0.0f, 1.0f, 0.0f },
+		{ 0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 0.0f,    0.0f, 0.0f, 0.0f },
+
+		// TOP                                                       
+		{ 0.0f, 1.0f, 0.0f,    0.0f, 1.0f, 1.0f,    1.0f, 1.0f, 1.0f },
+		{ 0.0f, 1.0f, 0.0f,    1.0f, 1.0f, 1.0f,    1.0f, 1.0f, 0.0f },
+
+		// BOTTOM                                                    
+		{ 1.0f, 0.0f, 1.0f,    0.0f, 0.0f, 1.0f,    0.0f, 0.0f, 0.0f },
+		{ 1.0f, 0.0f, 1.0f,    0.0f, 0.0f, 0.0f,    1.0f, 0.0f, 0.0f },
+
+	};
 }
