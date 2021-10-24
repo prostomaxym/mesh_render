@@ -1,9 +1,12 @@
 #include <Windows.h>
 
+#include <chrono>
+
 #include <glut.h>
 
 #include "Keyboard.h"
 #include "main.h"
+#include "Text.h"
 #include "Window.h"
 
 void update();
@@ -17,9 +20,12 @@ const int kFullWidth = glutGet(GLUT_SCREEN_WIDTH) * DPIscale;  //fullscreen widt
 const int kFullHeight = glutGet(GLUT_SCREEN_HEIGHT) * DPIscale;  //fullscreen height resolution
 const int kWidth = 1280, kHeight = 720;  //default window resolution
 bool fullscreen = false;  //default screen mode
-int loopdelay = 0;
+int loopdelay = 0;  //delay between frames
+clock_t current_ticks, delta_ticks;
+clock_t fps = 0;
 
 Window window(kWidth, kHeight, "Mesh Render");
+Text ui;
 
 int main()
 {
@@ -38,8 +44,13 @@ int main()
 
 void gameloop(int = 0)
 {
+	current_ticks = clock();
+	
 	update();
 	render();
+
+	delta_ticks = clock() - current_ticks; //the time, in ms, that took to render the scene
+	if (delta_ticks > 0)	fps = CLOCKS_PER_SEC / delta_ticks;
 	glutTimerFunc(0, gameloop, 0);
 }
 
@@ -47,6 +58,8 @@ void render()
 {
 	glClearColor(0.0f, 0.65f, 1.0f, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	ui.drawFpsCounter(50, 50, fps);
 
 	glFlush();
 }
