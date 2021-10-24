@@ -6,6 +6,7 @@
 struct vec3f
 {
 	float x, y, z;
+	void set(float first, float second, float third);
 };
 
 struct triangle
@@ -25,7 +26,9 @@ struct mat4x4
 };
 
 extern mat4x4 matProj, matRotZ, matRotX;
+extern vec3f vCamera;
 
 void MultiplyMatrixVector(vec3f& i, vec3f& o, mat4x4& m);
+void initProjectionMatrix(float zNear, float zFar, float Fov);
 
 #endif  // MESH_RENDER_MESH_H_

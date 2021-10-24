@@ -15,7 +15,6 @@ extern Window window;
 void update();
 void render();
 void gameloop(int);
-void initProjectionMatrix(float zNear, float zFar, float Fov);
 void updateRotationMatrix();
 void meshCubeInit();
 #endif  // MESH_RENDER_MAIN_H_

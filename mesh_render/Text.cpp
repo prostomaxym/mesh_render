@@ -14,5 +14,5 @@ void Text::drawFpsCounter(int x, int y, int fps)
 {
 	glColor3f(1.0f, 0.4f, 0.3f);
 	this->glWrite(x, glutGet(GLUT_WINDOW_HEIGHT)-y,
-		(int*)GLUT_BITMAP_TIMES_ROMAN_24, std::to_string(fps));
+		(int*)GLUT_BITMAP_TIMES_ROMAN_24, "FPS: "+std::to_string(fps));
 }

@@ -46,6 +46,7 @@ int main()
 
 	initProjectionMatrix(0.1f, 1000.0f, 90.0f);
 	meshCubeInit();
+	vCamera.set(0, 0, 0);
 
 	//GLut func initialization
 	glutDisplayFunc(render);
@@ -84,22 +85,6 @@ void render()
 void update()
 {
 	updateRotationMatrix();
-}
-
-void initProjectionMatrix(float zNear, float zFar, float Fov)
-{
-	fNear = zNear;
-	fFar = zFar;
-	fFov = Fov;
-	fAspectRatio = (float)glutGet(GLUT_WINDOW_HEIGHT) / (float)glutGet(GLUT_WINDOW_WIDTH);
-	fFovRad = 1.0f / tanf(fFov * 0.5f / 180.0f * 3.14159f);
-
-	matProj.m[0][0] = fAspectRatio * fFovRad;
-	matProj.m[1][1] = fFovRad;
-	matProj.m[2][2] = fFar / (fFar - fNear);
-	matProj.m[3][2] = (-fFar * fNear) / (fFar - fNear);
-	matProj.m[2][3] = 1.0f;
-	matProj.m[3][3] = 0.0f;
 }
 
 void updateRotationMatrix()
