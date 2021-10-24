@@ -21,14 +21,42 @@ const int kFullHeight = glutGet(GLUT_SCREEN_HEIGHT) * DPIscale;  //fullscreen he
 const int kWidth = 1280, kHeight = 720;  //default window resolution
 bool fullscreen = false;  //default screen mode
 
-int loopdelay = 1;  //delay between frames
+int loopdelay = 1;  //delay between frames in ms
 int current_ticks, delta_ticks;
 int fps = 0;  //fps counter
 
 Window window(kWidth, kHeight, "Mesh Render");
 Text ui;
 
-mesh meshCube;
+mesh meshCube({
+
+	// FRONT
+	{ 0.0f, 0.0f, 0.0f,    0.0f, 1.0f, 0.0f,    1.0f, 1.0f, 0.0f },
+	{ 0.0f, 0.0f, 0.0f,    1.0f, 1.0f, 0.0f,    1.0f, 0.0f, 0.0f },
+
+	// RIGHT                                                      
+	{ 1.0f, 0.0f, 0.0f,    1.0f, 1.0f, 0.0f,    1.0f, 1.0f, 1.0f },
+	{ 1.0f, 0.0f, 0.0f,    1.0f, 1.0f, 1.0f,    1.0f, 0.0f, 1.0f },
+
+	// BACK                                                     
+	{ 1.0f, 0.0f, 1.0f,    1.0f, 1.0f, 1.0f,    0.0f, 1.0f, 1.0f },
+	{ 1.0f, 0.0f, 1.0f,    0.0f, 1.0f, 1.0f,    0.0f, 0.0f, 1.0f },
+
+	// LEFT                                                      
+	{ 0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 1.0f,    0.0f, 1.0f, 0.0f },
+	{ 0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 0.0f,    0.0f, 0.0f, 0.0f },
+
+	// TOP                                                       
+	{ 0.0f, 1.0f, 0.0f,    0.0f, 1.0f, 1.0f,    1.0f, 1.0f, 1.0f },
+	{ 0.0f, 1.0f, 0.0f,    1.0f, 1.0f, 1.0f,    1.0f, 1.0f, 0.0f },
+
+	// BOTTOM                                                    
+	{ 1.0f, 0.0f, 1.0f,    0.0f, 0.0f, 1.0f,    0.0f, 0.0f, 0.0f },
+	{ 1.0f, 0.0f, 1.0f,    0.0f, 0.0f, 0.0f,    1.0f, 0.0f, 0.0f },
+
+	});
+mesh ship;
+
 
 // Projection Matrix
 float fTheta = 0;
@@ -45,9 +73,7 @@ int main()
 	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
 
 	initProjectionMatrix(0.1f, 1000.0f, 90.0f);
-	meshCubeInit();
-	vCamera.set(0, 0, 0);
-
+	ship.loadFromObjectFile("spaceship.obj");
 	//GLut func initialization
 	glutDisplayFunc(render);
 	glutTimerFunc(loopdelay, gameloop, 0);
@@ -77,7 +103,8 @@ void render()
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	ui.drawFpsCounter(50, 50, fps);
-	meshCube.drawMesh(0.4f, 0.7f, 0.3f);
+	//meshCube.drawMesh(0.4f, 0.7f, 0.3f);
+	ship.drawMesh(0.4f, 0.7f, 0.3f);
 
 	glFlush();
 }
@@ -107,35 +134,4 @@ void updateRotationMatrix()
 	matRotX.m[2][1] = -sinf(fTheta * 0.5f);
 	matRotX.m[2][2] = cosf(fTheta * 0.5f);
 	matRotX.m[3][3] = 1;
-}
-
-void meshCubeInit()
-{
-	meshCube.tris = {
-
-		// FRONT
-		{ 0.0f, 0.0f, 0.0f,    0.0f, 1.0f, 0.0f,    1.0f, 1.0f, 0.0f },
-		{ 0.0f, 0.0f, 0.0f,    1.0f, 1.0f, 0.0f,    1.0f, 0.0f, 0.0f },
-
-		// RIGHT                                                      
-		{ 1.0f, 0.0f, 0.0f,    1.0f, 1.0f, 0.0f,    1.0f, 1.0f, 1.0f },
-		{ 1.0f, 0.0f, 0.0f,    1.0f, 1.0f, 1.0f,    1.0f, 0.0f, 1.0f },
-
-		// BACK                                                     
-		{ 1.0f, 0.0f, 1.0f,    1.0f, 1.0f, 1.0f,    0.0f, 1.0f, 1.0f },
-		{ 1.0f, 0.0f, 1.0f,    0.0f, 1.0f, 1.0f,    0.0f, 0.0f, 1.0f },
-
-		// LEFT                                                      
-		{ 0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 1.0f,    0.0f, 1.0f, 0.0f },
-		{ 0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 0.0f,    0.0f, 0.0f, 0.0f },
-
-		// TOP                                                       
-		{ 0.0f, 1.0f, 0.0f,    0.0f, 1.0f, 1.0f,    1.0f, 1.0f, 1.0f },
-		{ 0.0f, 1.0f, 0.0f,    1.0f, 1.0f, 1.0f,    1.0f, 1.0f, 0.0f },
-
-		// BOTTOM                                                    
-		{ 1.0f, 0.0f, 1.0f,    0.0f, 0.0f, 1.0f,    0.0f, 0.0f, 0.0f },
-		{ 1.0f, 0.0f, 1.0f,    0.0f, 0.0f, 0.0f,    1.0f, 0.0f, 0.0f },
-
-	};
 }
