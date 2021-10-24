@@ -5,6 +5,7 @@
 
 #include "Keyboard.h"
 #include "main.h"
+#include "Matrix.h"
 #include "Mesh.h"
 #include "Text.h"
 #include "Window.h"
@@ -58,22 +59,19 @@ mesh meshCube({
 mesh ship;
 
 
-// Projection Matrix
-float fTheta = 0;
-float fNear;
-float fFar;
-float fFov;
-float fAspectRatio;
-float fFovRad;
-float fElapsedTime;
-
-
 int main()
 {
 	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
 
-	initProjectionMatrix(0.1f, 1000.0f, 90.0f);
 	ship.loadFromObjectFile("spaceship.obj");
+	matProj.makeProjection(0.1f, 1000.0f, 90.0f);
+	
+	matTrans.makeTranslation(0.0f, 0.0f, 5.0f);
+
+	matWorld.makeIdentity();	// form World Matrix
+	matWorld = matRotZ * matRotX;  // transform by rotation
+	matWorld = matWorld * matTrans;  // transform by translation
+
 	//GLut func initialization
 	glutDisplayFunc(render);
 	glutTimerFunc(loopdelay, gameloop, 0);
@@ -111,27 +109,16 @@ void render()
 
 void update()
 {
-	updateRotationMatrix();
-}
+	float fElapsedTime = glutGet(GLUT_ELAPSED_TIME);
+	float fTheta = 1.0f * fElapsedTime / 1000;
 
-void updateRotationMatrix()
-{
-	fElapsedTime = glutGet(GLUT_ELAPSED_TIME);
-	fTheta = 1.0f * fElapsedTime / 1000;
-	
-	// Rotation Z
-	matRotZ.m[0][0] = cosf(fTheta);
-	matRotZ.m[0][1] = sinf(fTheta);
-	matRotZ.m[1][0] = -sinf(fTheta);
-	matRotZ.m[1][1] = cosf(fTheta);
-	matRotZ.m[2][2] = 1;
-	matRotZ.m[3][3] = 1;
+	matRotX.rotateX(fTheta * 0.0f);
+	matRotX.rotateY(fTheta * 1.0f);
+	matRotZ.rotateZ(fTheta * 1.0f);
 
-	// Rotation X
-	matRotX.m[0][0] = 1;
-	matRotX.m[1][1] = cosf(fTheta * 0.5f);
-	matRotX.m[1][2] = sinf(fTheta * 0.5f);
-	matRotX.m[2][1] = -sinf(fTheta * 0.5f);
-	matRotX.m[2][2] = cosf(fTheta * 0.5f);
-	matRotX.m[3][3] = 1;
+	matTrans.makeTranslation(0.0f, 0.0f, 8.0f);
+
+	matWorld.makeIdentity();	// form World Matrix
+	matWorld = matRotZ * matRotX;  // transform by rotation
+	matWorld = matWorld * matTrans;  // transform by translation
 }
