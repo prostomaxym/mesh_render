@@ -1,6 +1,6 @@
 #include "Keyboard.h"
 
-#include "main.h"
+#include "../main.h"
 
 void ReleaseKeyHandler(unsigned char key, int x, int y)
 {

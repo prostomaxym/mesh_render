@@ -1,7 +1,7 @@
 #ifndef MESH_RENDER_MAIN_H_
 #define MESH_RENDER_MAIN_H_
 
-#include "Window.h"
+#include "utility/Window.h"
 
 //Resolution related variables
 extern float DPIscale;

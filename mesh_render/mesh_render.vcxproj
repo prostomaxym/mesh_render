@@ -151,22 +151,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="graphics\Matrix.cpp" />
+    <ClCompile Include="graphics\Mesh.cpp" />
+    <ClCompile Include="graphics\Vector.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Matrix.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="Text.cpp" />
-    <ClCompile Include="Vector.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="utility\Keyboard.cpp" />
+    <ClCompile Include="utility\Text.cpp" />
+    <ClCompile Include="utility\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="graphics\Matrix.h" />
+    <ClInclude Include="graphics\Mesh.h" />
+    <ClInclude Include="graphics\Vector.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="Matrix.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="Text.h" />
-    <ClInclude Include="Vector.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="utility\Keyboard.h" />
+    <ClInclude Include="utility\Text.h" />
+    <ClInclude Include="utility\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

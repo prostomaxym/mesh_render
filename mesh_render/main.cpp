@@ -3,16 +3,12 @@
 
 #include <glut.h>
 
-#include "Keyboard.h"
 #include "main.h"
-#include "Matrix.h"
-#include "Mesh.h"
-#include "Text.h"
-#include "Window.h"
-
-void update();
-void render();
-void gameloop(int);
+#include "graphics/Matrix.h"
+#include "graphics/Mesh.h"
+#include "utility/Keyboard.h"
+#include "utility/Text.h"
+#include "utility/Window.h"
 
 //Resolution related variables
 //96 DPI - Windows constant
@@ -56,21 +52,21 @@ mesh meshCube({
 	{ 1.0f, 0.0f, 1.0f,    0.0f, 0.0f, 0.0f,    1.0f, 0.0f, 0.0f },
 
 	});
-mesh ship;
+mesh axis;
+mesh mountains;
+mesh teapot;
+
 
 
 int main()
 {
 	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
 
-	ship.loadFromObjectFile("spaceship.obj");
-	matProj.makeProjection(0.1f, 1000.0f, 90.0f);
-	
-	matTrans.makeTranslation(0.0f, 0.0f, 5.0f);
+	axis.loadFromObjectFile("objects/axis.obj");
+	teapot.loadFromObjectFile("objects/teapot.obj");
+	mountains.loadFromObjectFile("objects/mountains.obj");
 
-	matWorld.makeIdentity();	// form World Matrix
-	matWorld = matRotZ * matRotX;  // transform by rotation
-	matWorld = matWorld * matTrans;  // transform by translation
+	matProj.makeProjection(0.1f, 1000.0f, 90.0f);
 
 	//GLut func initialization
 	glutDisplayFunc(render);
@@ -89,7 +85,7 @@ void gameloop(int = 0)
 	update();
 	render();
 
-	delta_ticks = glutGet(GLUT_ELAPSED_TIME) - current_ticks; //the time, in ms, that took to render the scene
+	delta_ticks = glutGet(GLUT_ELAPSED_TIME) - current_ticks; //time (ms) to render the scene
 	if (delta_ticks > 0)	fps = 1000 / delta_ticks;
 
 	glutTimerFunc(loopdelay, gameloop, 0);
@@ -99,11 +95,13 @@ void render()
 {
 	glClearColor(0.0f, 0.65f, 1.0f, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
-
-	ui.drawFpsCounter(50, 50, fps);
+	
+	axis.drawMesh(0.4f, 0.7f, 0.3f);
 	//meshCube.drawMesh(0.4f, 0.7f, 0.3f);
-	ship.drawMesh(0.4f, 0.7f, 0.3f);
-
+	//mountains.drawMesh(0.4f, 0.7f, 0.3f);
+	//teapot.drawMesh(0.83f, 0.68f, 0.2f);
+	
+	ui.drawFpsCounter(50, 50, fps);
 	glFlush();
 }
 
@@ -113,12 +111,12 @@ void update()
 	float fTheta = 1.0f * fElapsedTime / 1000;
 
 	matRotX.rotateX(fTheta * 0.0f);
-	matRotX.rotateY(fTheta * 1.0f);
-	matRotZ.rotateZ(fTheta * 1.0f);
+	matRotY.rotateY(fTheta * 1.0f);
+	matRotZ.rotateZ(fTheta * 0.0f);
 
-	matTrans.makeTranslation(0.0f, 0.0f, 8.0f);
+	matTrans.makeTranslation(0.0f, -5.0f, 20.0f);
 
-	matWorld.makeIdentity();	// form World Matrix
-	matWorld = matRotZ * matRotX;  // transform by rotation
-	matWorld = matWorld * matTrans;  // transform by translation
+	matWorld.makeIdentity();	//form World Matrix
+	matWorld = matRotX * matRotZ * matRotY; //transform by rotation
+	matWorld = matWorld * matTrans;  //transform by translation
 }

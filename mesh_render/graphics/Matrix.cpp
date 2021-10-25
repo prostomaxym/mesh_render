@@ -4,7 +4,7 @@
 
 #include <glut.h>
 
-mat4x4 matProj, matRotX, matRotY,matRotZ, matWorld, matTrans;
+mat4x4 matProj, matRotX, matRotY, matRotZ, matWorld, matTrans;
 
 mat4x4 mat4x4::operator*(mat4x4& other)
 {
