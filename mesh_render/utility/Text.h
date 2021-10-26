@@ -1,5 +1,5 @@
-#ifndef MESH_RENDER_TEXT_H_
-#define MESH_RENDER_TEXT_H_
+#ifndef MESH_RENDER_UTILITY_TEXT_H_
+#define MESH_RENDER_UTILITY_TEXT_H_
 
 #include <string>
 
@@ -11,4 +11,4 @@ public:
 private:
 	void glWrite(float x, float y, int* font, std::string text);
 };
-#endif  // PATHFINDING_VISUALIZER_TEXT_H_
+#endif  // MESH_RENDER_UTILITY_TEXT_H_

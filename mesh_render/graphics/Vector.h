@@ -1,5 +1,5 @@
-#ifndef MESH_RENDER_VECTOR_H_
-#define MESH_RENDER_VECTOR_H_
+#ifndef MESH_RENDER_GRAPHICS_VECTOR_H_
+#define MESH_RENDER_GRAPHICS_VECTOR_H_
 
 struct vec3f
 {
@@ -20,8 +20,4 @@ struct vec3f
 	float getLength();
 	void normalise(); //normalise by its lenght
 };
-
-extern vec3f vCamera;
-extern vec3f light_direction;
-
-#endif  // MESH_RENDER_VECTOR_H_
+#endif  // MESH_RENDER_GRAPHICS_VECTOR_H_

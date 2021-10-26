@@ -6,7 +6,9 @@
 #include "main.h"
 #include "graphics/Matrix.h"
 #include "graphics/Mesh.h"
+#include "graphics/Vector.h"
 #include "utility/Keyboard.h"
+#include "utility/Mouse.h"
 #include "utility/Text.h"
 #include "utility/Window.h"
 
@@ -19,8 +21,9 @@ const int kWidth = 1280, kHeight = 720;  //default window resolution
 bool fullscreen = false;  //default screen mode
 
 int loopdelay = 1;  //delay between frames in ms
-int current_ticks, delta_ticks;
+int t, old_t, dt;
 int fps = 0;  //fps counter
+float fYaw, fXaw;
 
 Window window(kWidth, kHeight, "Mesh Render");
 Text ui;
@@ -56,6 +59,11 @@ mesh axis;
 mesh mountains;
 mesh teapot;
 
+mat4x4 matProj, matRotX, matRotY, matRotZ, matWorld, matTrans, matCamera, matView, matCameraRot;
+vec3f vCamera, vForward, vSide, vLookDir;
+vec3f vTarget = { 0.0f, 0.0f, 0.1f };
+vec3f light_direction = { 0.0f, 1.0f, -3.0f };
+vec3f vUp = { 0.0f, 1.0f, 0.0f };
 
 
 int main()
@@ -71,7 +79,12 @@ int main()
 	//GLut func initialization
 	glutDisplayFunc(render);
 	glutTimerFunc(loopdelay, gameloop, 0);
+	glutKeyboardFunc(PressKeyHandler);
 	glutKeyboardUpFunc(ReleaseKeyHandler);
+	glutPassiveMotionFunc(PassiveMotionMouseHandler);
+	glutSetCursor(GLUT_CURSOR_NONE);
+
+	old_t = glutGet(GLUT_ELAPSED_TIME);
 
 	//Game loop
 	glutMainLoop();
@@ -80,13 +93,14 @@ int main()
 
 void gameloop(int = 0)
 {
-	current_ticks = glutGet(GLUT_ELAPSED_TIME);
-	
 	update();
 	render();
 
-	delta_ticks = glutGet(GLUT_ELAPSED_TIME) - current_ticks; //time (ms) to render the scene
-	if (delta_ticks > 0)	fps = 1000 / delta_ticks;
+	t = glutGet(GLUT_ELAPSED_TIME);
+	dt = (t - old_t);
+	old_t = t;
+
+	if (dt > 0)	fps = 1000 / dt;
 
 	glutTimerFunc(loopdelay, gameloop, 0);
 }
@@ -96,9 +110,9 @@ void render()
 	glClearColor(0.0f, 0.65f, 1.0f, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 	
-	axis.drawMesh(0.4f, 0.7f, 0.3f);
+	//axis.drawMesh(0.4f, 0.7f, 0.3f, matWorld, matView, matProj, vCamera, light_direction);
 	//meshCube.drawMesh(0.4f, 0.7f, 0.3f);
-	//mountains.drawMesh(0.4f, 0.7f, 0.3f);
+	mountains.drawMesh(0.4f, 0.7f, 0.3f, matWorld, matView, matProj, vCamera, light_direction);
 	//teapot.drawMesh(0.83f, 0.68f, 0.2f);
 	
 	ui.drawFpsCounter(50, 50, fps);
@@ -107,16 +121,28 @@ void render()
 
 void update()
 {
-	float fElapsedTime = glutGet(GLUT_ELAPSED_TIME);
-	float fTheta = 1.0f * fElapsedTime / 1000;
+	float fTheta = 1.0f * t / 1000;
 
 	matRotX.rotateX(fTheta * 0.0f);
-	matRotY.rotateY(fTheta * 1.0f);
+	matRotY.rotateY(fTheta * 0.0f);
 	matRotZ.rotateZ(fTheta * 0.0f);
 
-	matTrans.makeTranslation(0.0f, -5.0f, 20.0f);
-
+	//Update World Matrix
+	matTrans.makeTranslation(0.0f, -50.0f, 200.0f);
 	matWorld.makeIdentity();	//form World Matrix
 	matWorld = matRotX * matRotZ * matRotY; //transform by rotation
 	matWorld = matWorld * matTrans;  //transform by translation
+	
+
+	//Update camera
+	vForward = vLookDir * 1.0f * dt;
+	vSide = vForward ^ vUp;
+	vUp = { 0,1,0 };
+	vTarget = { 0,0,1 };
+	matCameraRot.rotateY(fYaw);
+	matCameraRot.rotateX(fXaw);
+	vLookDir = MatrixMultiplyVector(matCameraRot, vTarget);
+	vTarget = vCamera + vLookDir;
+	matCamera.MatrixPointAt(vCamera, vTarget, vUp);
+	matView.MatrixQuickInverse(matCamera);
 }

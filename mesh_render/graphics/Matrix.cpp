@@ -4,8 +4,6 @@
 
 #include <glut.h>
 
-mat4x4 matProj, matRotX, matRotY, matRotZ, matWorld, matTrans;
-
 mat4x4 mat4x4::operator*(mat4x4& other)
 {
 	mat4x4 matrix;
@@ -19,17 +17,18 @@ mat4x4 mat4x4::operator*(mat4x4& other)
 	}
 	return matrix;
 }
+
 void mat4x4::makeProjection(float fNear, float fFar, float fFov)
 {
 	float fAspectRatio = (float)glutGet(GLUT_WINDOW_HEIGHT) / (float)glutGet(GLUT_WINDOW_WIDTH);
 	float fFovRad = 1.0f / tanf(fFov * 0.5f / 180.0f * 3.14159f);
 
-	matProj.m[0][0] = fAspectRatio * fFovRad;
-	matProj.m[1][1] = fFovRad;
-	matProj.m[2][2] = fFar / (fFar - fNear);
-	matProj.m[3][2] = (-fFar * fNear) / (fFar - fNear);
-	matProj.m[2][3] = 1.0f;
-	matProj.m[3][3] = 0.0f;
+	this->m[0][0] = fAspectRatio * fFovRad;
+	this->m[1][1] = fFovRad;
+	this->m[2][2] = fFar / (fFar - fNear);
+	this->m[3][2] = (-fFar * fNear) / (fFar - fNear);
+	this->m[2][3] = 1.0f;
+	this->m[3][3] = 0.0f;
 }
 
 void mat4x4::makeIdentity()
@@ -90,4 +89,38 @@ vec3f MatrixMultiplyVector(mat4x4& m, vec3f& i)
 	v.w = i.x * m.m[0][3] + i.y * m.m[1][3] + i.z * m.m[2][3] + m.m[3][3];
 
 	return v;
+}
+
+void mat4x4::MatrixPointAt(vec3f& pos, vec3f& target, vec3f& up)
+{
+	// Calculate new forward direction
+	vec3f newForward = target - pos;
+	newForward.normalise();
+
+	// Calculate new Up direction
+	vec3f a = newForward * (up * newForward);
+	vec3f newUp = up - a;
+	newUp.normalise();
+
+	// New Right direction is easy, its just cross product
+	vec3f newRight = newUp ^ newForward;
+
+	// Construct Dimensioning and Translation Matrix	
+	mat4x4 matrix;
+	matrix.m[0][0] = newRight.x;	matrix.m[0][1] = newRight.y;	matrix.m[0][2] = newRight.z;	matrix.m[0][3] = 0.0f;
+	matrix.m[1][0] = newUp.x;			matrix.m[1][1] = newUp.y;			matrix.m[1][2] = newUp.z;			matrix.m[1][3] = 0.0f;
+	matrix.m[2][0] = newForward.x;matrix.m[2][1] = newForward.y;matrix.m[2][2] = newForward.z;matrix.m[2][3] = 0.0f;
+	matrix.m[3][0] = pos.x;				matrix.m[3][1] = pos.y;				matrix.m[3][2] = pos.z;				matrix.m[3][3] = 1.0f;
+	*this = matrix;
+}
+
+void mat4x4::MatrixQuickInverse(mat4x4& m) // Only for Rotation/Translation Matrices
+{
+	this->m[0][0] = m.m[0][0]; this->m[0][1] = m.m[1][0]; this->m[0][2] = m.m[2][0]; this->m[0][3] = 0.0f;
+	this->m[1][0] = m.m[0][1]; this->m[1][1] = m.m[1][1]; this->m[1][2] = m.m[2][1]; this->m[1][3] = 0.0f;
+	this->m[2][0] = m.m[0][2]; this->m[2][1] = m.m[1][2]; this->m[2][2] = m.m[2][2]; this->m[2][3] = 0.0f;
+	this->m[3][0] = -(m.m[3][0] * this->m[0][0] + m.m[3][1] * this->m[1][0] + m.m[3][2] * this->m[2][0]);
+	this->m[3][1] = -(m.m[3][0] * this->m[0][1] + m.m[3][1] * this->m[1][1] + m.m[3][2] * this->m[2][1]);
+	this->m[3][2] = -(m.m[3][0] * this->m[0][2] + m.m[3][1] * this->m[1][2] + m.m[3][2] * this->m[2][2]);
+	this->m[3][3] = 1.0f;
 }

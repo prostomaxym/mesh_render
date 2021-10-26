@@ -2,9 +2,6 @@
 
 #include <cmath>
 
-vec3f vCamera = { 0.0f, 0.0f, 0.0f };
-vec3f light_direction = { 0.0f, 1.0f, -3.0f };
-
 vec3f vec3f::operator+(vec3f& other)
 {
 	return { this->x + other.x,this->y + other.y, this->z + other.z };

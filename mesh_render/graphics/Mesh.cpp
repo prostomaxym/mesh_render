@@ -11,12 +11,17 @@ mesh::mesh()
 	
 }
 
-mesh::mesh(std::vector <triangle> input)
+mesh::mesh(std::vector <triangle> polygons)
 {
-	this->tris = std::vector <triangle>(input);
+	this->tris = std::vector <triangle>(polygons);
 }
 
-void mesh::drawMesh(float r, float g, float b)
+void mesh::drawMesh(float r, float g, float b, 
+		mat4x4& matWorld, 
+		mat4x4& matView, 
+		mat4x4& matProj, 
+		vec3f& vCamera, 
+		vec3f& light_direction)
 {
 	// Store triagles for rastering later
 	std::vector<triangle> vecTrianglesToRaster;
@@ -46,10 +51,14 @@ void mesh::drawMesh(float r, float g, float b)
 			//How aligned are light direction and triangle surface normal
 			float dp = std::max(0.1f, light_direction * normal);
 
+			triViewed.p[0] = MatrixMultiplyVector(matView, triTransformed.p[0]);
+			triViewed.p[1] = MatrixMultiplyVector(matView, triTransformed.p[1]);
+			triViewed.p[2] = MatrixMultiplyVector(matView, triTransformed.p[2]);
+
 			// Project triangles from 3D --> 2D
-			triProjected.p[0] = MatrixMultiplyVector(matProj,triTransformed.p[0]);
-			triProjected.p[1] = MatrixMultiplyVector(matProj, triTransformed.p[1]);
-			triProjected.p[2] = MatrixMultiplyVector(matProj, triTransformed.p[2]);
+			triProjected.p[0] = MatrixMultiplyVector(matProj, triViewed.p[0]);
+			triProjected.p[1] = MatrixMultiplyVector(matProj, triViewed.p[1]);
+			triProjected.p[2] = MatrixMultiplyVector(matProj, triViewed.p[2]);
 
 			triProjected.p[0] = triProjected.p[0] / triProjected.p[0].w;
 			triProjected.p[1] = triProjected.p[1] / triProjected.p[1].w;

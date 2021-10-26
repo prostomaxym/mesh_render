@@ -1,5 +1,5 @@
-#ifndef MESH_RENDER_MESH_H_
-#define MESH_RENDER_MESH_H_
+#ifndef MESH_RENDER_GRAPHICS_MESH_H_
+#define MESH_RENDER_GRAPHICS_MESH_H_
 
 #include <string>
 #include <vector>
@@ -18,9 +18,14 @@ struct mesh
 	std::vector <triangle> tris;
 
 	mesh();
-	mesh(std::vector <triangle> input);
+	mesh(std::vector <triangle> polygons);
 
-	void drawMesh(float r, float g, float b);
+	void drawMesh(float r, float g, float b, 
+		mat4x4& matWorld,
+		mat4x4& matView,
+		mat4x4& matProj,
+		vec3f& vCamera,
+		vec3f& light_direction);
 	bool loadFromObjectFile(std::string sFilename);
 };
-#endif  // MESH_RENDER_MESH_H_
+#endif  // MESH_RENDER_GRAPHICS_MESH_H_

@@ -48,6 +48,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="utility\Mouse.cpp">
+      <Filter>Source Files\utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\Matrix.h">
@@ -69,6 +72,9 @@
       <Filter>Header Files\utility</Filter>
     </ClInclude>
     <ClInclude Include="utility\Window.h">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\Mouse.h">
       <Filter>Header Files\utility</Filter>
     </ClInclude>
   </ItemGroup>

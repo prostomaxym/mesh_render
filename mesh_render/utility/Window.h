@@ -1,5 +1,5 @@
-#ifndef MESH_RENDER_WINDOW_H_
-#define MESH_RENDER_WINDOW_H_
+#ifndef MESH_RENDER_UTILITY_WINDOW_H_
+#define MESH_RENDER_UTILITY_WINDOW_H_
 
 #include <string>
 
@@ -16,5 +16,5 @@ private:
 	int width, height; //window resolution
 	std::string window_name;
 };
-#endif  // MESH_RENDER_WINDOW_H_
+#endif  // MESH_RENDER_UTILITY_WINDOW_H_
 

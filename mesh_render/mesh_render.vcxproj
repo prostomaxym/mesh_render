@@ -156,6 +156,7 @@
     <ClCompile Include="graphics\Vector.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="utility\Keyboard.cpp" />
+    <ClCompile Include="utility\Mouse.cpp" />
     <ClCompile Include="utility\Text.cpp" />
     <ClCompile Include="utility\Window.cpp" />
   </ItemGroup>
@@ -165,6 +166,7 @@
     <ClInclude Include="graphics\Vector.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="utility\Keyboard.h" />
+    <ClInclude Include="utility\Mouse.h" />
     <ClInclude Include="utility\Text.h" />
     <ClInclude Include="utility\Window.h" />
   </ItemGroup>
