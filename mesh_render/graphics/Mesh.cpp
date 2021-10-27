@@ -19,9 +19,8 @@ mesh::mesh(std::vector <triangle> polygons)
 }
 
 void mesh::drawMesh(float r, float g, float b, 
-		mat4x4& matWorld, 
-		mat4x4& matView, 
-		mat4x4& matProj, 
+		World& world,
+		mat4x4& matView,
 		vec3f& vCamera, 
 		vec3f& light_direction)
 {
@@ -32,9 +31,9 @@ void mesh::drawMesh(float r, float g, float b,
 		triangle triProjected, triTransformed, triViewed;
 
 		// World Matrix Transform
-		triTransformed.p[0] = MatrixMultiplyVector(matWorld, tri.p[0]);
-		triTransformed.p[1] = MatrixMultiplyVector(matWorld, tri.p[1]);
-		triTransformed.p[2] = MatrixMultiplyVector(matWorld, tri.p[2]);
+		triTransformed.p[0] = MatrixMultiplyVector(world.matWorld, tri.p[0]);
+		triTransformed.p[1] = MatrixMultiplyVector(world.matWorld, tri.p[1]);
+		triTransformed.p[2] = MatrixMultiplyVector(world.matWorld, tri.p[2]);
 
 		// Use Cross-Product to get surface normal
 		vec3f normal, line1, line2;
@@ -67,9 +66,9 @@ void mesh::drawMesh(float r, float g, float b,
 			for (int n = 0; n < nClippedTriangles; n++)
 			{
 				// Project triangles from 3D --> 2D
-				triProjected.p[0] = MatrixMultiplyVector(matProj, clipped[n].p[0]);
-				triProjected.p[1] = MatrixMultiplyVector(matProj, clipped[n].p[1]);
-				triProjected.p[2] = MatrixMultiplyVector(matProj, clipped[n].p[2]);
+				triProjected.p[0] = MatrixMultiplyVector(world.matProj, clipped[n].p[0]);
+				triProjected.p[1] = MatrixMultiplyVector(world.matProj, clipped[n].p[1]);
+				triProjected.p[2] = MatrixMultiplyVector(world.matProj, clipped[n].p[2]);
 
 				// Scale into view
 				triProjected.p[0] = triProjected.p[0] / triProjected.p[0].w;

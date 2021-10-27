@@ -51,6 +51,9 @@
     <ClCompile Include="utility\Mouse.cpp">
       <Filter>Source Files\utility</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\World.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\Matrix.h">
@@ -76,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="utility\Mouse.h">
       <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\World.h">
+      <Filter>Header Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

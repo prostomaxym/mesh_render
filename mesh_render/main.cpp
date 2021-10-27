@@ -7,10 +7,18 @@
 #include "graphics/Matrix.h"
 #include "graphics/Mesh.h"
 #include "graphics/Vector.h"
+#include "graphics/World.h"
 #include "utility/Keyboard.h"
 #include "utility/Mouse.h"
 #include "utility/Text.h"
 #include "utility/Window.h"
+
+//Force higher performance GPU usage
+extern "C"
+{
+	_declspec(dllexport) DWORD NvOptimusEnablement = 1;
+	_declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
+}
 
 //Resolution related variables
 //96 DPI - Windows constant
@@ -61,12 +69,12 @@ mesh axis;
 mesh mountains;
 mesh teapot;
 
-mat4x4 matProj, matRotX, matRotY, matRotZ, matWorld, matTrans, matCamera, matView, matCameraRot;
+World world;
+mat4x4 matCamera, matView, matCameraRot;
 vec3f vCamera, vForward, vSide, vLookDir;
 vec3f vTarget = { 0.0f, 0.0f, 1.0f };
 vec3f light_direction = { 0.0f, 1.0f, -3.0f };
 vec3f vUp = { 0.0f, 1.0f, 0.0f };
-
 
 int main()
 {
@@ -76,7 +84,12 @@ int main()
 	teapot.loadFromObjectFile("objects/teapot.obj");
 	mountains.loadFromObjectFile("objects/mountains.obj");
 
-	matProj.makeProjection(0.1f, 1000.0f, 90.0f);
+	//World setup
+	world.makeProjection(0.1f, 1000.0f, 90.0f);
+	world.makeIdentity();
+	world.makeRotation(0.0f, 0.0f, 0.0f);
+	world.makeTranslation(0.0f, -2.0f, 8.0f);
+	world.update();
 
 	//GLut func initialization
 	glutDisplayFunc(render);
@@ -114,7 +127,7 @@ void render()
 
 	//axis.drawMesh(0.4f, 0.7f, 0.3f, matWorld, matView, matProj, vCamera, light_direction);
 	//meshCube.drawMesh(0.4f, 0.7f, 0.3f);
-	mountains.drawMesh(0.4f, 0.7f, 0.3f, matWorld, matView, matProj, vCamera, light_direction);
+	mountains.drawMesh(0.4f, 0.7f, 0.3f, world, matView, vCamera, light_direction);
 	//teapot.drawMesh(0.83f, 0.68f, 0.2f, matWorld, matView, matProj, vCamera, light_direction);
 	
 	ui.drawFpsCounter(50, 50, fps);
@@ -123,15 +136,8 @@ void render()
 
 void update()
 {
-	matRotX.rotateX(0.0f);
-	matRotY.rotateY(0.0f);
-	matRotZ.rotateZ(0.0f);
-
 	//Update World Matrix
-	matTrans.makeTranslation(0.0f, -2.0f, 8.0f);
-	matWorld.makeIdentity();	//form World Matrix
-	matWorld = matRotX * matRotZ * matRotY; //transform by rotation
-	matWorld = matWorld * matTrans;  //transform by translation
+	
 }
 
 void updateCamera(float fYaw, float fPitch)

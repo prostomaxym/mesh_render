@@ -6,6 +6,7 @@
 
 #include "Matrix.h"
 #include "Vector.h"
+#include "World.h"
 
 struct triangle
 {
@@ -21,9 +22,8 @@ struct mesh
 	mesh(std::vector <triangle> polygons);
 
 	void drawMesh(float r, float g, float b, 
-		mat4x4& matWorld,
+		World& world,
 		mat4x4& matView,
-		mat4x4& matProj,
 		vec3f& vCamera,
 		vec3f& light_direction);
 	bool loadFromObjectFile(std::string sFilename);
