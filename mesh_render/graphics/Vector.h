@@ -19,5 +19,6 @@ struct vec3f
 
 	float getLength();
 	void normalise(); //normalise by its lenght
+	void intersectPlane(vec3f& plane_p, vec3f& plane_n, vec3f& lineStart, vec3f& lineEnd);
 };
 #endif  // MESH_RENDER_GRAPHICS_VECTOR_H_

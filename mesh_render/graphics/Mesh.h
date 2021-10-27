@@ -28,4 +28,6 @@ struct mesh
 		vec3f& light_direction);
 	bool loadFromObjectFile(std::string sFilename);
 };
+
+int TriangleClipAgainstPlane(vec3f plane_p, vec3f plane_n, triangle& in_tri, triangle& out_tri1, triangle& out_tri2);
 #endif  // MESH_RENDER_GRAPHICS_MESH_H_

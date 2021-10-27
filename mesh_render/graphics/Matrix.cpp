@@ -106,12 +106,10 @@ void mat4x4::MatrixPointAt(vec3f& pos, vec3f& target, vec3f& up)
 	vec3f newRight = newUp ^ newForward;
 
 	// Construct Dimensioning and Translation Matrix	
-	mat4x4 matrix;
-	matrix.m[0][0] = newRight.x;	matrix.m[0][1] = newRight.y;	matrix.m[0][2] = newRight.z;	matrix.m[0][3] = 0.0f;
-	matrix.m[1][0] = newUp.x;			matrix.m[1][1] = newUp.y;			matrix.m[1][2] = newUp.z;			matrix.m[1][3] = 0.0f;
-	matrix.m[2][0] = newForward.x;matrix.m[2][1] = newForward.y;matrix.m[2][2] = newForward.z;matrix.m[2][3] = 0.0f;
-	matrix.m[3][0] = pos.x;				matrix.m[3][1] = pos.y;				matrix.m[3][2] = pos.z;				matrix.m[3][3] = 1.0f;
-	*this = matrix;
+	this->m[0][0] = newRight.x;		this->m[0][1] = newRight.y;		this->m[0][2] = newRight.z;	this->m[0][3] = 0.0f;
+	this->m[1][0] = newUp.x;			this->m[1][1] = newUp.y;			this->m[1][2] = newUp.z;		this->m[1][3] = 0.0f;
+	this->m[2][0] = newForward.x;	this->m[2][1] = newForward.y;	this->m[2][2] = newForward.z;this->m[2][3] = 0.0f;
+	this->m[3][0] = pos.x;				this->m[3][1] = pos.y;				this->m[3][2] = pos.z;			this->m[3][3] = 1.0f;
 }
 
 void mat4x4::MatrixQuickInverse(mat4x4& m) // Only for Rotation/Translation Matrices

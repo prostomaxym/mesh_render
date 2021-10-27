@@ -21,10 +21,10 @@ void PressKeyHandler(unsigned char key, int x, int y)
 		vCamera = vCamera - vForward;
 		break;
 	case 32: 
-		vCamera = vCamera - vUp;
+		vCamera = vCamera + vUp;
 		break;
 	case 'c':
-		vCamera = vCamera + vUp;
+		vCamera = vCamera - vUp;
 		break;
 	}
 }

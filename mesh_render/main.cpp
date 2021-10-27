@@ -23,7 +23,9 @@ bool fullscreen = false;  //default screen mode
 int loopdelay = 1;  //delay between frames in ms
 int t, old_t, dt;
 int fps = 0;  //fps counter
-float fYaw, fXaw;
+
+float fYaw, fPitch;
+float movespeed = 0.1f;
 
 Window window(kWidth, kHeight, "Mesh Render");
 Text ui;
@@ -61,7 +63,7 @@ mesh teapot;
 
 mat4x4 matProj, matRotX, matRotY, matRotZ, matWorld, matTrans, matCamera, matView, matCameraRot;
 vec3f vCamera, vForward, vSide, vLookDir;
-vec3f vTarget = { 0.0f, 0.0f, 0.1f };
+vec3f vTarget = { 0.0f, 0.0f, 1.0f };
 vec3f light_direction = { 0.0f, 1.0f, -3.0f };
 vec3f vUp = { 0.0f, 1.0f, 0.0f };
 
@@ -82,12 +84,12 @@ int main()
 	glutKeyboardFunc(PressKeyHandler);
 	glutKeyboardUpFunc(ReleaseKeyHandler);
 	glutPassiveMotionFunc(PassiveMotionMouseHandler);
-	glutSetCursor(GLUT_CURSOR_NONE);
+	glutSetCursor(GLUT_CURSOR_CROSSHAIR);
 
 	old_t = glutGet(GLUT_ELAPSED_TIME);
 
-	//Game loop
 	glutMainLoop();
+	//Game loop
 	return 0;
 }
 
@@ -109,11 +111,11 @@ void render()
 {
 	glClearColor(0.0f, 0.65f, 1.0f, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
-	
+
 	//axis.drawMesh(0.4f, 0.7f, 0.3f, matWorld, matView, matProj, vCamera, light_direction);
 	//meshCube.drawMesh(0.4f, 0.7f, 0.3f);
 	mountains.drawMesh(0.4f, 0.7f, 0.3f, matWorld, matView, matProj, vCamera, light_direction);
-	//teapot.drawMesh(0.83f, 0.68f, 0.2f);
+	//teapot.drawMesh(0.83f, 0.68f, 0.2f, matWorld, matView, matProj, vCamera, light_direction);
 	
 	ui.drawFpsCounter(50, 50, fps);
 	glFlush();
@@ -121,27 +123,24 @@ void render()
 
 void update()
 {
-	float fTheta = 1.0f * t / 1000;
-
-	matRotX.rotateX(fTheta * 0.0f);
-	matRotY.rotateY(fTheta * 0.0f);
-	matRotZ.rotateZ(fTheta * 0.0f);
+	matRotX.rotateX(0.0f);
+	matRotY.rotateY(0.0f);
+	matRotZ.rotateZ(0.0f);
 
 	//Update World Matrix
-	matTrans.makeTranslation(0.0f, -50.0f, 200.0f);
+	matTrans.makeTranslation(0.0f, -2.0f, 8.0f);
 	matWorld.makeIdentity();	//form World Matrix
 	matWorld = matRotX * matRotZ * matRotY; //transform by rotation
 	matWorld = matWorld * matTrans;  //transform by translation
-	
+}
 
-	//Update camera
-	vForward = vLookDir * 1.0f * dt;
+void updateCamera(float fYaw, float fPitch)
+{
+	vForward = vLookDir * movespeed * dt;
 	vSide = vForward ^ vUp;
-	vUp = { 0,1,0 };
-	vTarget = { 0,0,1 };
-	matCameraRot.rotateY(fYaw);
-	matCameraRot.rotateX(fXaw);
-	vLookDir = MatrixMultiplyVector(matCameraRot, vTarget);
+	vUp = { 0.0f, 1.0f, 0.0f };
+	vTarget = { 0.0f, 0.0f, 1.0f };
+	vLookDir = { cosf(fPitch) * cosf(fYaw), sinf(fPitch) , cosf(fPitch) * sinf(fYaw) };
 	vTarget = vCamera + vLookDir;
 	matCamera.MatrixPointAt(vCamera, vTarget, vUp);
 	matView.MatrixQuickInverse(matCamera);

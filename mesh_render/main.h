@@ -11,8 +11,8 @@ extern const int kFullHeight;  //fullscreen height resolution
 extern const int kWidth, kHeight;  //default window resolution
 extern bool fullscreen;  //default screen mode
 
-extern int dt;
-extern float fYaw, fXaw;
+extern int t, old_t, dt;
+extern float fYaw, fPitch;
 
 extern Window window;
 
@@ -21,4 +21,5 @@ extern vec3f vCamera, vForward, vSide, vUp;
 void update();
 void render();
 void gameloop(int);
+void updateCamera(float fY, float fX);
 #endif  // MESH_RENDER_MAIN_H_

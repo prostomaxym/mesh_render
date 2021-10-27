@@ -55,3 +55,15 @@ void vec3f::normalise()
 	this->y /= l;
 	this->z /= l;
 }
+
+void vec3f::intersectPlane(vec3f& plane_p, vec3f& plane_n, vec3f& lineStart, vec3f& lineEnd)
+{
+	plane_n.normalise();
+	float plane_d = -1.0f * (plane_n * plane_p);
+	float ad = lineStart * plane_n;
+	float bd = lineEnd * plane_n;
+	float t = (-plane_d - ad) / (bd - ad);
+	vec3f lineStartToEnd = lineEnd - lineStart;
+	vec3f lineToIntersect = lineStartToEnd * t;
+	*this = lineStart + lineToIntersect;
+}
