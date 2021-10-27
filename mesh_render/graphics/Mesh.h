@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "Camera.h"
 #include "Matrix.h"
 #include "Vector.h"
 #include "World.h"
@@ -23,8 +24,7 @@ struct mesh
 
 	void drawMesh(float r, float g, float b, 
 		World& world,
-		mat4x4& matView,
-		vec3f& vCamera,
+		Camera& camera,
 		vec3f& light_direction);
 	bool loadFromObjectFile(std::string sFilename);
 };

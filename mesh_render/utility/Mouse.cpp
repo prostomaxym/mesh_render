@@ -29,19 +29,19 @@ void PassiveMotionMouseHandler(int x, int y)
 	mousePos.xPrevious = mousePos.xCurrent;
 	mousePos.yPrevious = mousePos.yCurrent;
 
-	fYaw += fmod(dx / 1000.0f, 6.28f);
-	fPitch -= 1.0f * dy / 1000.0f;
+	camera.fYaw += fmod(dx / 1000.0f, 6.28f);
+	camera.fPitch -= 1.0f * dy / 1000.0f;
 
-	if (fPitch > 1.57f) 
+	if (camera.fPitch > 1.57f)
 	{
-		fPitch = 1.57f - 0.0001f;
+		camera.fPitch = 1.57f - 0.0001f;
 	}
-	else if (fPitch < -1.57f) 
+	else if (camera.fPitch < -1.57f)
 	{
-		fPitch = -1.57f + 0.0001f;
+		camera.fPitch = -1.57f + 0.0001f;
 	}
 
-	updateCamera(-fYaw, fPitch);
+	camera.update(-1.0f*camera.fYaw, camera.fPitch);
 
 	if (x <= glutGet(GLUT_WINDOW_WIDTH) - 300 || y <= glutGet(GLUT_WINDOW_HEIGHT) - 300
 		||x >= glutGet(GLUT_WINDOW_WIDTH) + 300 || y >= glutGet(GLUT_WINDOW_HEIGHT) + 300)

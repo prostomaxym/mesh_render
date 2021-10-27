@@ -9,22 +9,22 @@ void PressKeyHandler(unsigned char key, int x, int y)
 	switch (key)
 	{
 	case 'a':
-		vCamera = vCamera + vSide;
+		camera.vCamera = camera.vCamera + camera.vSide;
 		break;
 	case 'd':
-		vCamera = vCamera - vSide;
+		camera.vCamera = camera.vCamera - camera.vSide;
 		break;
 	case 'w':
-		vCamera = vCamera + vForward;
+		camera.vCamera = camera.vCamera + camera.vForward;
 		break;
 	case 's':
-		vCamera = vCamera - vForward;
+		camera.vCamera = camera.vCamera - camera.vForward;
 		break;
 	case 32: 
-		vCamera = vCamera + vUp;
+		camera.vCamera = camera.vCamera + camera.vUp;
 		break;
 	case 'c':
-		vCamera = vCamera - vUp;
+		camera.vCamera = camera.vCamera - camera.vUp;
 		break;
 	}
 }
@@ -42,6 +42,18 @@ void ReleaseKeyHandler(unsigned char key, int x, int y)
 		{
 			window.enterFullscreen(kFullWidth, kFullHeight);
 			fullscreen = true;
+		}
+	}
+
+	if (key == 'r')
+	{
+		if (allowPolygonLines)
+		{
+			allowPolygonsLines = false;
+		}
+		else
+		{
+			allowPolygonsLines = true;
 		}
 	}
 }

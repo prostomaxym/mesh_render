@@ -7,6 +7,8 @@
 
 #include <glut.h>
 
+#include "../main.h"
+
 
 mesh::mesh()
 {
@@ -20,8 +22,7 @@ mesh::mesh(std::vector <triangle> polygons)
 
 void mesh::drawMesh(float r, float g, float b, 
 		World& world,
-		mat4x4& matView,
-		vec3f& vCamera, 
+		Camera& camera,
 		vec3f& light_direction)
 {
 	// Store triagles for rastering later
@@ -42,7 +43,7 @@ void mesh::drawMesh(float r, float g, float b,
 		normal = line1 ^ line2;  //operator^ overloaded - cross product
 		normal.normalise();
 
-		vec3f vCameraRay = triTransformed.p[0] - vCamera;
+		vec3f vCameraRay = triTransformed.p[0] - camera.vCamera;
 
 		if (normal * vCameraRay < 0.0f)
 		{
@@ -52,9 +53,9 @@ void mesh::drawMesh(float r, float g, float b,
 			//How aligned are light direction and triangle surface normal
 			float dp = std::max(0.1f, light_direction * normal);
 
-			triViewed.p[0] = MatrixMultiplyVector(matView, triTransformed.p[0]);
-			triViewed.p[1] = MatrixMultiplyVector(matView, triTransformed.p[1]);
-			triViewed.p[2] = MatrixMultiplyVector(matView, triTransformed.p[2]);
+			triViewed.p[0] = MatrixMultiplyVector(camera.matView, triTransformed.p[0]);
+			triViewed.p[1] = MatrixMultiplyVector(camera.matView, triTransformed.p[1]);
+			triViewed.p[2] = MatrixMultiplyVector(camera.matView, triTransformed.p[2]);
 
 			// Clip Viewed Triangle against near plane, this could form two additional
 			// additional triangles. 
@@ -111,13 +112,17 @@ void mesh::drawMesh(float r, float g, float b,
 		glVertex2f(t.p[2].x, t.p[2].y);
 		glEnd();
 
-		glBegin(GL_LINE_STRIP);
-		glColor3f(0.0f, 0.0f, 0.0f);
-		glVertex2f(t.p[0].x, t.p[0].y);
-		glVertex2f(t.p[1].x, t.p[1].y);
-		glVertex2f(t.p[2].x, t.p[2].y);
-		glVertex2f(t.p[0].x, t.p[0].y);
-		glEnd();
+		//draw triangle sides
+		if (allowPolygonLines)
+		{
+			glBegin(GL_LINE_STRIP);
+			glColor3f(0.0f, 0.0f, 0.0f);
+			glVertex2f(t.p[0].x, t.p[0].y);
+			glVertex2f(t.p[1].x, t.p[1].y);
+			glVertex2f(t.p[2].x, t.p[2].y);
+			glVertex2f(t.p[0].x, t.p[0].y);
+			glEnd();
+		}
 	}
 }
 
@@ -251,4 +256,5 @@ int TriangleClipAgainstPlane(vec3f plane_p, vec3f plane_n, triangle& in_tri, tri
 
 		return 2; // Return two newly formed triangles which form a quad
 	}
+	return 0;
 }

@@ -4,6 +4,7 @@
 #include <glut.h>
 
 #include "main.h"
+#include "graphics/Camera.h"
 #include "graphics/Matrix.h"
 #include "graphics/Mesh.h"
 #include "graphics/Vector.h"
@@ -29,11 +30,9 @@ const int kWidth = 1280, kHeight = 720;  //default window resolution
 bool fullscreen = false;  //default screen mode
 
 int loopdelay = 1;  //delay between frames in ms
-int t, old_t, dt;
+int t, old_t, dt; // for glutGet(GLUT_ELAPSED_TIME)
 int fps = 0;  //fps counter
-
-float fYaw, fPitch;
-float movespeed = 0.1f;
+bool allowPolygonLines = true;  //allow drawing polygon lines for debug
 
 Window window(kWidth, kHeight, "Mesh Render");
 Text ui;
@@ -70,11 +69,8 @@ mesh mountains;
 mesh teapot;
 
 World world;
-mat4x4 matCamera, matView, matCameraRot;
-vec3f vCamera, vForward, vSide, vLookDir;
-vec3f vTarget = { 0.0f, 0.0f, 1.0f };
-vec3f light_direction = { 0.0f, 1.0f, -3.0f };
-vec3f vUp = { 0.0f, 1.0f, 0.0f };
+Camera camera;
+vec3f light_direction = { 0.0f, 1000.0f, -3000.0f };  //single direction lighting
 
 int main()
 {
@@ -127,27 +123,15 @@ void render()
 
 	//axis.drawMesh(0.4f, 0.7f, 0.3f, matWorld, matView, matProj, vCamera, light_direction);
 	//meshCube.drawMesh(0.4f, 0.7f, 0.3f);
-	mountains.drawMesh(0.4f, 0.7f, 0.3f, world, matView, vCamera, light_direction);
+	mountains.drawMesh(0.4f, 0.7f, 0.3f, world, camera, light_direction);
 	//teapot.drawMesh(0.83f, 0.68f, 0.2f, matWorld, matView, matProj, vCamera, light_direction);
-	
+
 	ui.drawFpsCounter(50, 50, fps);
 	glFlush();
 }
 
 void update()
 {
-	//Update World Matrix
 	
 }
 
-void updateCamera(float fYaw, float fPitch)
-{
-	vForward = vLookDir * movespeed * dt;
-	vSide = vForward ^ vUp;
-	vUp = { 0.0f, 1.0f, 0.0f };
-	vTarget = { 0.0f, 0.0f, 1.0f };
-	vLookDir = { cosf(fPitch) * cosf(fYaw), sinf(fPitch) , cosf(fPitch) * sinf(fYaw) };
-	vTarget = vCamera + vLookDir;
-	matCamera.MatrixPointAt(vCamera, vTarget, vUp);
-	matView.MatrixQuickInverse(matCamera);
-}
