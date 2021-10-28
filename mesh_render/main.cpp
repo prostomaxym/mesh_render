@@ -36,7 +36,6 @@ bool fullscreen = false;  //default screen mode
 int frametime_lock = 1000 / 250;  //max fps frametime lock
 int t, old_t, dt;  // for glutGet(GLUT_ELAPSED_TIME)
 int fps = 0;  //fps counter
-bool allowPolygonLines = true;  //allow drawing polygon lines for debug
 unsigned int texture;
 
 Window window(kWidth, kHeight, "Mesh Render");
@@ -81,6 +80,7 @@ int main()
 	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
 
 	initGL();
+	LoadTextures("levels/Hurricos/s2-1_024-n.T.png");
 	camera.fPitch = 0.0f;
 	camera.fYaw = 0.0f;
 
@@ -129,8 +129,6 @@ void render()
 		camera.vTarget.x, camera.vTarget.y, camera.vTarget.z,
 		0.0f, 1.0f, 0.0f);
 
-	
-
 	//meshCube.drawMesh(0.4f, 0.7f, 0.3f);
 	//mountains.drawMesh(0.4f, 0.7f, 0.3f);
 	//teapot.drawMesh(0.83f, 0.68f, 0.2f);
@@ -144,7 +142,7 @@ void update()
 	camera.update();
 }
 
-void LoadTextures()
+void LoadTextures(std::string filename)
 {
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -159,7 +157,7 @@ void LoadTextures()
 
 	// load and generate the texture
 	int width, height, nrChannels;
-	unsigned char* data = stbi_load("levels/Hurricos/s2-1_024-n.T.png", &width, &height, &nrChannels, 0);
+	unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrChannels, 0);
 	if (data)
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -169,9 +167,9 @@ void LoadTextures()
 
 void initGL()
 {
-	LoadTextures();
 	glEnable(GL_TEXTURE_2D);
-	//glEnable(GL_SCISSOR_TEST);
+	glEnable(GL_LINE_SMOOTH);
+	glEnable(GL_POLYGON_SMOOTH);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClearDepth(1.0);
 	glDepthFunc(GL_LESS);
@@ -179,7 +177,6 @@ void initGL()
 	glShadeModel(GL_SMOOTH);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(90.0f, (GLfloat)glutGet(GLUT_WINDOW_WIDTH) / (GLfloat)glutGet(GLUT_WINDOW_HEIGHT), 0.1f, 10000.0f);
+	gluPerspective(90.0f, (GLfloat)glutGet(GLUT_WINDOW_WIDTH) / (GLfloat)glutGet(GLUT_WINDOW_HEIGHT), 0.5f, 10000.0f);
 	glMatrixMode(GL_MODELVIEW);
-	//gluOrtho2D(0, (GLfloat)glutGet(GLUT_WINDOW_WIDTH), 0, (GLfloat)glutGet(GLUT_WINDOW_HEIGHT));
 }

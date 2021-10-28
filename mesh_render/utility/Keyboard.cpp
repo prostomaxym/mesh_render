@@ -51,16 +51,4 @@ void ReleaseKeyHandler(unsigned char key, int x, int y)
 			fullscreen = true;
 		}
 	}
-
-	if (key == 'r')
-	{
-		if (allowPolygonLines)
-		{
-			allowPolygonLines = false;
-		}
-		else
-		{
-			allowPolygonLines = true;
-		}
-	}
 }

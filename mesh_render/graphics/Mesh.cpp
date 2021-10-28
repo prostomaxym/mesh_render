@@ -27,6 +27,7 @@ void mesh::drawMesh(float r, float g, float b)
 	{
 		//rasterise triangles
 		glBegin(GL_TRIANGLES);
+		glBindTexture(GL_TEXTURE_2D, texture);
 
 		glColor3f(r, g, b);
 		/*glTexCoord3f(t.t[0].u, t.t[0].v, t.t[0].w); glVertex2f(t.p[0].x, t.p[0].y);
@@ -41,16 +42,6 @@ void mesh::drawMesh(float r, float g, float b)
 		glVertex3f(tri.p[2].x, tri.p[2].y, tri.p[2].z);
 
 		glEnd();
-
-		//draw triangle sides for debug
-		if (allowPolygonLines)
-		{
-			glBegin(GL_LINE_STRIP);  
-			glVertex3f(tri.p[0].x, tri.p[0].y, tri.p[0].z);
-			glVertex3f(tri.p[1].x, tri.p[1].y, tri.p[1].z); 
-			glVertex3f(tri.p[2].x, tri.p[2].y, tri.p[2].z);
-			glEnd();
-		}
 	}
 }
 
