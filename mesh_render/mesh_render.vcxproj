@@ -169,6 +169,7 @@
     <ClInclude Include="graphics\Vector.h" />
     <ClInclude Include="graphics\World.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="stb_image.h" />
     <ClInclude Include="utility\Keyboard.h" />
     <ClInclude Include="utility\Mouse.h" />
     <ClInclude Include="utility\Text.h" />

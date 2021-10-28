@@ -12,7 +12,7 @@
 struct triangle
 {
 	vec3f p[3];
-	float dp = 1; //triangle similarity to lighting normal
+	vec2f t[3];
 };
 
 struct mesh
@@ -22,12 +22,7 @@ struct mesh
 	mesh();
 	mesh(std::vector <triangle> polygons);
 
-	void drawMesh(float r, float g, float b, 
-		World& world,
-		Camera& camera,
-		vec3f& light_direction);
-	bool loadFromObjectFile(std::string sFilename);
+	void drawMesh(float r, float g, float b);
+	bool loadFromObjectFile(std::string sFilename, bool bHasTexture = false);
 };
-
-int TriangleClipAgainstPlane(vec3f plane_p, vec3f plane_n, triangle& in_tri, triangle& out_tri1, triangle& out_tri2);
 #endif  // MESH_RENDER_GRAPHICS_MESH_H_

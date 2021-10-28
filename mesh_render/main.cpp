@@ -1,6 +1,10 @@
 #include <cmath>
 #include <Windows.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+#include <gl/GL.h>
+#include <gl/GLU.h>
 #include <glut.h>
 
 #include "main.h"
@@ -29,10 +33,11 @@ const int kFullHeight = glutGet(GLUT_SCREEN_HEIGHT) * DPIscale;  //fullscreen he
 const int kWidth = 1280, kHeight = 720;  //default window resolution
 bool fullscreen = false;  //default screen mode
 
-int loopdelay = 1;  //delay between frames in ms
-int t, old_t, dt; // for glutGet(GLUT_ELAPSED_TIME)
+int frametime_lock = 1000 / 250;  //max fps frametime lock
+int t, old_t, dt;  // for glutGet(GLUT_ELAPSED_TIME)
 int fps = 0;  //fps counter
 bool allowPolygonLines = true;  //allow drawing polygon lines for debug
+unsigned int texture;
 
 Window window(kWidth, kHeight, "Mesh Render");
 Text ui;
@@ -40,60 +45,56 @@ Text ui;
 mesh meshCube({
 
 	// FRONT
-	{ 0.0f, 0.0f, 0.0f,    0.0f, 1.0f, 0.0f,    1.0f, 1.0f, 0.0f },
-	{ 0.0f, 0.0f, 0.0f,    1.0f, 1.0f, 0.0f,    1.0f, 0.0f, 0.0f },
+	{ 0.0f, 0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 0.0f, 1.0f,    1.0f, 1.0f, 0.0f, 1.0f,		0.0f, 1.0f, 1.0f,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f, 1.0f,},
+	{ 0.0f, 0.0f, 0.0f, 1.0f,    1.0f, 1.0f, 0.0f, 1.0f,    1.0f, 0.0f, 0.0f, 1.0f,		0.0f, 1.0f, 1.0f,		1.0f, 0.0f, 1.0f,		1.0f, 1.0f, 1.0f,},
 
-	// RIGHT                                                      
-	{ 1.0f, 0.0f, 0.0f,    1.0f, 1.0f, 0.0f,    1.0f, 1.0f, 1.0f },
-	{ 1.0f, 0.0f, 0.0f,    1.0f, 1.0f, 1.0f,    1.0f, 0.0f, 1.0f },
+	// RIGHT           																			   
+	{ 1.0f, 0.0f, 0.0f, 1.0f,    1.0f, 1.0f, 0.0f, 1.0f,    1.0f, 1.0f, 1.0f, 1.0f,		0.0f, 1.0f, 1.0f,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f, 1.0f,},
+	{ 1.0f, 0.0f, 0.0f, 1.0f,    1.0f, 1.0f, 1.0f, 1.0f,    1.0f, 0.0f, 1.0f, 1.0f,		0.0f, 1.0f, 1.0f,		1.0f, 0.0f, 1.0f,		1.0f, 1.0f, 1.0f,},
 
-	// BACK                                                     
-	{ 1.0f, 0.0f, 1.0f,    1.0f, 1.0f, 1.0f,    0.0f, 1.0f, 1.0f },
-	{ 1.0f, 0.0f, 1.0f,    0.0f, 1.0f, 1.0f,    0.0f, 0.0f, 1.0f },
+	// BACK          																			   
+	{ 1.0f, 0.0f, 1.0f, 1.0f,    1.0f, 1.0f, 1.0f, 1.0f,    0.0f, 1.0f, 1.0f, 1.0f,		0.0f, 1.0f, 1.0f,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f, 1.0f,},
+	{ 1.0f, 0.0f, 1.0f, 1.0f,    0.0f, 1.0f, 1.0f, 1.0f,    0.0f, 0.0f, 1.0f, 1.0f,		0.0f, 1.0f, 1.0f,		1.0f, 0.0f, 1.0f,		1.0f, 1.0f, 1.0f,},
 
-	// LEFT                                                      
-	{ 0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 1.0f,    0.0f, 1.0f, 0.0f },
-	{ 0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 0.0f,    0.0f, 0.0f, 0.0f },
+	// LEFT            																			   
+	{ 0.0f, 0.0f, 1.0f, 1.0f,    0.0f, 1.0f, 1.0f, 1.0f,    0.0f, 1.0f, 0.0f, 1.0f,		0.0f, 1.0f, 1.0f,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f, 1.0f,},
+	{ 0.0f, 0.0f, 1.0f, 1.0f,    0.0f, 1.0f, 0.0f, 1.0f,    0.0f, 0.0f, 0.0f, 1.0f,		0.0f, 1.0f, 1.0f,		1.0f, 0.0f, 1.0f,		1.0f, 1.0f, 1.0f,},
 
-	// TOP                                                       
-	{ 0.0f, 1.0f, 0.0f,    0.0f, 1.0f, 1.0f,    1.0f, 1.0f, 1.0f },
-	{ 0.0f, 1.0f, 0.0f,    1.0f, 1.0f, 1.0f,    1.0f, 1.0f, 0.0f },
+	// TOP             																			   
+	{ 0.0f, 1.0f, 0.0f, 1.0f,    0.0f, 1.0f, 1.0f, 1.0f,    1.0f, 1.0f, 1.0f, 1.0f,		0.0f, 1.0f, 1.0f,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f, 1.0f,},
+	{ 0.0f, 1.0f, 0.0f, 1.0f,    1.0f, 1.0f, 1.0f, 1.0f,    1.0f, 1.0f, 0.0f, 1.0f,		0.0f, 1.0f, 1.0f,		1.0f, 0.0f, 1.0f,		1.0f, 1.0f, 1.0f,},
 
-	// BOTTOM                                                    
-	{ 1.0f, 0.0f, 1.0f,    0.0f, 0.0f, 1.0f,    0.0f, 0.0f, 0.0f },
-	{ 1.0f, 0.0f, 1.0f,    0.0f, 0.0f, 0.0f,    1.0f, 0.0f, 0.0f },
+	// BOTTOM          																			  
+	{ 1.0f, 0.0f, 1.0f, 1.0f,    0.0f, 0.0f, 1.0f, 1.0f,    0.0f, 0.0f, 0.0f, 1.0f,		0.0f, 1.0f, 1.0f,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f, 1.0f,},
+	{ 1.0f, 0.0f, 1.0f, 1.0f,    0.0f, 0.0f, 0.0f, 1.0f,    1.0f, 0.0f, 0.0f, 1.0f,		0.0f, 1.0f, 1.0f,		1.0f, 0.0f, 1.0f,		1.0f, 1.0f, 1.0f,},
 
-	});
-mesh axis;
+});
 mesh mountains;
 mesh teapot;
+mesh level;
 
-World world;
 Camera camera;
-vec3f light_direction = { 0.0f, 1000.0f, -3000.0f };  //single direction lighting
+
 
 int main()
 {
 	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
 
-	axis.loadFromObjectFile("objects/axis.obj");
+	initGL();
+	camera.fPitch = 0.0f;
+	camera.fYaw = 0.0f;
+
 	teapot.loadFromObjectFile("objects/teapot.obj");
 	mountains.loadFromObjectFile("objects/mountains.obj");
-
-	//World setup
-	world.makeProjection(0.1f, 1000.0f, 90.0f);
-	world.makeIdentity();
-	world.makeRotation(0.0f, 0.0f, 0.0f);
-	world.makeTranslation(0.0f, -2.0f, 8.0f);
-	world.update();
+	level.loadFromObjectFile("levels/Hurricos/Hurricos2.obj", true);
 
 	//GLut func initialization
 	glutDisplayFunc(render);
-	glutTimerFunc(loopdelay, gameloop, 0);
+	glutTimerFunc(frametime_lock, gameloop, 0);
 	glutKeyboardFunc(PressKeyHandler);
 	glutKeyboardUpFunc(ReleaseKeyHandler);
 	glutPassiveMotionFunc(PassiveMotionMouseHandler);
-	glutSetCursor(GLUT_CURSOR_CROSSHAIR);
+	glutSetCursor(GLUT_CURSOR_NONE);
 
 	old_t = glutGet(GLUT_ELAPSED_TIME);
 
@@ -113,25 +114,72 @@ void gameloop(int = 0)
 
 	if (dt > 0)	fps = 1000 / dt;
 
-	glutTimerFunc(loopdelay, gameloop, 0);
+	glutTimerFunc(frametime_lock, gameloop, 0);
 }
 
 void render()
 {
 	glClearColor(0.0f, 0.65f, 1.0f, 1);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
 
-	//axis.drawMesh(0.4f, 0.7f, 0.3f, matWorld, matView, matProj, vCamera, light_direction);
+	//glTranslatef(0.0f, -1.0f, -5.0f);
+
+	gluLookAt(camera.vCamera.x, camera.vCamera.y, camera.vCamera.z,
+		camera.vTarget.x, camera.vTarget.y, camera.vTarget.z,
+		0.0f, 1.0f, 0.0f);
+
+	
+
 	//meshCube.drawMesh(0.4f, 0.7f, 0.3f);
-	mountains.drawMesh(0.4f, 0.7f, 0.3f, world, camera, light_direction);
-	//teapot.drawMesh(0.83f, 0.68f, 0.2f, matWorld, matView, matProj, vCamera, light_direction);
-
-	ui.drawFpsCounter(50, 50, fps);
+	//mountains.drawMesh(0.4f, 0.7f, 0.3f);
+	//teapot.drawMesh(0.83f, 0.68f, 0.2f);
+	level.drawMesh(0.4f, 1.0f, 0.3f);
+	
 	glFlush();
 }
 
 void update()
 {
-	
+	camera.update();
 }
 
+void LoadTextures()
+{
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	//set the texture wrapping/filtering options (on the currently bound texture object)
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	// load and generate the texture
+	int width, height, nrChannels;
+	unsigned char* data = stbi_load("levels/Hurricos/s2-1_024-n.T.png", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	}
+	stbi_image_free(data);
+}
+
+void initGL()
+{
+	LoadTextures();
+	glEnable(GL_TEXTURE_2D);
+	//glEnable(GL_SCISSOR_TEST);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClearDepth(1.0);
+	glDepthFunc(GL_LESS);
+	glEnable(GL_DEPTH_TEST);
+	glShadeModel(GL_SMOOTH);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(90.0f, (GLfloat)glutGet(GLUT_WINDOW_WIDTH) / (GLfloat)glutGet(GLUT_WINDOW_HEIGHT), 0.1f, 10000.0f);
+	glMatrixMode(GL_MODELVIEW);
+	//gluOrtho2D(0, (GLfloat)glutGet(GLUT_WINDOW_WIDTH), 0, (GLfloat)glutGet(GLUT_WINDOW_HEIGHT));
+}

@@ -17,8 +17,11 @@ extern bool allowPolygonLines;
 
 extern Window window;
 extern Camera camera;
+extern unsigned int texture;
 
 void update();
 void render();
 void gameloop(int);
+void LoadTextures();
+void initGL();
 #endif  // MESH_RENDER_MAIN_H_

@@ -26,7 +26,14 @@ void PressKeyHandler(unsigned char key, int x, int y)
 	case 'c':
 		camera.vCamera = camera.vCamera - camera.vUp;
 		break;
+	case 'q':
+		camera.fYaw += 0.1f;
+		break;
+	case 'e':
+		camera.fYaw -= 0.1f;
+		break;
 	}
+	camera.update();
 }
 
 void ReleaseKeyHandler(unsigned char key, int x, int y)
@@ -49,11 +56,11 @@ void ReleaseKeyHandler(unsigned char key, int x, int y)
 	{
 		if (allowPolygonLines)
 		{
-			allowPolygonsLines = false;
+			allowPolygonLines = false;
 		}
 		else
 		{
-			allowPolygonsLines = true;
+			allowPolygonLines = true;
 		}
 	}
 }
