@@ -29,10 +29,7 @@ void mesh::drawMesh(float r, float g, float b)
 		glBegin(GL_TRIANGLES);
 		glBindTexture(GL_TEXTURE_2D, texture);
 
-		glColor3f(r, g, b);
-		/*glTexCoord3f(t.t[0].u, t.t[0].v, t.t[0].w); glVertex2f(t.p[0].x, t.p[0].y);
-		glTexCoord3f(t.t[1].u, t.t[1].v, t.t[1].w); glVertex2f(t.p[1].x, t.p[1].y);
-		glTexCoord3f(t.t[2].u, t.t[2].v, t.t[2].w); glVertex2f(t.p[2].x, t.p[2].y);*/
+		//glColor3f(r, g, b);
 
 		glTexCoord2f(tri.t[0].u, tri.t[0].v);  
 		glVertex3f(tri.p[0].x, tri.p[0].y, tri.p[0].z);

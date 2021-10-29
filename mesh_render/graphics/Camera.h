@@ -8,11 +8,14 @@ struct Camera
 {
 	float fYaw;
 	float fPitch;
-	float movespeed = 1.0f;
+	float movespeed;
 
 	vec3f vCamera, vForward, vSide, vLookDir;
 	vec3f vTarget = { 0.0f, 0.0f, 0.0f };
 	vec3f vUp = { 0.0f, 1.0f, 0.0f };
+
+	void init();
+	void init(float movespd);
 
 	void update();
 };

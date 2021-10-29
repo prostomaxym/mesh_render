@@ -41,52 +41,43 @@ unsigned int texture;
 Window window(kWidth, kHeight, "Mesh Render");
 Text ui;
 
-mesh meshCube({
-
-	// FRONT
-	{ 0.0f, 0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 0.0f, 1.0f,    1.0f, 1.0f, 0.0f, 1.0f,		0.0f, 1.0f, 1.0f,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f, 1.0f,},
-	{ 0.0f, 0.0f, 0.0f, 1.0f,    1.0f, 1.0f, 0.0f, 1.0f,    1.0f, 0.0f, 0.0f, 1.0f,		0.0f, 1.0f, 1.0f,		1.0f, 0.0f, 1.0f,		1.0f, 1.0f, 1.0f,},
-
-	// RIGHT           																			   
-	{ 1.0f, 0.0f, 0.0f, 1.0f,    1.0f, 1.0f, 0.0f, 1.0f,    1.0f, 1.0f, 1.0f, 1.0f,		0.0f, 1.0f, 1.0f,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f, 1.0f,},
-	{ 1.0f, 0.0f, 0.0f, 1.0f,    1.0f, 1.0f, 1.0f, 1.0f,    1.0f, 0.0f, 1.0f, 1.0f,		0.0f, 1.0f, 1.0f,		1.0f, 0.0f, 1.0f,		1.0f, 1.0f, 1.0f,},
-
-	// BACK          																			   
-	{ 1.0f, 0.0f, 1.0f, 1.0f,    1.0f, 1.0f, 1.0f, 1.0f,    0.0f, 1.0f, 1.0f, 1.0f,		0.0f, 1.0f, 1.0f,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f, 1.0f,},
-	{ 1.0f, 0.0f, 1.0f, 1.0f,    0.0f, 1.0f, 1.0f, 1.0f,    0.0f, 0.0f, 1.0f, 1.0f,		0.0f, 1.0f, 1.0f,		1.0f, 0.0f, 1.0f,		1.0f, 1.0f, 1.0f,},
-
-	// LEFT            																			   
-	{ 0.0f, 0.0f, 1.0f, 1.0f,    0.0f, 1.0f, 1.0f, 1.0f,    0.0f, 1.0f, 0.0f, 1.0f,		0.0f, 1.0f, 1.0f,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f, 1.0f,},
-	{ 0.0f, 0.0f, 1.0f, 1.0f,    0.0f, 1.0f, 0.0f, 1.0f,    0.0f, 0.0f, 0.0f, 1.0f,		0.0f, 1.0f, 1.0f,		1.0f, 0.0f, 1.0f,		1.0f, 1.0f, 1.0f,},
-
-	// TOP             																			   
-	{ 0.0f, 1.0f, 0.0f, 1.0f,    0.0f, 1.0f, 1.0f, 1.0f,    1.0f, 1.0f, 1.0f, 1.0f,		0.0f, 1.0f, 1.0f,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f, 1.0f,},
-	{ 0.0f, 1.0f, 0.0f, 1.0f,    1.0f, 1.0f, 1.0f, 1.0f,    1.0f, 1.0f, 0.0f, 1.0f,		0.0f, 1.0f, 1.0f,		1.0f, 0.0f, 1.0f,		1.0f, 1.0f, 1.0f,},
-
-	// BOTTOM          																			  
-	{ 1.0f, 0.0f, 1.0f, 1.0f,    0.0f, 0.0f, 1.0f, 1.0f,    0.0f, 0.0f, 0.0f, 1.0f,		0.0f, 1.0f, 1.0f,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f, 1.0f,},
-	{ 1.0f, 0.0f, 1.0f, 1.0f,    0.0f, 0.0f, 0.0f, 1.0f,    1.0f, 0.0f, 0.0f, 1.0f,		0.0f, 1.0f, 1.0f,		1.0f, 0.0f, 1.0f,		1.0f, 1.0f, 1.0f,},
-
-});
-mesh mountains;
-mesh teapot;
 mesh level;
+mesh level2;
+mesh level3;
+
+mesh dahaka;
 
 Camera camera;
 
+
+//TODO:
+// remove legacy
+// refactor mouse and keyboard
+// refactor gl init
+// refactor texture loading
+// enhance mesh class
+// make object class
 
 int main()
 {
 	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
 
 	initGL();
-	LoadTextures("levels/Hurricos/s2-1_024-n.T.png");
-	camera.fPitch = 0.0f;
-	camera.fYaw = 0.0f;
+	
+	
+	camera.init();
 
-	teapot.loadFromObjectFile("objects/teapot.obj");
-	mountains.loadFromObjectFile("objects/mountains.obj");
 	level.loadFromObjectFile("levels/Hurricos/Hurricos2.obj", true);
+	LoadTextures("levels/Hurricos/s2-1_024-n.T.png");
+
+	//level2.loadFromObjectFile("levels/Autumn Plains/Autumn Plains.obj", true);
+	//LoadTextures("levels/Autumn Plains/spyro_autumn_plains.png");
+
+	//level3.loadFromObjectFile("levels/Summer Forest/Summer Forest.obj", true);
+	//LoadTextures("levels/Summer Forest/s2-1_016-n.png");
+	
+	//dahaka.loadFromObjectFile("objects/Dahaka/Dahaka.obj", true);
+	//LoadTextures("objects/Dahaka/Dahaka_Body.png");
 
 	//GLut func initialization
 	glutDisplayFunc(render);
@@ -123,23 +114,22 @@ void render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	//glTranslatef(0.0f, -1.0f, -5.0f);
-
-	gluLookAt(camera.vCamera.x, camera.vCamera.y, camera.vCamera.z,
+	gluLookAt(
+		camera.vCamera.x, camera.vCamera.y, camera.vCamera.z,
 		camera.vTarget.x, camera.vTarget.y, camera.vTarget.z,
-		0.0f, 1.0f, 0.0f);
+		0.0f,							1.0f,							0.0f);
 
-	//meshCube.drawMesh(0.4f, 0.7f, 0.3f);
-	//mountains.drawMesh(0.4f, 0.7f, 0.3f);
-	//teapot.drawMesh(0.83f, 0.68f, 0.2f);
-	level.drawMesh(0.4f, 1.0f, 0.3f);
-	
+	//level.drawMesh(0.4f, 1.0f, 0.3f);
+	//level2.drawMesh(0.4f, 1.0f, 0.3f);
+	//level3.drawMesh(0.4f, 1.0f, 0.3f);
+	//dahaka.drawMesh(0.4f, 1.0f, 0.3f);
+
 	glFlush();
 }
 
 void update()
 {
-	camera.update();
+	//camera.update();
 }
 
 void LoadTextures(std::string filename)

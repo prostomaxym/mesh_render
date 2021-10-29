@@ -6,6 +6,21 @@
 
 #include "../main.h"
 
+void Camera::init()
+{
+	this->fPitch = 0.0f;
+	this->fYaw = 0.0f;
+	this->movespeed = 3.0f;
+}
+
+void Camera::init(float movespd)
+{
+	this->fPitch = 0.0f;
+	this->fYaw = 0.0f;
+	this->movespeed = movespd;
+}
+
+
 void Camera::update()
 {
 	vForward = vLookDir * (movespeed * dt);
