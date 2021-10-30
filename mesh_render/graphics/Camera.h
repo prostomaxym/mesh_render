@@ -28,10 +28,9 @@ private:
 	float camspeed;
 
 	vec3f vCamera;
-	vec3f vForward;
-	vec3f vSide;
+	vec3f vUp;
+	vec3f vRight;
 	vec3f vLookDir;
 	vec3f vTarget;
-	vec3f vUp;
 };
 #endif  // RENDER_MESH_GRAPHICS_CAMERA_H_

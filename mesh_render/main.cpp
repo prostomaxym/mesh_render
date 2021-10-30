@@ -37,8 +37,8 @@ int fps = 0;  //fps counter
 unsigned int texture;
 
 Window window(kWidth, kHeight, "Mesh Render");
-Camera camera;
-Mouse mouse(/*mouse sensitivity =*/3.0f);
+Camera camera(/*camera speed=*/3.0f);
+Mouse mouse(/*mouse sensitivity =*/1.0f);
 
 mesh level;
 mesh level2;
@@ -46,7 +46,6 @@ mesh level3;
 
 //TODO:
 // refactor keyboard
-// refactor gl init
 // refactor texture loading
 // enhance mesh class
 // make object class
@@ -56,6 +55,7 @@ int main()
 	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
 
 	initGL(90.0f, 0.1f, 10000.0f);
+	void initGLUT();
 
 	//level.loadFromObjectFile("levels/Hurricos/Hurricos2.obj", true);
 	//LoadTextures("levels/Hurricos/s2-1_024-n.T.png");
@@ -65,15 +65,6 @@ int main()
 
 	//level3.loadFromObjectFile("levels/Summer Forest/Summer Forest.obj", true);
 	//LoadTextures("levels/Summer Forest/s2-1_016-n.png");
-
-
-	//GLut initialization
-	glutDisplayFunc(render);
-	glutTimerFunc(frametime_lock, gameloop, 0);
-	glutKeyboardFunc(PressKeyHandler);
-	glutKeyboardUpFunc(ReleaseKeyHandler);
-	glutPassiveMotionFunc(passiveMouseMotionCallback);
-	glutSetCursor(GLUT_CURSOR_NONE);
 
 	old_t = glutGet(GLUT_ELAPSED_TIME);
 	glutMainLoop();
@@ -149,6 +140,16 @@ void initGL(float POV, float zNear, float zFar)
 	glLoadIdentity();
 	gluPerspective(POV, (GLfloat)glutGet(GLUT_WINDOW_WIDTH) / (GLfloat)glutGet(GLUT_WINDOW_HEIGHT), zNear, zFar);
 	glMatrixMode(GL_MODELVIEW);
+}
+
+void initGLUT()
+{
+	glutDisplayFunc(render);
+	glutTimerFunc(frametime_lock, gameloop, 0);
+	glutKeyboardFunc(PressKeyHandler);
+	glutKeyboardUpFunc(ReleaseKeyHandler);
+	glutPassiveMotionFunc(passiveMouseMotionCallback);
+	glutSetCursor(GLUT_CURSOR_NONE);
 }
 
 void passiveMouseMotionCallback(int x, int y)
