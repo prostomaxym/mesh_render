@@ -2,15 +2,13 @@
 
 #include <cmath>
 
-#include <glut.h>
-
 #include "../main.h"
 
 void Camera::init()
 {
 	this->fPitch = 0.0f;
 	this->fYaw = 0.0f;
-	this->movespeed = 3.0f;
+	this->movespeed = 0.5f;
 }
 
 void Camera::init(float movespd)

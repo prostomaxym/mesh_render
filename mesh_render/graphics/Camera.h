@@ -1,7 +1,6 @@
 #ifndef RENDER_MESH_GRAPHICS_CAMERA_H_
 #define RENDER_MESH_GRAPHICS_CAMERA_H_
 
-#include "Matrix.h"
 #include "Vector.h"
 
 struct Camera

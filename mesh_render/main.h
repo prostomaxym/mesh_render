@@ -4,7 +4,6 @@
 #include <string>
 
 #include "graphics/Camera.h"
-#include "graphics/Vector.h"
 #include "utility/Window.h"
 
 //Resolution related variables
@@ -24,5 +23,5 @@ void update();
 void render();
 void gameloop(int);
 void LoadTextures(std::string filename);
-void initGL();
+void initGL(float POV, float zNear, float zFar);
 #endif  // MESH_RENDER_MAIN_H_

@@ -5,9 +5,7 @@
 #include <vector>
 
 #include "Camera.h"
-#include "Matrix.h"
 #include "Vector.h"
-#include "World.h"
 
 struct triangle
 {

@@ -152,10 +152,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="graphics\Camera.cpp" />
-    <ClCompile Include="graphics\Matrix.cpp" />
     <ClCompile Include="graphics\Mesh.cpp" />
     <ClCompile Include="graphics\Vector.cpp" />
-    <ClCompile Include="graphics\World.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="utility\Keyboard.cpp" />
     <ClCompile Include="utility\Mouse.cpp" />
@@ -164,10 +162,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\Camera.h" />
-    <ClInclude Include="graphics\Matrix.h" />
     <ClInclude Include="graphics\Mesh.h" />
     <ClInclude Include="graphics\Vector.h" />
-    <ClInclude Include="graphics\World.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="utility\Keyboard.h" />

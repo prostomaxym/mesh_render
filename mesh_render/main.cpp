@@ -9,13 +9,10 @@
 
 #include "main.h"
 #include "graphics/Camera.h"
-#include "graphics/Matrix.h"
 #include "graphics/Mesh.h"
 #include "graphics/Vector.h"
-#include "graphics/World.h"
 #include "utility/Keyboard.h"
 #include "utility/Mouse.h"
-#include "utility/Text.h"
 #include "utility/Window.h"
 
 //Force higher performance GPU usage
@@ -39,16 +36,13 @@ int fps = 0;  //fps counter
 unsigned int texture;
 
 Window window(kWidth, kHeight, "Mesh Render");
-Text ui;
+Camera camera;
 
 mesh level;
 mesh level2;
 mesh level3;
-
-mesh dahaka;
-
-Camera camera;
-
+mesh enemy;
+mesh anor;
 
 //TODO:
 // remove legacy
@@ -62,13 +56,12 @@ int main()
 {
 	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
 
-	initGL();
-	
+	initGL(90.0f, 0.5f, 10000.0f);
 	
 	camera.init();
 
-	level.loadFromObjectFile("levels/Hurricos/Hurricos2.obj", true);
-	LoadTextures("levels/Hurricos/s2-1_024-n.T.png");
+	//level.loadFromObjectFile("levels/Hurricos/Hurricos2.obj", true);
+	//LoadTextures("levels/Hurricos/s2-1_024-n.T.png");
 
 	//level2.loadFromObjectFile("levels/Autumn Plains/Autumn Plains.obj", true);
 	//LoadTextures("levels/Autumn Plains/spyro_autumn_plains.png");
@@ -76,8 +69,11 @@ int main()
 	//level3.loadFromObjectFile("levels/Summer Forest/Summer Forest.obj", true);
 	//LoadTextures("levels/Summer Forest/s2-1_016-n.png");
 	
-	//dahaka.loadFromObjectFile("objects/Dahaka/Dahaka.obj", true);
+	//enemy.loadFromObjectFile("objects/Dahaka/Dahaka.obj", true);
 	//LoadTextures("objects/Dahaka/Dahaka_Body.png");
+
+	anor.loadFromObjectFile("levels/Anor Londo.obj", true);
+	LoadTextures("levels/texture.png");
 
 	//GLut func initialization
 	glutDisplayFunc(render);
@@ -123,6 +119,7 @@ void render()
 	//level2.drawMesh(0.4f, 1.0f, 0.3f);
 	//level3.drawMesh(0.4f, 1.0f, 0.3f);
 	//dahaka.drawMesh(0.4f, 1.0f, 0.3f);
+	anor.drawMesh(0.4f, 1.0f, 0.3f);
 
 	glFlush();
 }
@@ -138,8 +135,8 @@ void LoadTextures(std::string filename)
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	//set the texture wrapping/filtering options (on the currently bound texture object)
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -150,12 +147,12 @@ void LoadTextures(std::string filename)
 	unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrChannels, 0);
 	if (data)
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 	}
 	stbi_image_free(data);
 }
 
-void initGL()
+void initGL(float POV, float zNear, float zFar)
 {
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LINE_SMOOTH);
@@ -167,6 +164,6 @@ void initGL()
 	glShadeModel(GL_SMOOTH);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(90.0f, (GLfloat)glutGet(GLUT_WINDOW_WIDTH) / (GLfloat)glutGet(GLUT_WINDOW_HEIGHT), 0.5f, 10000.0f);
+	gluPerspective(POV, (GLfloat)glutGet(GLUT_WINDOW_WIDTH) / (GLfloat)glutGet(GLUT_WINDOW_HEIGHT), zNear, zFar);
 	glMatrixMode(GL_MODELVIEW);
 }
