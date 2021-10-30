@@ -2,8 +2,6 @@
 
 #include <glut.h>
 
-#include "../main.h"
-
 Window::Window()
 {
 	this->width = 1280;

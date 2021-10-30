@@ -24,4 +24,5 @@ void render();
 void gameloop(int);
 void LoadTextures(std::string filename);
 void initGL(float POV, float zNear, float zFar);
+void passiveMouseMotionCallback(int x, int y);
 #endif  // MESH_RENDER_MAIN_H_

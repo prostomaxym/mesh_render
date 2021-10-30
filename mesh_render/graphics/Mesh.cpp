@@ -22,7 +22,6 @@ mesh::mesh(std::vector <triangle> polygons)
 
 void mesh::drawMesh(float r, float g, float b)
 {
-	// Store triagles for rastering later
 	for (auto& tri : tris)
 	{
 		//rasterise triangles
@@ -68,9 +67,6 @@ bool mesh::loadFromObjectFile(std::string sFilename, bool bHasTexture)
 			{
 				vec2f v;
 				s >> junk >> junk >> v.u >> v.v;
-				// A little hack for the spyro texture
-				//v.u = 1.0f - v.u;
-				//v.v = 1.0f - v.v;
 				texs.push_back(v);
 			}
 			else

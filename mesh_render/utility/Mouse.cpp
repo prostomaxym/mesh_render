@@ -1,54 +1,65 @@
 #include "Mouse.h"
 
-#include <cmath>
-
 #include <glut.h>
 
-#include "../main.h"
-
-struct MousePos
+Mouse::Mouse()
 {
-	int xPrevious = 0;
-	int yPrevious = 0;
-	int xCurrent = 0;
-	int yCurrent = 0;
-} mousePos;
+	this->xPrevious = 0;
+	this->yPrevious = 0;
+	this->xCurrent = 0;
+	this->yCurrent = 0;
+	this->dx = 0;
+	this->dy = 0;
+	this->fSensitivity = 1.0f;
+}
 
-void PassiveMotionMouseHandler(int x, int y)
+Mouse::Mouse(float sens)
 {
-	if (mousePos.xPrevious == 0 && mousePos.yPrevious == 0)
+	this->xPrevious = 0;
+	this->yPrevious = 0;
+	this->xCurrent = 0;
+	this->yCurrent = 0;
+	this->dx = 0;
+	this->dy = 0;
+	this->fSensitivity = sens;
+}
+
+void Mouse::setSensitivity(float sens)
+{
+	this->fSensitivity = sens;
+}
+
+float Mouse::getSensitivity()
+{
+	return this->fSensitivity;
+}
+
+void Mouse::passiveMotionMouseHandler(int x, int y, Camera& cam)
+{
+	if (this->xPrevious == 0 && this->yPrevious == 0)
 	{
-		mousePos.xPrevious = x;
-		mousePos.yPrevious = y;
+		this->xPrevious = x;
+		this->yPrevious = y;
 	}
 
-	mousePos.xCurrent = x;
-	mousePos.yCurrent = y;
-	int dx = mousePos.xCurrent - mousePos.xPrevious;
-	int dy = mousePos.yCurrent - mousePos.yPrevious;
-	mousePos.xPrevious = mousePos.xCurrent;
-	mousePos.yPrevious = mousePos.yCurrent;
+	this->xCurrent = x;
+	this->yCurrent = y;
 
-	//camera.fYaw += fmod(dx / 100, 6.28f);
-	//camera.fPitch -= dy / 100;
-	camera.fYaw += dx / 1000.0f;
-	camera.fPitch -= dy / 1000.0f;
+	this->dx = this->xCurrent - this->xPrevious;
+	this->dy = this->yCurrent - this->yPrevious;
 
-	if (camera.fPitch > 1.57f)
-	{
-		camera.fPitch = 1.56f;
-	}
-	else if (camera.fPitch < -1.57f)
-	{
-		camera.fPitch = -1.56f;
-	}
+	this->xPrevious = this->xCurrent;
+	this->yPrevious = this->yCurrent;
 
-	camera.update();
+	cam.setAngle(this->fSensitivity * this->dx / 1000.0f,
+							 this->fSensitivity * this->dy / 1000.0f);
+	cam.update();
+
 	if (x <= glutGet(GLUT_WINDOW_WIDTH) - 300 || y <= glutGet(GLUT_WINDOW_HEIGHT) - 300
 		||x >= glutGet(GLUT_WINDOW_WIDTH) + 300 || y >= glutGet(GLUT_WINDOW_HEIGHT) + 300)
 	{
 		glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2);
-		mousePos.xPrevious = glutGet(GLUT_WINDOW_WIDTH) / 2;
-		mousePos.yPrevious = glutGet(GLUT_WINDOW_HEIGHT) / 2;
+		this->xPrevious = glutGet(GLUT_WINDOW_WIDTH) / 2;
+		this->yPrevious = glutGet(GLUT_WINDOW_HEIGHT) / 2;
 	}
 }
