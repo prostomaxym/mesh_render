@@ -30,28 +30,31 @@ void Keyboard::update(Camera& cam)
 {
 	processInput(cam);
 	cam.update();
-	std::copy(std::begin(currentState), std::end(currentState), std::begin(lastState));
+	for (auto& n : keyBinding)
+	{
+		lastState[n.second] = currentState[n.second];
+	}
 }
 
 void Keyboard::processInput(Camera& cam)
 {
-	if (isHeld('a'))	cam.moveLeft();
-	else if (isHeld('d'))		cam.moveRight();
+	if (isHeld(keyBinding["moveLeft"]))		cam.moveLeft();
+	else if (isHeld(keyBinding["moveRight"]))		cam.moveRight();
 
-	if (isHeld('w'))		cam.moveForward();
-	else if (isHeld('s'))		cam.moveBackward();
+	if (isHeld(keyBinding["moveForward"]))		cam.moveForward();
+	else if (isHeld(keyBinding["moveBackward"]))		cam.moveBackward();
 
-	if (isHeld(32))		cam.moveUp();
-	else if (isHeld('c'))		cam.moveDown();
+	if (isHeld(keyBinding["moveUp"]))		cam.moveUp();
+	else if (isHeld(keyBinding["moveDown"]))		cam.moveDown();
 
-	if (isHeld('g'))
+	if (isHeld(keyBinding["toggleZoom"]))
 	{
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		gluPerspective(POV / 2, (GLfloat)glutGet(GLUT_WINDOW_WIDTH) / (GLfloat)glutGet(GLUT_WINDOW_HEIGHT), zNear, zFar);
 		glMatrixMode(GL_MODELVIEW);
 	}
-	else if (isReleased('g'))
+	else if (isReleased(keyBinding["toggleZoom"]))
 	{
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
@@ -59,7 +62,7 @@ void Keyboard::processInput(Camera& cam)
 		glMatrixMode(GL_MODELVIEW);
 	}
 
-	if (isPressed('f'))
+	if (isPressed(keyBinding["toggleFullscreen"]))
 	{
 		if (fullscreen)
 		{
