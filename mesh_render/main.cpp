@@ -10,6 +10,7 @@
 #include "main.h"
 #include "graphics/Camera.h"
 #include "graphics/Mesh.h"
+#include "graphics/Texture.h"
 #include "utility/Keyboard.h"
 #include "utility/Mouse.h"
 #include "utility/Window.h"
@@ -18,7 +19,7 @@
 extern "C"
 {
 	_declspec(dllexport) DWORD NvOptimusEnablement = 1;
-	_declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
+	//_declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
 }
 
 //Resolution related variables
@@ -36,8 +37,6 @@ int t, old_t, dt;  //elapsed time, deltatime between frames
 int fps = 0;  //fps counter
 float POV = 85.0f, zNear = 0.1f, zFar = 10000.0f;  //Perspective params
 
-unsigned int texture;
-
 Camera camera(/*camera speed=*/1.0f);
 Mouse mouse(/*mouse sensitivity =*/1.0f);
 Keyboard keyboard;
@@ -47,8 +46,6 @@ mesh level2;
 mesh level3;
 
 //TODO:
-// key binding
-// refactor texture loading
 // enhance mesh class
 // make object class
 
@@ -60,14 +57,12 @@ int main()
 	initGLUT();
 
 	//level.loadFromObjectFile("levels/Hurricos/Hurricos2.obj", true);
-	//LoadTextures("levels/Hurricos/s2-1_024-n.T.png");
-
 	level2.loadFromObjectFile("levels/Autumn Plains/Autumn Plains.obj", true);
-	LoadTextures("levels/Autumn Plains/spyro_autumn_plains.png");
-
 	//level3.loadFromObjectFile("levels/Summer Forest/Summer Forest.obj", true);
-	//LoadTextures("levels/Summer Forest/s2-1_016-n.png");
 
+	//Texture* t1 = new Texture("levels/Hurricos/s2-1_024-n.T.png");
+	Texture* t2 = new Texture("levels/Autumn Plains/spyro_autumn_plains.png");
+	//Texture* t3 = new Texture("levels/Summer Forest/s2-1_016-n.png");
 
 	old_t = glutGet(GLUT_ELAPSED_TIME);
 	glutMainLoop();
@@ -105,28 +100,7 @@ void render()
 void update()
 {
 	keyboard.update(camera);
-}
-
-void LoadTextures(std::string filename)
-{
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-
-	//set the texture wrapping/filtering options (on the currently bound texture object)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-
-	// load and generate the texture
-	int width, height, nrChannels;
-	unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-	}
-	stbi_image_free(data);
+	camera.update();
 }
 
 void initGL(float POV, float zNear, float zFar)

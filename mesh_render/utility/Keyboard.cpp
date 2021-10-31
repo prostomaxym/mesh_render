@@ -29,7 +29,6 @@ void Keyboard::setKeyState(unsigned char keycode, bool state)
 void Keyboard::update(Camera& cam)
 {
 	processInput(cam);
-	cam.update();
 	for (auto& n : keyBinding)
 	{
 		lastState[n.second] = currentState[n.second];

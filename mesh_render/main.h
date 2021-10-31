@@ -16,12 +16,10 @@ extern int t, old_t, dt;
 extern float POV, zNear, zFar;
 
 extern Window window;
-extern unsigned int texture;
 
 void update();
 void render();
 void gameloop(int);
-void LoadTextures(std::string filename);
 
 void initGL(float POV, float zNear, float zFar);
 void initGLUT();

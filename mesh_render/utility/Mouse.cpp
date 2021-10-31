@@ -53,7 +53,7 @@ void Mouse::passiveMotionMouseHandler(int x, int y, Camera& cam)
 
 	cam.setAngle(fSensitivity_ * dx_ / 1000.0f,
 							 fSensitivity_ * dy_ / 1000.0f);
-	cam.update();
+
 	glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2);
 	xPrevious_ = glutGet(GLUT_WINDOW_WIDTH) / 2;
 	yPrevious_ = glutGet(GLUT_WINDOW_HEIGHT) / 2;

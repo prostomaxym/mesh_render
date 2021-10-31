@@ -154,6 +154,7 @@
     <ClCompile Include="glatter\glatter.c" />
     <ClCompile Include="graphics\Camera.cpp" />
     <ClCompile Include="graphics\Mesh.cpp" />
+    <ClCompile Include="graphics\Texture.cpp" />
     <ClCompile Include="graphics\Vector.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="utility\Keyboard.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="glatter\glatter.h" />
     <ClInclude Include="graphics\Camera.h" />
     <ClInclude Include="graphics\Mesh.h" />
+    <ClInclude Include="graphics\Texture.h" />
     <ClInclude Include="graphics\Vector.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="stb_image.h" />

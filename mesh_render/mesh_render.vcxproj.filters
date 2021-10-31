@@ -54,6 +54,9 @@
     <ClCompile Include="glatter\glatter.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\Texture.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\Mesh.h">
@@ -85,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="glatter\glatter.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\Texture.h">
+      <Filter>Header Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

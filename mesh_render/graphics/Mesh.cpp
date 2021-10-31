@@ -25,9 +25,6 @@ void mesh::drawMesh(float r, float g, float b)
 	{
 		//rasterise triangles
 		glBegin(GL_TRIANGLES);
-		glBindTexture(GL_TEXTURE_2D, texture);
-
-		//glColor3f(r, g, b);
 
 		glTexCoord2f(tri.t[0].u, tri.t[0].v);  
 		glVertex3f(tri.p[0].x, tri.p[0].y, tri.p[0].z);
