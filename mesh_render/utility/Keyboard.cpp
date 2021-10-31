@@ -1,5 +1,6 @@
 #include "Keyboard.h"
 
+#include <glut.h>
 #include "../main.h"
 
 void PressKeyHandler(unsigned char key, int x, int y)
@@ -24,6 +25,12 @@ void PressKeyHandler(unsigned char key, int x, int y)
 	case 'c':
 		camera.moveDown();
 		break;
+	case 'g':
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		gluPerspective(45.0f, (GLfloat)glutGet(GLUT_WINDOW_WIDTH) / (GLfloat)glutGet(GLUT_WINDOW_HEIGHT), 0.1f, 10000.0f);
+		glMatrixMode(GL_MODELVIEW);
+		break;
 	}
 	camera.update();
 }
@@ -42,5 +49,13 @@ void ReleaseKeyHandler(unsigned char key, int x, int y)
 			window.enterFullscreen(kFullWidth, kFullHeight);
 			fullscreen = true;
 		}
+	}
+	if (key == 'g')
+	{
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glLoadIdentity();
+		gluPerspective(85.0f, (GLfloat)glutGet(GLUT_WINDOW_WIDTH) / (GLfloat)glutGet(GLUT_WINDOW_HEIGHT), 0.1f, 10000.0f);
+		glMatrixMode(GL_MODELVIEW);
 	}
 }

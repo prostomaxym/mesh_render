@@ -1,11 +1,11 @@
-#include <cmath>
 #include <Windows.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
-#include <glut.h>
+#include <glut.h> 
+#include "glatter/glatter.h"  //load glext function pointers
 
 #include "main.h"
 #include "graphics/Camera.h"
@@ -54,17 +54,18 @@ int main()
 {
 	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
 
-	initGL(90.0f, 0.1f, 10000.0f);
-	void initGLUT();
+	initGL(85.0f, 0.1f, 10000.0f);
+	initGLUT();
 
 	//level.loadFromObjectFile("levels/Hurricos/Hurricos2.obj", true);
 	//LoadTextures("levels/Hurricos/s2-1_024-n.T.png");
 
 	level2.loadFromObjectFile("levels/Autumn Plains/Autumn Plains.obj", true);
-	LoadTextures("levels/Autumn Plains/spyro_autumn_plains.png");
+	//LoadTextures("levels/Autumn Plains/spyro_autumn_plains.png");
 
 	//level3.loadFromObjectFile("levels/Summer Forest/Summer Forest.obj", true);
 	//LoadTextures("levels/Summer Forest/s2-1_016-n.png");
+
 
 	old_t = glutGet(GLUT_ELAPSED_TIME);
 	glutMainLoop();
@@ -101,6 +102,7 @@ void render()
 
 void update()
 {
+
 }
 
 void LoadTextures(std::string filename)
@@ -109,12 +111,11 @@ void LoadTextures(std::string filename)
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	//set the texture wrapping/filtering options (on the currently bound texture object)
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
 
 	// load and generate the texture
 	int width, height, nrChannels;

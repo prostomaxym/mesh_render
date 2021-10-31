@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="glatter\glatter.c" />
     <ClCompile Include="graphics\Camera.cpp" />
     <ClCompile Include="graphics\Mesh.cpp" />
     <ClCompile Include="graphics\Vector.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="utility\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="glatter\glatter.h" />
     <ClInclude Include="graphics\Camera.h" />
     <ClInclude Include="graphics\Mesh.h" />
     <ClInclude Include="graphics\Vector.h" />
