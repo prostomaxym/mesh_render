@@ -1,43 +1,56 @@
 #include "Keyboard.h"
 
+#include <algorithm>
+
 #include <glut.h>
 #include "../main.h"
 
-void PressKeyHandler(unsigned char key, int x, int y)
+Keyboard::Keyboard() : 
+	lastState { false },
+	currentState { false }
 {
-	switch (key)
-	{
-	case 'a':
-		camera.moveLeft();
-		break;
-	case 'd':
-		camera.moveRight();
-		break;
-	case 'w':
-		camera.moveForward();
-		break;
-	case 's':
-		camera.moveBackward();
-		break;
-	case 32: 
-		camera.moveUp();
-		break;
-	case 'c':
-		camera.moveDown();
-		break;
-	case 'g':
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(45.0f, (GLfloat)glutGet(GLUT_WINDOW_WIDTH) / (GLfloat)glutGet(GLUT_WINDOW_HEIGHT), 0.1f, 10000.0f);
-		glMatrixMode(GL_MODELVIEW);
-		break;
-	}
-	camera.update();
+
 }
 
-void ReleaseKeyHandler(unsigned char key, int x, int y)
+void Keyboard::setKeyState(unsigned char keycode, bool state)
 {
-	if (key == 'f')
+	currentState[keycode] = state;
+}
+
+void Keyboard::update(Camera& cam)
+{
+	processInput(cam);
+	cam.update();
+	std::copy(std::begin(currentState), std::end(currentState), std::begin(lastState));
+}
+
+void Keyboard::processInput(Camera& cam)
+{
+	if (isHeld('a'))	cam.moveLeft();
+	else if (isHeld('d'))		cam.moveRight();
+
+	if (isHeld('w'))		cam.moveForward();
+	else if (isHeld('s'))		cam.moveBackward();
+
+	if (isHeld(32))		cam.moveUp();
+	else if (isHeld('c'))		cam.moveDown();
+
+	if (isHeld('g'))
+	{
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		gluPerspective(POV / 2, (GLfloat)glutGet(GLUT_WINDOW_WIDTH) / (GLfloat)glutGet(GLUT_WINDOW_HEIGHT), zNear, zFar);
+		glMatrixMode(GL_MODELVIEW);
+	}
+	else if (isReleased('g'))
+	{
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		gluPerspective(POV, (GLfloat)glutGet(GLUT_WINDOW_WIDTH) / (GLfloat)glutGet(GLUT_WINDOW_HEIGHT), zNear, zFar);
+		glMatrixMode(GL_MODELVIEW);
+	}
+
+	if (isPressed('f'))
 	{
 		if (fullscreen)
 		{
@@ -50,12 +63,27 @@ void ReleaseKeyHandler(unsigned char key, int x, int y)
 			fullscreen = true;
 		}
 	}
-	if (key == 'g')
-	{
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glLoadIdentity();
-		gluPerspective(85.0f, (GLfloat)glutGet(GLUT_WINDOW_WIDTH) / (GLfloat)glutGet(GLUT_WINDOW_HEIGHT), 0.1f, 10000.0f);
-		glMatrixMode(GL_MODELVIEW);
-	}
+}
+
+bool Keyboard::isHeld(unsigned char keycode)
+{
+	if (lastState[keycode] == true && currentState[keycode] == true)
+		return true;
+	else 
+		return false;
+}
+bool Keyboard::isPressed(unsigned char keycode)
+{
+	if (lastState[keycode] == false && currentState[keycode] == true)
+		return true;
+	else
+		return false;
+}
+
+bool Keyboard::isReleased(unsigned char keycode)
+{
+	if (lastState[keycode] == true && currentState[keycode] == false)
+		return true;
+	else
+		return false;
 }

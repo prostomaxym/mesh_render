@@ -28,24 +28,26 @@ const int kFullWidth = glutGet(GLUT_SCREEN_WIDTH) * DPIscale;  //fullscreen widt
 const int kFullHeight = glutGet(GLUT_SCREEN_HEIGHT) * DPIscale;  //fullscreen height resolution
 const int kWidth = 1280, kHeight = 720;  //default window resolution
 bool fullscreen = false;  //default screen mode
+Window window(kWidth, kHeight, "Mesh Render");
 
 const int maxfps = 250;  //max fps lock
 int frametime_lock = 1000 / maxfps;  //min frametime lock
-int t, old_t, dt;  // for glutGet(GLUT_ELAPSED_TIME)
+int t, old_t, dt;  //elapsed time, deltatime between frames
 int fps = 0;  //fps counter
+float POV = 85.0f, zNear = 0.1f, zFar = 10000.0f;  //Perspective params
 
 unsigned int texture;
 
-Window window(kWidth, kHeight, "Mesh Render");
-Camera camera(/*camera speed=*/3.0f);
+Camera camera(/*camera speed=*/1.0f);
 Mouse mouse(/*mouse sensitivity =*/1.0f);
+Keyboard keyboard;
 
 mesh level;
 mesh level2;
 mesh level3;
 
 //TODO:
-// refactor keyboard
+// key binding
 // refactor texture loading
 // enhance mesh class
 // make object class
@@ -54,14 +56,14 @@ int main()
 {
 	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
 
-	initGL(85.0f, 0.1f, 10000.0f);
+	initGL(POV, zNear, zFar);
 	initGLUT();
 
 	//level.loadFromObjectFile("levels/Hurricos/Hurricos2.obj", true);
 	//LoadTextures("levels/Hurricos/s2-1_024-n.T.png");
 
 	level2.loadFromObjectFile("levels/Autumn Plains/Autumn Plains.obj", true);
-	//LoadTextures("levels/Autumn Plains/spyro_autumn_plains.png");
+	LoadTextures("levels/Autumn Plains/spyro_autumn_plains.png");
 
 	//level3.loadFromObjectFile("levels/Summer Forest/Summer Forest.obj", true);
 	//LoadTextures("levels/Summer Forest/s2-1_016-n.png");
@@ -102,7 +104,7 @@ void render()
 
 void update()
 {
-
+	keyboard.update(camera);
 }
 
 void LoadTextures(std::string filename)
@@ -147,8 +149,9 @@ void initGLUT()
 {
 	glutDisplayFunc(render);
 	glutTimerFunc(frametime_lock, gameloop, 0);
-	glutKeyboardFunc(PressKeyHandler);
-	glutKeyboardUpFunc(ReleaseKeyHandler);
+	glutKeyboardFunc(pressKeyCallback);
+	glutKeyboardUpFunc(releaseKeyCallback);
+	glutIgnoreKeyRepeat(true);
 	glutPassiveMotionFunc(passiveMouseMotionCallback);
 	glutSetCursor(GLUT_CURSOR_NONE);
 }
@@ -156,4 +159,14 @@ void initGLUT()
 void passiveMouseMotionCallback(int x, int y)
 {
 	mouse.passiveMotionMouseHandler(x, y, camera);
+}
+
+void pressKeyCallback(unsigned char key, int x, int y)
+{
+	keyboard.setKeyState(key, true);
+}
+
+void releaseKeyCallback(unsigned char key, int x, int y)
+{
+	keyboard.setKeyState(key, false);
 }
