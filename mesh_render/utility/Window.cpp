@@ -4,28 +4,28 @@
 
 Window::Window()
 {
-	this->width = 1280;
-	this->height = 720;
-	this->window_name = "Pathfinding algorithms visualizer";
+	width_ = 1280;
+	height_ = 720;
+	window_name_ = "Pathfinding algorithms visualizer";
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-	glutInitWindowSize(this->width, this->height);
-	glutCreateWindow(this->window_name.c_str());
+	glutInitWindowSize(width_, height_);
+	glutCreateWindow(this->window_name_.c_str());
 }
 
 Window::Window(int w, int h, std::string winname)
 {
-	this->width = w;
-	this->height = h;
-	this->window_name = winname;
+	width_ = w;
+	height_ = h;
+	window_name_ = winname;
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-	glutInitWindowSize(this->width, this->height);
-	glutCreateWindow(this->window_name.c_str());
+	glutInitWindowSize(width_, height_);
+	glutCreateWindow(window_name_.c_str());
 }
 
 void Window::leaveFullscreen(int w, int h)
 {
-	this->width = w;
-	this->height = h;
+	width_ = w;
+	height_ = h;
 	glutReshapeWindow(w, h);
 	glutPositionWindow(50, 50);
 	glLoadIdentity();
@@ -33,8 +33,8 @@ void Window::leaveFullscreen(int w, int h)
 
 void Window::enterFullscreen(int w, int h)
 {
-	this->width = w;
-	this->height = h;
+	width_ = w;
+	height_ = h;
 	glutReshapeWindow(w, h);
 	glutPositionWindow(0, 0);
 	glLoadIdentity();

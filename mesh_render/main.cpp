@@ -30,7 +30,7 @@ const int kWidth = 1280, kHeight = 720;  //default window resolution
 bool fullscreen = false;  //default screen mode
 Window window(kWidth, kHeight, "Mesh Render");
 
-const int maxfps = 250;  //max fps lock
+const float maxfps = 250;  //max fps lock
 int frametime_lock = 1000 / maxfps;  //min frametime lock
 int t, old_t, dt;  //elapsed time, deltatime between frames
 int fps = 0;  //fps counter

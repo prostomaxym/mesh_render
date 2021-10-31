@@ -13,8 +13,8 @@ public:
 	void leaveFullscreen(int w, int h);
 
 private:
-	int width, height; //window resolution
-	std::string window_name;
+	int width_, height_; //window resolution
+	std::string window_name_;
 };
 #endif  // MESH_RENDER_UTILITY_WINDOW_H_
 

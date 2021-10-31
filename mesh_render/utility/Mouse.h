@@ -14,12 +14,12 @@ public:
 	void passiveMotionMouseHandler(int x, int y, Camera& cam);
 
 private:
-	int xPrevious;
-	int yPrevious;
-	int xCurrent;
-	int yCurrent;
-	int dx;
-	int dy;
-	float fSensitivity;
+	int xPrevious_;
+	int yPrevious_;
+	int xCurrent_;
+	int yCurrent_;
+	int dx_;
+	int dy_;
+	float fSensitivity_;
 };
 #endif  // MESH_RENDER_UTILITY_MOUSE_H_

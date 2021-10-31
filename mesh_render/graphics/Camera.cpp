@@ -9,20 +9,20 @@
 
 Camera::Camera()
 {
-	this->fPitch = 0.0f;
-	this->fYaw = 0.0f;
-	this->camspeed = 1.0f;
-	this->vLookDir = { cosf(fPitch) * cosf(fYaw), sinf(fPitch) , cosf(fPitch) * sinf(fYaw) };
-	this->update();
+	fPitch_ = 0.0f;
+	fYaw_ = 0.0f;
+	camspeed_ = 1.0f;
+	vLookDir_ = { cosf(fPitch_) * cosf(fYaw_), sinf(fPitch_) , cosf(fPitch_) * sinf(fYaw_) };
+	update();
 }
 
 Camera::Camera(float camspd)
 {
-	this->fPitch = 0.0f;
-	this->fYaw = 0.0f;
-	this->camspeed = camspd;
-	this->vLookDir = { cosf(fPitch) * cosf(fYaw), sinf(fPitch) , cosf(fPitch) * sinf(fYaw) };
-	this->update();
+	fPitch_ = 0.0f;
+	fYaw_ = 0.0f;
+	camspeed_ = camspd;
+	vLookDir_ = { cosf(fPitch_) * cosf(fYaw_), sinf(fPitch_) , cosf(fPitch_) * sinf(fYaw_) };
+	update();
 }
 
 Camera::Camera(vec3f cameraPos = { 0.0f, 0.0f, 0.0f }, 
@@ -30,83 +30,83 @@ Camera::Camera(vec3f cameraPos = { 0.0f, 0.0f, 0.0f },
 {
 	yaw *= M_PI / 180.0f;
 	pitch *= M_PI / 180.0f;
-	this->fPitch = pitch;
-	this->fYaw = yaw;
-	this->camspeed = camspd;
-	this->vCamera = cameraPos;
-	this->vLookDir = { cosf(fPitch) * cosf(fYaw), sinf(fPitch) , cosf(fPitch) * sinf(fYaw) };
-	this->update();
+	fPitch_ = pitch;
+	fYaw_ = yaw;
+	camspeed_ = camspd;
+	vCamera_ = cameraPos;
+	vLookDir_ = { cosf(fPitch_) * cosf(fYaw_), sinf(fPitch_) , cosf(fPitch_) * sinf(fYaw_) };
+	update();
 }
 
 void Camera::update()
 {
-	vUp = { 0.0f, 1.0f, 0.0f };
-	vTarget = { 0.0f, 0.0f, 0.0f };
+	vUp_ = { 0.0f, 1.0f, 0.0f };
+	vTarget_ = { 0.0f, 0.0f, 0.0f };
 
-	vLookDir = { cosf(fPitch) * cosf(fYaw), sinf(fPitch) , cosf(fPitch) * sinf(fYaw) };
-	vLookDir.normalise();
+	vLookDir_ = { cosf(fPitch_) * cosf(fYaw_), sinf(fPitch_) , cosf(fPitch_) * sinf(fYaw_) };
+	vLookDir_.normalise();
 
-	vRight = vUp ^ vLookDir;
-	vRight.normalise();
+	vRight_ = vUp_ ^ vLookDir_;
+	vRight_.normalise();
 
-	vTarget = vCamera + vLookDir;
+	vTarget_ = vCamera_ + vLookDir_;
 }
 
 void Camera::setAngle(float yaw, float pitch)
 {
-	this->fYaw += yaw;
-	this->fPitch -= pitch;
+	fYaw_ += yaw;
+	fPitch_ -= pitch;
 
-	if (this->fPitch > 1.57f)
+	if (fPitch_ > 1.57f)
 	{
-		this->fPitch = 1.57f;
+		fPitch_ = 1.57f;
 	}
-	else if (this->fPitch < -1.57f)
+	else if (fPitch_ < -1.57f)
 	{
-		this->fPitch = -1.57f;
+		fPitch_ = -1.57f;
 	}
 }
 
 void Camera::lookAt()
 {
 	gluLookAt(
-		this->vCamera.x, this->vCamera.y, this->vCamera.z,
-		this->vTarget.x, this->vTarget.y, this->vTarget.z,
-		this->vUp.x,		 this->vUp.y,			this->vUp.z );
+		vCamera_.x,	vCamera_.y, vCamera_.z,
+		vTarget_.x, vTarget_.y, vTarget_.z,
+		vUp_.x,			vUp_.y,			vUp_.z );
 }
 
 void Camera::moveLeft()
 {
-	vRight = vRight * (camspeed * dt);
-	this->vCamera = vCamera + vRight;
+	vRight_ = vRight_ * (camspeed_ * dt);
+	vCamera_ = vCamera_ + vRight_;
 }
 
 void Camera::moveRight()
 {
-	vRight = vRight * (camspeed * dt);
-	this->vCamera = vCamera - vRight;
+	vRight_ = vRight_ * (camspeed_ * dt);
+	vCamera_ = vCamera_ - vRight_;
 }
 
 void Camera::moveForward()
 {
-	vLookDir = vLookDir * (camspeed * dt);
-	this->vCamera = vCamera + vLookDir;
+	vLookDir_ = vLookDir_ * (camspeed_ * dt);
+	vCamera_ = vCamera_ + vLookDir_;
 }
 
 void Camera::moveBackward()
 {
-	vLookDir = vLookDir * (camspeed * dt);
-	this->vCamera = vCamera - vLookDir;
+	vLookDir_ = vLookDir_ * (camspeed_ * dt);
+	vCamera_ = vCamera_ - vLookDir_;
 }
 
 void Camera::moveUp()
 {
-	vUp = vUp * (dt * camspeed);
-	this->vCamera = vCamera +  vUp;
+	vUp_ = vUp_ * (camspeed_ * dt);
+	vCamera_ = vCamera_ +  vUp_;
 }
 
 void Camera::moveDown() 
 {
-	vUp = vUp * (dt * camspeed);
-	this->vCamera = vCamera - vUp;
+	vUp_ = vUp_ * (camspeed_ * dt);
+	vCamera_ = vCamera_ - vUp_;
 }

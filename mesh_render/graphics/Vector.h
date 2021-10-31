@@ -16,12 +16,12 @@ struct vec3f
 	float z = 0.0f;
 	float w = 1.0f;
 
-	vec3f operator+(vec3f& other); //add 2 vectors
-	vec3f operator-(vec3f& other); //subtruct 2 vectors
+	vec3f operator+(vec3f& other);  //add 2 vectors
+	vec3f operator-(vec3f& other);  //subtruct 2 vectors
 	vec3f operator*(float k);  //multiply vector by scalar
 	vec3f operator/(float k);  //divide vector by scalar (k!=0) else do nothing
 
-	float operator*(vec3f& other); //dot product of 2 vectors
+	float operator*(vec3f& other);  //dot product of 2 vectors
 	vec3f operator^(vec3f& other);  //cross product of 2 vectors
 
 	float getLength();

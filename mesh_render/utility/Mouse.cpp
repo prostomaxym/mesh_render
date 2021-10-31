@@ -4,57 +4,57 @@
 
 Mouse::Mouse()
 {
-	this->xPrevious = 0;
-	this->yPrevious = 0;
-	this->xCurrent = 0;
-	this->yCurrent = 0;
-	this->dx = 0;
-	this->dy = 0;
-	this->fSensitivity = 1.0f;
+	xPrevious_ = 0;
+	yPrevious_ = 0;
+	xCurrent_ = 0;
+	yCurrent_ = 0;
+	dx_ = 0;
+	dy_ = 0;
+	fSensitivity_ = 1.0f;
 }
 
 Mouse::Mouse(float sens)
 {
-	this->xPrevious = 0;
-	this->yPrevious = 0;
-	this->xCurrent = 0;
-	this->yCurrent = 0;
-	this->dx = 0;
-	this->dy = 0;
-	this->fSensitivity = sens;
+	xPrevious_ = 0;
+	yPrevious_ = 0;
+	xCurrent_ = 0;
+	yCurrent_ = 0;
+	dx_ = 0;
+	dy_ = 0;
+	fSensitivity_ = sens;
 }
 
 void Mouse::setSensitivity(float sens)
 {
-	this->fSensitivity = sens;
+	fSensitivity_ = sens;
 }
 
 float Mouse::getSensitivity()
 {
-	return this->fSensitivity;
+	return fSensitivity_;
 }
 
 void Mouse::passiveMotionMouseHandler(int x, int y, Camera& cam)
 {
-	if (this->xPrevious == 0 && this->yPrevious == 0)
+	if (xPrevious_ == 0 && yPrevious_ == 0)
 	{
-		this->xPrevious = x;
-		this->yPrevious = y;
+		xPrevious_ = x;
+		yPrevious_ = y;
 	}
 
-	this->xCurrent = x;
-	this->yCurrent = y;
+	xCurrent_ = x;
+	yCurrent_ = y;
 
-	this->dx = this->xCurrent - this->xPrevious;
-	this->dy = this->yCurrent - this->yPrevious;
+	dx_ = xCurrent_ - xPrevious_;
+	dy_ = yCurrent_ - yPrevious_;
 
-	this->xPrevious = this->xCurrent;
-	this->yPrevious = this->yCurrent;
+	xPrevious_ = xCurrent_;
+	yPrevious_ = yCurrent_;
 
-	cam.setAngle(this->fSensitivity * this->dx / 1000.0f,
-							 this->fSensitivity * this->dy / 1000.0f);
+	cam.setAngle(fSensitivity_ * dx_ / 1000.0f,
+							 fSensitivity_ * dy_ / 1000.0f);
 	cam.update();
 	glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2);
-	this->xPrevious = glutGet(GLUT_WINDOW_WIDTH) / 2;
-	this->yPrevious = glutGet(GLUT_WINDOW_HEIGHT) / 2;
+	xPrevious_ = glutGet(GLUT_WINDOW_WIDTH) / 2;
+	yPrevious_ = glutGet(GLUT_WINDOW_HEIGHT) / 2;
 }

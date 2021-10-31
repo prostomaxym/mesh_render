@@ -23,14 +23,14 @@ public:
 	void moveDown();
 
 private:
-	float fYaw;  //ZX plane angle between forward vec and z axis
-	float fPitch;  //YZ plane angle between forward vec and z axis
-	float camspeed;
+	float fYaw_;  //ZX plane angle between forward vec and z axis
+	float fPitch_;  //YZ plane angle between forward vec and z axis
+	float camspeed_;
 
-	vec3f vCamera;
-	vec3f vUp;
-	vec3f vRight;
-	vec3f vLookDir;
-	vec3f vTarget;
+	vec3f vCamera_;
+	vec3f vUp_;
+	vec3f vRight_;
+	vec3f vLookDir_;
+	vec3f vTarget_;
 };
 #endif  // RENDER_MESH_GRAPHICS_CAMERA_H_

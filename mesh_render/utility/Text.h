@@ -6,9 +6,10 @@
 class Text
 {
 public:
-	void drawFpsCounter(int x, int y, int fps); //Bind to left top corner
+	//Bind to left top corner
+	static void drawText(int x, int y, std::string text, int number, float r = 0.0f, float g = 0.0f, float b = 0.0f);  
 
 private:
-	void glWrite(float x, float y, int* font, std::string text);
+	static void rasterText(float x, float y, int* font, std::string text);
 };
 #endif  // MESH_RENDER_UTILITY_TEXT_H_

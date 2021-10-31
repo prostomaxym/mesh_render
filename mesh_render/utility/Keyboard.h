@@ -1,6 +1,8 @@
 #ifndef MESH_RENDER_UTILITY_KEYBOARD_H_
 #define MESH_RENDER_UTILITY_KEYBOARD_H_
 
+#include <unordered_map>
+
 #include "../graphics/Camera.h"
 
 class Keyboard
@@ -14,6 +16,7 @@ public:
 private:
 	bool lastState[256];  //true - key down; false - up
 	bool currentState[256];  //true - key down; false - up
+	std::unordered_map <std::string, unsigned char> keyBinding;
 
 	void processInput(Camera& cam);
 	bool isHeld(unsigned char keycode);

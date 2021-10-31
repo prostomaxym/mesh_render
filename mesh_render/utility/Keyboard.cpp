@@ -9,7 +9,16 @@ Keyboard::Keyboard() :
 	lastState { false },
 	currentState { false }
 {
+	keyBinding["moveLeft"] = 'a';
+	keyBinding["moveRight"] = 'd';
+	keyBinding["moveForward"] = 'w';
+	keyBinding["moveBackward"] = 's';
 
+	keyBinding["moveUp"] = 32;
+	keyBinding["moveDown"] = 'c';
+
+	keyBinding["toggleZoom"] = 'g';
+	keyBinding["toggleFullscreen"] = 'f';
 }
 
 void Keyboard::setKeyState(unsigned char keycode, bool state)
