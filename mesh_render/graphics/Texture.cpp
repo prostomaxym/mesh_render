@@ -62,8 +62,11 @@ void Texture::load(std::string fname)
 
 void Texture::use()
 {
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texID_);
+	if (texID_ != NULL)
+	{
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texID_);
+	}
 }
 
 void Texture::clear()

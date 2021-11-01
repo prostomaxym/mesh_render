@@ -1,4 +1,4 @@
-#version 130
+#version 460
 
 in vec2 ex_uv;
 

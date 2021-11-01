@@ -30,9 +30,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="graphics\Mesh.cpp">
-      <Filter>Source Files\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="graphics\Vector.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
@@ -60,17 +57,17 @@
     <ClCompile Include="graphics\Texture.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\MeshA.cpp">
+    <ClCompile Include="graphics\Mesh.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
     <ClCompile Include="graphics\Shader.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\Matrix.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="graphics\Mesh.h">
-      <Filter>Header Files\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="graphics\Vector.h">
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
@@ -101,10 +98,13 @@
     <ClInclude Include="graphics\Texture.h">
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\MeshA.h">
+    <ClInclude Include="graphics\Mesh.h">
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
     <ClInclude Include="graphics\Shader.h">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\Matrix.h">
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,8 +9,8 @@
 
 #include "main.h"
 #include "graphics/Camera.h"
+#include "graphics/Matrix.h"
 #include "graphics/Mesh.h"
-#include "graphics/MeshA.h"
 #include "graphics/Texture.h"
 #include "graphics/Shader.h"
 #include "utility/Keyboard.h"
@@ -43,14 +43,15 @@ Camera camera(/*camera speed=*/1.0f);
 Mouse mouse(/*mouse sensitivity =*/1.0f);
 Keyboard keyboard;
 
-MeshA lev1("levels/Hurricos/Hurricos2.obj");
-MeshA lev2("levels/Autumn Plains/Autumn Plains2.obj");
-MeshA lev3("levels/Summer Forest/Summer Forest.obj");
-Texture *t1, *t2, *t3;
+Mesh lev1("levels/Hurricos/Hurricos2.obj");
+Mesh lev2("levels/Autumn Plains/Autumn Plains2.obj");
+Mesh lev3("levels/Summer Forest/Summer Forest.obj");
+//Mesh lev4("levels/Anor Londo.obj");
+//Texture* t4;
+Texture* t1, * t2, * t3;
 Shader texShader("shaders/texture.vert", "shaders/texture.frag");
 
 //TODO:
-// enhance mesh class
 // make object class
 
 int main()
@@ -61,13 +62,10 @@ int main()
 	initGLUT();
 	texShader.use();
 
-	//level.loadFromObjectFile("levels/Hurricos/Hurricos2.obj", true);
-	//level2.loadFromObjectFile("levels/Autumn Plains/Autumn Plains.obj", true);
-	//level3.loadFromObjectFile("levels/Summer Forest/Summer Forest.obj", true);
-
-	//t1 = new Texture("levels/Hurricos/s2-1_024-n.T.png");
+	t1 = new Texture("levels/Hurricos/s2-1_024-n.T.png");
 	t2 = new Texture("levels/Autumn Plains/spyro_autumn_plains.png");
-	//t3 = new Texture("levels/Summer Forest/s2-1_016-n.png");
+	t3 = new Texture("levels/Summer Forest/s2-1_016-n.png");
+	//t4 = new Texture("levels/texture2.png");
 
 	t2->use();
 	
@@ -97,9 +95,8 @@ void render()
 	glLoadIdentity();
 	
 	camera.lookAt();
+	updateMVP(texShader);
 
-	GLfloat m[16];
-	glGetFloatv(GL_PROJECTION_MATRIX, m);
 	lev2.draw();
 
 	glFlush();
@@ -151,4 +148,20 @@ void pressKeyCallback(unsigned char key, int x, int y)
 void releaseKeyCallback(unsigned char key, int x, int y)
 {
 	keyboard.setKeyState(key, false);
+}
+
+void updateMVP(Shader& shader)
+{
+	GLfloat m[16];
+	mat4 matProj, matModelView, MVP;
+
+	glGetFloatv(GL_PROJECTION_MATRIX, m);
+	matProj.convertArrayToMatrix(m);
+	glGetFloatv(GL_MODELVIEW_MATRIX, m);
+	matModelView.convertArrayToMatrix(m);
+
+	MVP = matModelView * matProj;
+
+	GLuint matProjLocation = glGetUniformLocation(shader.getID(), "MVP");
+	glUniformMatrix4fv(matProjLocation, 1, GL_FALSE, &MVP.m[0][0]);
 }

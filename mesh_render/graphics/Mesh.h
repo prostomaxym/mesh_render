@@ -4,23 +4,33 @@
 #include <string>
 #include <vector>
 
-#include "Camera.h"
-#include "Vector.h"
+#include "../glatter/glatter.h"
 
-struct triangle
+class Mesh
 {
-	vec3f p[3];
-	vec2f t[3];
+public:
+	static const int NUM_VBOS = 3;
+
+	Mesh();
+	Mesh(std::string fname);
+	~Mesh();
+
+	void load(std::string fname);
+	void clear();
+	void draw();
+
+private:
+
+	GLuint VAO;
+	GLuint VBO[NUM_VBOS];
+
+	std::vector<float> verts;
+	std::vector<float> uvs;
+	std::vector<float> normals;
+
+	void addFace(const std::vector<float>& vert_palette, const std::vector<float>& uv_palette,
+		uint32_t a, uint32_t at, uint32_t b, uint32_t bt, uint32_t c, uint32_t ct, bool is3DTex);
 };
 
-struct mesh
-{
-	std::vector <triangle> tris;
-
-	mesh();
-	mesh(std::vector <triangle> polygons);
-
-	void drawMesh(float r, float g, float b);
-	bool loadFromObjectFile(std::string sFilename, bool bHasTexture = false);
-};
 #endif  // MESH_RENDER_GRAPHICS_MESH_H_
+
