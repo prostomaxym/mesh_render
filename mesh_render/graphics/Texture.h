@@ -16,6 +16,8 @@ public:
 	void use();
 	void clear();
 
+	GLuint getID();
+
 private:
 	GLuint texID_;
 };

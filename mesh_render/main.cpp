@@ -12,6 +12,7 @@
 #include "graphics/Mesh.h"
 #include "graphics/MeshA.h"
 #include "graphics/Texture.h"
+#include "graphics/Shader.h"
 #include "utility/Keyboard.h"
 #include "utility/Mouse.h"
 #include "utility/Window.h"
@@ -42,12 +43,11 @@ Camera camera(/*camera speed=*/1.0f);
 Mouse mouse(/*mouse sensitivity =*/1.0f);
 Keyboard keyboard;
 
-mesh level;
-mesh level2;
-mesh level3;
-
+MeshA lev1("levels/Hurricos/Hurricos2.obj");
 MeshA lev2("levels/Autumn Plains/Autumn Plains2.obj");
-Texture* t2;
+MeshA lev3("levels/Summer Forest/Summer Forest.obj");
+Texture *t1, *t2, *t3;
+Shader texShader("shaders/texture.vert", "shaders/texture.frag");
 
 //TODO:
 // enhance mesh class
@@ -59,16 +59,19 @@ int main()
 
 	initGL(POV, zNear, zFar);
 	initGLUT();
+	texShader.use();
 
 	//level.loadFromObjectFile("levels/Hurricos/Hurricos2.obj", true);
 	//level2.loadFromObjectFile("levels/Autumn Plains/Autumn Plains.obj", true);
 	//level3.loadFromObjectFile("levels/Summer Forest/Summer Forest.obj", true);
 
-	//Texture* t1 = new Texture("levels/Hurricos/s2-1_024-n.T.png");
+	//t1 = new Texture("levels/Hurricos/s2-1_024-n.T.png");
 	t2 = new Texture("levels/Autumn Plains/spyro_autumn_plains.png");
-	
-	//Texture* t3 = new Texture("levels/Summer Forest/s2-1_016-n.png");
+	//t3 = new Texture("levels/Summer Forest/s2-1_016-n.png");
 
+	t2->use();
+	
+	
 	old_t = glutGet(GLUT_ELAPSED_TIME);
 	glutMainLoop();
 	return 0;
@@ -95,10 +98,8 @@ void render()
 	
 	camera.lookAt();
 
-	//level.drawMesh(0.4f, 1.0f, 0.3f);
-	//level2.drawMesh(0.4f, 1.0f, 0.3f);
-	//level3.drawMesh(0.4f, 1.0f, 0.3f);
-	t2->use();
+	GLfloat m[16];
+	glGetFloatv(GL_PROJECTION_MATRIX, m);
 	lev2.draw();
 
 	glFlush();

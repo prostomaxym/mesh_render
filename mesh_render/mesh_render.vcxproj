@@ -155,6 +155,7 @@
     <ClCompile Include="graphics\Camera.cpp" />
     <ClCompile Include="graphics\Mesh.cpp" />
     <ClCompile Include="graphics\MeshA.cpp" />
+    <ClCompile Include="graphics\Shader.cpp" />
     <ClCompile Include="graphics\Texture.cpp" />
     <ClCompile Include="graphics\Vector.cpp" />
     <ClCompile Include="main.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="graphics\Camera.h" />
     <ClInclude Include="graphics\Mesh.h" />
     <ClInclude Include="graphics\MeshA.h" />
+    <ClInclude Include="graphics\Shader.h" />
     <ClInclude Include="graphics\Texture.h" />
     <ClInclude Include="graphics\Vector.h" />
     <ClInclude Include="main.h" />
@@ -176,6 +178,10 @@
     <ClInclude Include="utility\Mouse.h" />
     <ClInclude Include="utility\Text.h" />
     <ClInclude Include="utility\Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\texture.frag" />
+    <None Include="shaders\texture.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
