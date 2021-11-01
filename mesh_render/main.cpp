@@ -10,6 +10,7 @@
 #include "main.h"
 #include "graphics/Camera.h"
 #include "graphics/Mesh.h"
+#include "graphics/MeshA.h"
 #include "graphics/Texture.h"
 #include "utility/Keyboard.h"
 #include "utility/Mouse.h"
@@ -45,6 +46,9 @@ mesh level;
 mesh level2;
 mesh level3;
 
+MeshA lev2("levels/Autumn Plains/Autumn Plains2.obj");
+Texture* t2;
+
 //TODO:
 // enhance mesh class
 // make object class
@@ -57,11 +61,12 @@ int main()
 	initGLUT();
 
 	//level.loadFromObjectFile("levels/Hurricos/Hurricos2.obj", true);
-	level2.loadFromObjectFile("levels/Autumn Plains/Autumn Plains.obj", true);
+	//level2.loadFromObjectFile("levels/Autumn Plains/Autumn Plains.obj", true);
 	//level3.loadFromObjectFile("levels/Summer Forest/Summer Forest.obj", true);
 
 	//Texture* t1 = new Texture("levels/Hurricos/s2-1_024-n.T.png");
-	Texture* t2 = new Texture("levels/Autumn Plains/spyro_autumn_plains.png");
+	t2 = new Texture("levels/Autumn Plains/spyro_autumn_plains.png");
+	
 	//Texture* t3 = new Texture("levels/Summer Forest/s2-1_016-n.png");
 
 	old_t = glutGet(GLUT_ELAPSED_TIME);
@@ -91,8 +96,10 @@ void render()
 	camera.lookAt();
 
 	//level.drawMesh(0.4f, 1.0f, 0.3f);
-	level2.drawMesh(0.4f, 1.0f, 0.3f);
+	//level2.drawMesh(0.4f, 1.0f, 0.3f);
 	//level3.drawMesh(0.4f, 1.0f, 0.3f);
+	t2->use();
+	lev2.draw();
 
 	glFlush();
 }

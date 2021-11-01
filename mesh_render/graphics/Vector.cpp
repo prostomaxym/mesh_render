@@ -2,9 +2,40 @@
 
 #include <cmath>
 
+vec3f::vec3f()
+{
+	x = 0.0f;
+	y = 0.0f;
+	z = 0.0f;
+	w = 1.0f;
+}
+
+vec3f::vec3f(float b)
+{
+	x = b;
+	y = b;
+	z = b;
+	w = 1.0f;
+}
+
+vec3f::vec3f(const float* b)
+{
+	x = b[0];
+	y = b[1];
+	z = b[2];
+	w = 1.0f;
+}
+
+vec3f::vec3f(float a, float b, float c)
+{
+	x = a;
+	y = b;
+	z = c;
+	w = 1.0f;
+}
 vec3f vec3f::operator+(vec3f& other)
 {
-	return { this->x + other.x,this->y + other.y, this->z + other.z };
+	return { this->x + other.x, this->y + other.y, this->z + other.z };
 }
 
 vec3f vec3f::operator-(vec3f& other)

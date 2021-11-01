@@ -11,10 +11,15 @@ struct vec2f
 
 struct vec3f
 {
-	float x = 0.0f;
-	float y = 0.0f;
-	float z = 0.0f;
-	float w = 1.0f;
+	float x;
+	float y;
+	float z;
+	float w;
+
+	vec3f();
+	vec3f(float b);
+	vec3f(const float* b);
+	vec3f(float a, float b, float c);
 
 	vec3f operator+(vec3f& other);  //add 2 vectors
 	vec3f operator-(vec3f& other);  //subtruct 2 vectors

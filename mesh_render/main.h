@@ -4,6 +4,7 @@
 #include <string>
 
 #include "utility/Window.h"
+#include "graphics/Texture.h"
 
 //Resolution related variables
 extern float DPIscale;
