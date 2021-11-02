@@ -1,3 +1,4 @@
+#include <cmath>
 #include <Windows.h>
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -46,20 +47,39 @@ Mouse mouse(/*mouse sensitivity =*/1.0f);
 Keyboard keyboard;
 
 WorldMatrix matWorld;
-Light sun(/*light position=*/	{4000.0f, 6000.0f, 1500.0f}, 
-	/*initial camera position*/	{0.0f, 0.0f, 0.0f}, 
-	/*light color*/							{0.95f, 0.85f, 0.65f});
+
+//Static light setup
+//final illuminance result depends on sourcePower/ distance^2
+//Light sun(/*light position=*/	{ 4000.0f, 6000.0f, 1500.0f },
+//					/*light power*/			50000000.0f,
+//					/*light color*/			{ 0.95f, 0.85f, 0.65f }
+//					/*day period(sec)*/	10.f);
+
+//Dynamic light setup
+//final illuminance result depends on sourcePower/ distance^2
+float distance = powf(10.0f, 5.0f);
+float sourcePower = powf(10.0f, 10.0f); 
+Light sun(/*distance*/				distance,
+					/*source power*/		0.9f * sourcePower,
+					/*light color*/			{ 0.95f, 0.85f, 0.65f }, 
+					/*zAxis offset*/		1500.0f,
+					/*day period(sec)*/	20.f);
+
 Mesh lev1("levels/Hurricos/Hurricos2.obj");
 Mesh lev2("levels/Autumn Plains/Autumn Plains2.obj");
 Mesh lev3("levels/Summer Forest/Summer Forest.obj");
 //Mesh lev4("levels/Anor Londo.obj");
+
 //Texture* t4;
 Texture* t1, * t2, * t3;
-//Shader texShader("shaders/texture.vert", "shaders/texture.frag");
+//Shader texShader("shaders/phong.vert", "shaders/phong.frag");
+
 Shader texShader("shaders/blinnphong.vert", "shaders/blinnphong.frag");
 
 //TODO:
+// add light distance/power
 // make object class
+// cleanup
 
 int main()
 {
@@ -108,7 +128,8 @@ void render()
 	
 	camera.lookAt();
 	matWorld.update(texShader);
-	sun.updateLight(texShader, camera);
+	//sun.updateStaticLight(texShader, camera);
+	sun.updateDynamicLight(texShader, camera);
 
 	lev2.draw();
 

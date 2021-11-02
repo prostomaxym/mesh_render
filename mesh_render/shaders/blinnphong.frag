@@ -8,11 +8,12 @@ uniform sampler2D tex;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform vec3 lightColor;
+uniform float lightPower;
 
 out vec4 color;
 
-const float lightPower = 50000000.0;
-const vec3 specColor = vec3(0.3, 0.3, 0.3);
+const vec3 specStrength = vec3(0.2, 0.2, 0.2);
+const float shininess = 16.0f;
 
 void main() 
 {
@@ -23,7 +24,10 @@ void main()
 	vec3 ambient = 0.05 * objectColor;
 
     // diffuse
-    vec3 lightDir = normalize(lightPos - ex_pos);
+    vec3 lightDir = lightPos - ex_pos;
+	float distance = length(lightDir);
+	lightDir=normalize(lightDir);
+	distance = distance * distance;  //n^2 distance
     vec3 normal = normalize(ex_normal);
     float diff = max(dot(lightDir, normal), 0.0);
     vec3 diffuse = diff * objectColor;
@@ -33,8 +37,8 @@ void main()
     vec3 reflectDir = reflect(-lightDir, normal);
     float spec = 0.0;
     vec3 halfwayDir = normalize(lightDir + viewDir);  
-    spec = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
-    vec3 specular = vec3(0.3) * spec; // assuming bright white light color
+    spec = pow(max(dot(normal, halfwayDir), 0.0), shininess);
+    vec3 specular = specStrength * spec; // assuming bright white light color
 
-    color = vec4(ambient + diffuse + specular, 1.0);
+    color = vec4(ambient + diffuse * lightPower/distance + specular * lightPower/distance, 1.0);
 }

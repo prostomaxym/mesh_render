@@ -1,15 +1,12 @@
 #version 460
 
-//Inputs
 in vec3 in_pos;
 in vec2 in_uv;
 in vec3 in_normal;
 
-//Outputs
 out vec3 ex_pos;
 out vec2 ex_uv;
 out vec3 ex_normal;
-
 
 uniform mat4 MVP;
 

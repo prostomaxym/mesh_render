@@ -121,16 +121,22 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\texture.frag">
-      <Filter>Source Files\shaders</Filter>
-    </None>
-    <None Include="shaders\texture.vert">
-      <Filter>Source Files\shaders</Filter>
-    </None>
     <None Include="shaders\blinnphong.frag">
       <Filter>Source Files\shaders</Filter>
     </None>
     <None Include="shaders\blinnphong.vert">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\phong.frag">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\phong.vert">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\lightSphere.vert">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\lightSphere.frag">
       <Filter>Source Files\shaders</Filter>
     </None>
   </ItemGroup>

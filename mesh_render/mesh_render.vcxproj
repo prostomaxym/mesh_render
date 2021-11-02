@@ -186,8 +186,10 @@
   <ItemGroup>
     <None Include="shaders\blinnphong.frag" />
     <None Include="shaders\blinnphong.vert" />
-    <None Include="shaders\texture.frag" />
-    <None Include="shaders\texture.vert" />
+    <None Include="shaders\lightSphere.frag" />
+    <None Include="shaders\lightSphere.vert" />
+    <None Include="shaders\phong.frag" />
+    <None Include="shaders\phong.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -16,18 +16,9 @@ void WorldMatrix::init(Shader& shader)
 	glGetFloatv(GL_MODELVIEW_MATRIX, m);
 	matModelView.convertArrayToMatrix(m);
 
-	GLuint modelViewUniform = glGetUniformLocation(shader.getID(), "modelview");
-	glUniformMatrix4fv(modelViewUniform, 1, GL_FALSE, &matModelView.m[0][0]);
-
-	MVP =  matModelView * matProj;
+	MVP = matModelView * matProj;
 	GLuint MVPmatUniform = glGetUniformLocation(shader.getID(), "MVP");
 	glUniformMatrix4fv(MVPmatUniform, 1, GL_FALSE, &MVP.m[0][0]);
-
-	GLfloat inv[16], tr[16];
-	invertMatrix(m, inv);
-	transposeMatrix(&inv[0], &tr[0], 4, 4);
-	GLuint matNormal = glGetUniformLocation(shader.getID(), "matNormal");
-	glUniformMatrix4fv(matNormal, 1, GL_FALSE, &tr[0]);
 }
 
 void WorldMatrix::update(Shader& shader)
