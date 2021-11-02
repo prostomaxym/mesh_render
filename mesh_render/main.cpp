@@ -9,6 +9,7 @@
 
 #include "main.h"
 #include "graphics/Camera.h"
+#include "graphics/Light.h"
 #include "graphics/Matrix.h"
 #include "graphics/Mesh.h"
 #include "graphics/Texture.h"
@@ -43,6 +44,9 @@ Camera camera(/*camera speed=*/1.0f);
 Mouse mouse(/*mouse sensitivity =*/1.0f);
 Keyboard keyboard;
 
+Light sun(/*light position=*/	{4000.0f, 6000.0f, 1500.0f}, 
+	/*initial camera position*/	{0.0f, 0.0f, 0.0f}, 
+	/*light color*/							{0.95f, 0.85f, 0.65f});
 Mesh lev1("levels/Hurricos/Hurricos2.obj");
 Mesh lev2("levels/Autumn Plains/Autumn Plains2.obj");
 Mesh lev3("levels/Summer Forest/Summer Forest.obj");
@@ -58,17 +62,21 @@ int main()
 {
 	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
 
+	//initialise GL and GLUT
 	initGL(POV, zNear, zFar);
 	initGLUT();
-	texShader.use();
 
+	//Select active shader
+	texShader.use();
+	sun.initLight(texShader, camera);
+
+	//Load textures
 	t1 = new Texture("levels/Hurricos/s2-1_024-n.T.png");
 	t2 = new Texture("levels/Autumn Plains/spyro_autumn_plains.png");
 	t3 = new Texture("levels/Summer Forest/s2-1_016-n.png");
 	//t4 = new Texture("levels/texture2.png");
 
 	t2->use();
-	
 	
 	old_t = glutGet(GLUT_ELAPSED_TIME);
 	glutMainLoop();
@@ -96,6 +104,7 @@ void render()
 	
 	camera.lookAt();
 	updateMVP(texShader);
+	sun.updateLight(texShader, camera);
 
 	lev2.draw();
 
@@ -152,8 +161,8 @@ void releaseKeyCallback(unsigned char key, int x, int y)
 
 void updateMVP(Shader& shader)
 {
-	GLfloat m[16];
-	mat4 matProj, matModelView, MVP;
+	static GLfloat m[16];
+	static mat4 matProj, matModelView, MVP;
 
 	glGetFloatv(GL_PROJECTION_MATRIX, m);
 	matProj.convertArrayToMatrix(m);
@@ -162,6 +171,9 @@ void updateMVP(Shader& shader)
 
 	MVP = matModelView * matProj;
 
-	GLuint matProjLocation = glGetUniformLocation(shader.getID(), "MVP");
+	static GLuint matProjLocation = glGetUniformLocation(shader.getID(), "MVP");
 	glUniformMatrix4fv(matProjLocation, 1, GL_FALSE, &MVP.m[0][0]);
 }
+
+
+

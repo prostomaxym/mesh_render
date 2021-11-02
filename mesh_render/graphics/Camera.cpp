@@ -110,3 +110,8 @@ void Camera::moveDown()
 	vUp_ = vUp_ * (camspeed_ * dt);
 	vCamera_ = vCamera_ - vUp_;
 }
+
+vec3f Camera::getCameraPos()
+{
+	return vCamera_;
+}

@@ -66,6 +66,9 @@
     <ClCompile Include="graphics\Matrix.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\Light.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\Vector.h">
@@ -105,6 +108,9 @@
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
     <ClInclude Include="graphics\Matrix.h">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\Light.h">
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>

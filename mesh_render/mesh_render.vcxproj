@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="glatter\glatter.c" />
     <ClCompile Include="graphics\Camera.cpp" />
+    <ClCompile Include="graphics\Light.cpp" />
     <ClCompile Include="graphics\Matrix.cpp" />
     <ClCompile Include="graphics\Mesh.cpp" />
     <ClCompile Include="graphics\Shader.cpp" />
@@ -167,6 +168,7 @@
   <ItemGroup>
     <ClInclude Include="glatter\glatter.h" />
     <ClInclude Include="graphics\Camera.h" />
+    <ClInclude Include="graphics\Light.h" />
     <ClInclude Include="graphics\Matrix.h" />
     <ClInclude Include="graphics\Mesh.h" />
     <ClInclude Include="graphics\Shader.h" />

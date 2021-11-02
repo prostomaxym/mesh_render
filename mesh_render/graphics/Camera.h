@@ -13,6 +13,7 @@ public:
 	void update();  //update camera position and direction
 	void setAngle( float yaw, float pitch);  //update camera direction
 	void lookAt();  //update lookAt matrix
+	vec3f getCameraPos();
 
 	//Camera movement
 	void moveLeft();
