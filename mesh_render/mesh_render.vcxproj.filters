@@ -69,6 +69,9 @@
     <ClCompile Include="graphics\Light.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\WorldMatrix.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\Vector.h">
@@ -113,12 +116,21 @@
     <ClInclude Include="graphics\Light.h">
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\WorldMatrix.h">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\texture.frag">
       <Filter>Source Files\shaders</Filter>
     </None>
     <None Include="shaders\texture.vert">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\blinnphong.frag">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\blinnphong.vert">
       <Filter>Source Files\shaders</Filter>
     </None>
   </ItemGroup>

@@ -159,6 +159,7 @@
     <ClCompile Include="graphics\Shader.cpp" />
     <ClCompile Include="graphics\Texture.cpp" />
     <ClCompile Include="graphics\Vector.cpp" />
+    <ClCompile Include="graphics\WorldMatrix.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="utility\Keyboard.cpp" />
     <ClCompile Include="utility\Mouse.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="graphics\Shader.h" />
     <ClInclude Include="graphics\Texture.h" />
     <ClInclude Include="graphics\Vector.h" />
+    <ClInclude Include="graphics\WorldMatrix.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="utility\Keyboard.h" />
@@ -182,6 +184,8 @@
     <ClInclude Include="utility\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\blinnphong.frag" />
+    <None Include="shaders\blinnphong.vert" />
     <None Include="shaders\texture.frag" />
     <None Include="shaders\texture.vert" />
   </ItemGroup>

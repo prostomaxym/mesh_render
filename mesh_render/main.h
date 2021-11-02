@@ -29,6 +29,4 @@ void initGLUT();
 void passiveMouseMotionCallback(int x, int y);
 void pressKeyCallback(unsigned char key, int x, int y);
 void releaseKeyCallback(unsigned char key, int x, int y);
-
-void updateMVP(Shader& shader);
 #endif  // MESH_RENDER_MAIN_H_

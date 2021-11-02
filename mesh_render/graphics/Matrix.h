@@ -19,4 +19,6 @@ struct mat4
 	void convertArrayToMatrix(GLfloat a[16]);
 };
 
+void invertMatrix(GLfloat(&m)[16], GLfloat(&inv)[16]);
+void transposeMatrix(GLfloat* src, GLfloat* dst, const int N, const int M);
 #endif  // MESH_RENDER_GRAPHICS_MATRIX_H_

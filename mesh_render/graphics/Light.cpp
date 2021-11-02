@@ -16,6 +16,10 @@ Light::Light(vec3f lightPos, vec3f viewPos, vec3f color)
 	lightPos_ = lightPos;
 	viewPos_ = viewPos;
 	lightColor_ = color;
+
+	lightPosUniform_ = NULL;
+	viewPosUniform_ = NULL;
+	lightColorUniform_ = NULL;
 }
 
 void Light::initLight(Shader& shader, Camera& cam)

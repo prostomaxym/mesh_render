@@ -14,6 +14,7 @@
 #include "graphics/Mesh.h"
 #include "graphics/Texture.h"
 #include "graphics/Shader.h"
+#include "graphics/WorldMatrix.h"
 #include "utility/Keyboard.h"
 #include "utility/Mouse.h"
 #include "utility/Window.h"
@@ -44,6 +45,7 @@ Camera camera(/*camera speed=*/1.0f);
 Mouse mouse(/*mouse sensitivity =*/1.0f);
 Keyboard keyboard;
 
+WorldMatrix matWorld;
 Light sun(/*light position=*/	{4000.0f, 6000.0f, 1500.0f}, 
 	/*initial camera position*/	{0.0f, 0.0f, 0.0f}, 
 	/*light color*/							{0.95f, 0.85f, 0.65f});
@@ -53,7 +55,8 @@ Mesh lev3("levels/Summer Forest/Summer Forest.obj");
 //Mesh lev4("levels/Anor Londo.obj");
 //Texture* t4;
 Texture* t1, * t2, * t3;
-Shader texShader("shaders/texture.vert", "shaders/texture.frag");
+//Shader texShader("shaders/texture.vert", "shaders/texture.frag");
+Shader texShader("shaders/blinnphong.vert", "shaders/blinnphong.frag");
 
 //TODO:
 // make object class
@@ -68,6 +71,7 @@ int main()
 
 	//Select active shader
 	texShader.use();
+	matWorld.init(texShader);
 	sun.initLight(texShader, camera);
 
 	//Load textures
@@ -103,7 +107,7 @@ void render()
 	glLoadIdentity();
 	
 	camera.lookAt();
-	updateMVP(texShader);
+	matWorld.update(texShader);
 	sun.updateLight(texShader, camera);
 
 	lev2.draw();
@@ -159,21 +163,7 @@ void releaseKeyCallback(unsigned char key, int x, int y)
 	keyboard.setKeyState(key, false);
 }
 
-void updateMVP(Shader& shader)
-{
-	static GLfloat m[16];
-	static mat4 matProj, matModelView, MVP;
 
-	glGetFloatv(GL_PROJECTION_MATRIX, m);
-	matProj.convertArrayToMatrix(m);
-	glGetFloatv(GL_MODELVIEW_MATRIX, m);
-	matModelView.convertArrayToMatrix(m);
-
-	MVP = matModelView * matProj;
-
-	static GLuint matProjLocation = glGetUniformLocation(shader.getID(), "MVP");
-	glUniformMatrix4fv(matProjLocation, 1, GL_FALSE, &MVP.m[0][0]);
-}
 
 
 
