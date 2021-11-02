@@ -36,16 +36,15 @@ const int kWidth = 1280, kHeight = 720;  //default window resolution
 bool fullscreen = false;  //default screen mode
 Window window(kWidth, kHeight, "Mesh Render");
 
-const float maxfps = 250;  //max fps lock
+const float maxfps = 1000;  //max fps lock
 int frametime_lock = 1000 / maxfps;  //min frametime lock
 int t, old_t, dt;  //elapsed time, deltatime between frames
 int fps = 0;  //fps counter
 float POV = 85.0f, zNear = 0.1f, zFar = 120000.0f;  //Perspective params
 
-Camera camera(/*camera speed=*/1.0f);
+Camera camera(/*camera speed=*/0.5f);
 Mouse mouse(/*mouse sensitivity =*/1.0f);
 Keyboard keyboard;
-
 WorldMatrix matWorld;
 
 //Static light setup
@@ -60,27 +59,34 @@ WorldMatrix matWorld;
 //final illuminance result depends on sourcePower/ distance^2
 float distance = powf(10.0f, 5.0f);
 float sourcePower = powf(10.0f, 10.0f); 
+
 Light sun(/*distance*/				distance,
 					/*source power*/		0.9f * sourcePower,
 					/*light color*/			{ 0.95f, 0.85f, 0.65f }, 
 					/*zAxis offset*/		15000.0f,
 					/*day period(sec)*/	60.0f);
-
 Mesh lightSphere("objects/sun.obj");
-Mesh lev1("levels/Hurricos/Hurricos2.obj");
-Mesh lev2("levels/Autumn Plains/Autumn Plains2.obj");
-Mesh lev3("levels/Summer Forest/Summer Forest.obj");
-//Mesh lev4("levels/Anor Londo.obj");
 
-//Texture* t4;
-Texture* t1, * t2, * t3;
+//Meshes
+Mesh* lev1;
+Mesh* lev2;
+Mesh* lev3;
+//Mesh* lev4;
+//Mesh* enemy;
 
+//Textures
+Texture* tex1;
+Texture* tex2;
+Texture* tex3;
+//Texture* tex4;
+Texture* enemyTex;
+
+//Shaders
 //Shader texShader("shaders/phong.vert", "shaders/phong.frag");
 Shader texShader("shaders/blinnphong.vert", "shaders/blinnphong.frag");
 Shader lightSphereShader("shaders/lightSphere.vert", "shaders/lightSphere.frag");
 
 //TODO:
-// add light distance/power
 // make object class
 // cleanup
 
@@ -97,13 +103,22 @@ int main()
 	matWorld.init(texShader);
 	sun.initLight(texShader, camera);
 
+	//Load meshes
+	lev1 = new Mesh("objects/Hurricos/Hurricos.obj");
+	lev2 = new Mesh("objects/Autumn Plains/Autumn Plains.obj");
+	lev3 = new Mesh("objects/Summer Forest/Summer Forest.obj");
+	//lev4 = new Mesh("objects/Anor Londo/Anor Londo.obj");
+	//enemy = new Mesh("objects/enemy/enemy.obj");
+	
+	// 
 	//Load textures
-	t1 = new Texture("levels/Hurricos/s2-1_024-n.T.png");
-	t2 = new Texture("levels/Autumn Plains/spyro_autumn_plains.png");
-	t3 = new Texture("levels/Summer Forest/s2-1_016-n.png");
-	//t4 = new Texture("levels/texture2.png");
+	tex1 = new Texture("objects/Hurricos/s2-1_024-n.T.png");
+	tex2 = new Texture("objects/Autumn Plains/spyro_autumn_plains.png");
+	tex3 = new Texture("objects/Summer Forest/s2-1_016-n.png");
+	//tex4 = new Texture("objects/Anor Londo/texture2.png");
+	//enemyTex = new Texture("objects/enemy/enemy.png");
 
-	t2->use();
+	tex2->use();
 	
 	old_t = glutGet(GLUT_ELAPSED_TIME);
 	glutMainLoop();
@@ -135,7 +150,7 @@ void render()
 	matWorld.update(texShader);
 	//sun.updateStaticLight(texShader, camera);
 	sun.updateDynamicLight(texShader, camera);
-	lev2.draw();
+	lev2->draw();
 
 	lightSphereShader.use();
 	vec3f pos = sun.getLightPos();

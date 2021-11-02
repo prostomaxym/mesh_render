@@ -13,6 +13,7 @@ uniform vec3 lightColor;
 uniform float lightPower;
 
 const float specularStrength = 0.5;
+const float ambientStrength = 0.1;
 
 void main()
 {

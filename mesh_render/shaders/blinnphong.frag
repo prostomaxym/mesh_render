@@ -12,7 +12,8 @@ uniform float lightPower;
 
 out vec4 color;
 
-const vec3 specStrength = vec3(0.2, 0.2, 0.2);
+const vec3 specStrength = vec3(0.3);
+const vec3 ambientStrength = vec3(0.1);
 const float shininess = 16.0f;
 
 void main() 
@@ -21,7 +22,7 @@ void main()
 	vec3 objectColor = vec3(texture(tex, ex_uv).rgb);
 
 	// ambient
-	vec3 ambient = 0.05 * objectColor;
+	vec3 ambient = ambientStrength * objectColor;
 
     // diffuse
     vec3 lightDir = lightPos - ex_pos;
