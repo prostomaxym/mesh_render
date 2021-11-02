@@ -67,6 +67,11 @@ void Light::initLight(Shader& shader, Camera& cam)
 	glUniform1f(lightPowerUniform_, lightPower_);
 }
 
+vec3f Light::getLightPos()
+{
+	return lightPos_;
+}
+
 void Light::updateStaticLight(Shader& shader, Camera& cam)
 {
 	//Camera position

@@ -1,6 +1,6 @@
 #version 460 core
 
-in vec3 in_pos;
+layout (location = 0) in vec3 in_pos;
 
 uniform mat4 MVP;
 

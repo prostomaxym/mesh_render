@@ -40,7 +40,7 @@ const float maxfps = 250;  //max fps lock
 int frametime_lock = 1000 / maxfps;  //min frametime lock
 int t, old_t, dt;  //elapsed time, deltatime between frames
 int fps = 0;  //fps counter
-float POV = 85.0f, zNear = 0.1f, zFar = 10000.0f;  //Perspective params
+float POV = 85.0f, zNear = 0.1f, zFar = 120000.0f;  //Perspective params
 
 Camera camera(/*camera speed=*/1.0f);
 Mouse mouse(/*mouse sensitivity =*/1.0f);
@@ -50,10 +50,11 @@ WorldMatrix matWorld;
 
 //Static light setup
 //final illuminance result depends on sourcePower/ distance^2
-//Light sun(/*light position=*/	{ 4000.0f, 6000.0f, 1500.0f },
-//					/*light power*/			50000000.0f,
-//					/*light color*/			{ 0.95f, 0.85f, 0.65f }
-//					/*day period(sec)*/	10.f);
+//float sourcePower = powf(10.0f, 10.0f); 
+//Light sun(/*light position=*/	{ 80000.0f, 60000.0f, 15000.0f },
+//					/*light power*/			0.9f * sourcePower,
+//					/*light color*/			{ 0.95f, 0.85f, 0.65f },
+//					/*day period(sec)*/	60.0f);
 
 //Dynamic light setup
 //final illuminance result depends on sourcePower/ distance^2
@@ -62,9 +63,10 @@ float sourcePower = powf(10.0f, 10.0f);
 Light sun(/*distance*/				distance,
 					/*source power*/		0.9f * sourcePower,
 					/*light color*/			{ 0.95f, 0.85f, 0.65f }, 
-					/*zAxis offset*/		1500.0f,
-					/*day period(sec)*/	20.f);
+					/*zAxis offset*/		15000.0f,
+					/*day period(sec)*/	60.0f);
 
+Mesh lightSphere("objects/sun.obj");
 Mesh lev1("levels/Hurricos/Hurricos2.obj");
 Mesh lev2("levels/Autumn Plains/Autumn Plains2.obj");
 Mesh lev3("levels/Summer Forest/Summer Forest.obj");
@@ -72,9 +74,10 @@ Mesh lev3("levels/Summer Forest/Summer Forest.obj");
 
 //Texture* t4;
 Texture* t1, * t2, * t3;
-//Shader texShader("shaders/phong.vert", "shaders/phong.frag");
 
+//Shader texShader("shaders/phong.vert", "shaders/phong.frag");
 Shader texShader("shaders/blinnphong.vert", "shaders/blinnphong.frag");
+Shader lightSphereShader("shaders/lightSphere.vert", "shaders/lightSphere.frag");
 
 //TODO:
 // add light distance/power
@@ -127,11 +130,18 @@ void render()
 	glLoadIdentity();
 	
 	camera.lookAt();
+
+	texShader.use();
 	matWorld.update(texShader);
 	//sun.updateStaticLight(texShader, camera);
 	sun.updateDynamicLight(texShader, camera);
-
 	lev2.draw();
+
+	lightSphereShader.use();
+	vec3f pos = sun.getLightPos();
+	matWorld.translate(lightSphereShader, pos.x, pos.y, pos.z);
+	matWorld.scale(lightSphereShader, 10.0f, 10.0f, 10.0f);
+	lightSphere.draw();
 
 	glFlush();
 }

@@ -12,6 +12,9 @@ public:
 	void init(Shader& shader);
 	void update(Shader& shader);
 
+	void translate(Shader& shader, float x, float y, float z);
+	void rotate(Shader& shader, float angle, vec3f vRotateAround);
+	void scale(Shader& shader,  float scaleX, float scaleY, float scaleZ);
 private:
 	mat4 matProj;
 	mat4 matModelView;

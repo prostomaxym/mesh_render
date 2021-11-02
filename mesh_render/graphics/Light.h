@@ -15,6 +15,9 @@ public:
 	Light(float distance, float power, vec3f color, float zOffset, float period);
 
 	void initLight(Shader& shader, Camera& cam);
+
+	vec3f getLightPos();
+
 	void updateStaticLight(Shader& shader, Camera& cam);
 	void updateDynamicLight(Shader& shader, Camera& cam);
 
