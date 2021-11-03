@@ -17,7 +17,7 @@ const float ambientStrength = 0.1;
 
 void main()
 {
-
+	//get object color from texture
 	vec3 objectColor = vec3(texture(tex, ex_uv).rgb);
 
     // ambient

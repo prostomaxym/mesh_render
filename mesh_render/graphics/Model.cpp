@@ -6,10 +6,10 @@ Model::Model()
 	modelTexture_ = Texture();
 }
 
-Model::Model(std::string objPath, std::string texPath)
+Model::Model(std::string objFilename, std::string texFilename)
 {
-	modelMesh_.load(objPath);
-	modelTexture_.load(texPath);
+	modelMesh_.load(objFilename);
+	modelTexture_.load(texFilename);
 }
 
 Model::~Model()
@@ -18,10 +18,10 @@ Model::~Model()
 	modelTexture_.clear();
 }
 
-void Model::load(std::string objPath, std::string texPath)
+void Model::load(std::string objFilename, std::string texFilename)
 {
-	modelMesh_.load(objPath);
-	modelTexture_.load(texPath);
+	modelMesh_.load(objFilename);
+	modelTexture_.load(texFilename);
 }
 
 void Model::clear()

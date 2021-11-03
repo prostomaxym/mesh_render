@@ -41,10 +41,10 @@ const float maxfps = 250;  //max fps lock
 int frametime_lock = 1000 / maxfps;  //min frametime lock
 int t, old_t, dt;  //elapsed time, deltatime between frames
 int fps = 0;  //fps counter
-float POV = 85.0f, zNear = 0.1f, zFar = 120000.0f;  //Perspective params
+float POV = 85.0f, zNear = 0.1f, zFar = 120000.0f;  //perspective params
 int demoLevel = 2;  //keyboard switch for demo levels
 
-Camera camera(/*camera speed=*/0.5f);
+Camera camera(/*camera speed=*/1.0f);
 Mouse mouse(/*mouse sensitivity =*/1.0f);
 Keyboard keyboard;
 WorldMatrix matWorld;
@@ -91,13 +91,13 @@ int main()
 	initGL(POV, zNear, zFar);
 	initGLUT();
 
-	//Select active shader
+	//Setup scene
 	texShader.use();
 	matWorld.init(texShader);
 	sun.initLight(texShader, camera);
 	
 	//Load models
-	//Models are read from files in a very straight forward way
+	//models are read from files in a very straight forward way
 	//thus loadings times can be significant
 	level1 = new Model("models/Hurricos/Hurricos.obj", "models/Hurricos/s2-1_024-n.T.png");
 	level2 = new Model("models/Autumn Plains/Autumn Plains.obj", "models/Autumn Plains/spyro_autumn_plains.png");

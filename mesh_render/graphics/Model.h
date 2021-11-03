@@ -10,10 +10,10 @@ class Model
 {
 public:
 	Model();
-	Model(std::string objPath, std::string texPath);
+	Model(std::string objFilename, std::string texFilename);
 	~Model();
 
-	void load(std::string objPath, std::string texPath);
+	void load(std::string objFilename, std::string texFilename);
 	void clear();
 
 	void draw();
