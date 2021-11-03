@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "../glatter/glatter.h"
+#include "../libraries/glatter/glatter.h"
 
 class Mesh
 {

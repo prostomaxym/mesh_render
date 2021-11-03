@@ -5,7 +5,7 @@
 #include "Shader.h"
 #include "Vector.h"
 
-#include "../glatter/glatter.h"
+#include "../libraries/glatter/glatter.h"
 
 class Light
 {

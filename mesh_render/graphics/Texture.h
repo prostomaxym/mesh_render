@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "../glatter/glatter.h"
+#include "../libraries/glatter/glatter.h"
 
 class Texture
 {

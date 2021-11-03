@@ -14,8 +14,9 @@ extern const int kFullHeight;  //fullscreen height resolution
 extern const int kWidth, kHeight;  //default window resolution
 extern bool fullscreen;  //default screen mode
 
-extern int t, old_t, dt;
-extern float POV, zNear, zFar;
+extern int t, old_t, dt;  //elapsed time, deltatime
+extern float POV, zNear, zFar;  //perspective params
+extern int demoLevel;  //keyboard switch for demo levels
 
 extern Window window;
 

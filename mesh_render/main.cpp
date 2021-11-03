@@ -2,17 +2,18 @@
 #include <Windows.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include "libraries/stb_image.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include <glut.h> 
-#include "glatter/glatter.h"  //load glext function pointers
+#include "libraries/glatter/glatter.h"  //load glext function pointers
 
 #include "main.h"
 #include "graphics/Camera.h"
 #include "graphics/Light.h"
 #include "graphics/Matrix.h"
 #include "graphics/Mesh.h"
+#include "graphics/Model.h"
 #include "graphics/Texture.h"
 #include "graphics/Shader.h"
 #include "graphics/WorldMatrix.h"
@@ -41,6 +42,7 @@ int frametime_lock = 1000 / maxfps;  //min frametime lock
 int t, old_t, dt;  //elapsed time, deltatime between frames
 int fps = 0;  //fps counter
 float POV = 85.0f, zNear = 0.1f, zFar = 120000.0f;  //Perspective params
+int demoLevel = 2;  //keyboard switch for demo levels
 
 Camera camera(/*camera speed=*/0.5f);
 Mouse mouse(/*mouse sensitivity =*/1.0f);
@@ -65,19 +67,13 @@ Light sun(/*distance*/				distance,
 					/*light color*/			{ 0.95f, 0.85f, 0.65f }, 
 					/*zAxis offset*/		15000.0f,
 					/*day period(sec)*/	60.0f);
-Mesh lightSphere("objects/sun.obj");
+Mesh lightSphere("models/sun.obj");
 
-//Meshes
-Mesh* lev1;
-Mesh* lev2;
-Mesh* lev3;
-Mesh* lev4;
-
-//Textures
-Texture* tex1;
-Texture* tex2;
-Texture* tex3;
-Texture* tex4;
+//Models
+Model* level1;
+Model* level2;
+Model* level3;
+Model* level4;
 
 //Shaders
 //Shader texShader("shaders/phong.vert", "shaders/phong.frag");
@@ -85,14 +81,13 @@ Shader texShader("shaders/blinnphong.vert", "shaders/blinnphong.frag");
 Shader lightSphereShader("shaders/lightSphere.vert", "shaders/lightSphere.frag");
 
 //TODO:
-// make object class
 // cleanup
 
 int main()
 {
 	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
 
-	//initialise GL and GLUT
+	//Initialise GL and GLUT
 	initGL(POV, zNear, zFar);
 	initGLUT();
 
@@ -100,19 +95,15 @@ int main()
 	texShader.use();
 	matWorld.init(texShader);
 	sun.initLight(texShader, camera);
+	
+	//Load models
+	//Models are read from files in a very straight forward way
+	//thus loadings times can be significant
+	level1 = new Model("models/Hurricos/Hurricos.obj", "models/Hurricos/s2-1_024-n.T.png");
+	level2 = new Model("models/Autumn Plains/Autumn Plains.obj", "models/Autumn Plains/spyro_autumn_plains.png");
+	level3 = new Model("models/Summer Forest/Summer Forest.obj", "models/Summer Forest/s2-1_016-n.png");
+	level4 = new Model("models/Anor Londo/Anor Londo3.obj", "models/Anor Londo/texture.png");  //very big model
 
-	//Load meshes
-	//lev1 = new Mesh("objects/Hurricos/Hurricos.obj");
-	lev2 = new Mesh("objects/Autumn Plains/Autumn Plains.obj");
-	//lev3 = new Mesh("objects/Summer Forest/Summer Forest.obj");
-	//lev4 = new Mesh("objects/Anor Londo/Anor Londo3.obj");
-	
-	//Load textures
-	//tex1 = new Texture("objects/Hurricos/s2-1_024-n.T.png");
-	tex2 = new Texture("objects/Autumn Plains/spyro_autumn_plains.png");
-	//tex3 = new Texture("objects/Summer Forest/s2-1_016-n.png");
-	//tex4 = new Texture("objects/Anor Londo/texture.png");
-	
 	old_t = glutGet(GLUT_ELAPSED_TIME);
 	glutMainLoop();
 	return 0;
@@ -143,8 +134,23 @@ void render()
 	matWorld.update(texShader);
 	//sun.updateStaticLight(texShader, camera);
 	sun.updateDynamicLight(texShader, camera);
-	lev2->draw();
 
+	switch (demoLevel)
+	{
+	case 1:
+		level1->draw();
+		break;
+	case 2:
+		level2->draw();
+		break;
+	case 3:
+		level3->draw();
+		break;
+	case 4:
+		level4->draw();
+		break;
+	}
+	
 	lightSphereShader.use();
 	vec3f pos = sun.getLightPos();
 	matWorld.translate(lightSphereShader, pos.x, pos.y, pos.z);

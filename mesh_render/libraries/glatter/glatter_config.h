@@ -80,7 +80,7 @@
 // Unless specified otherwise, GL errors will be logged in debug builds
 #if !defined(GLATTER_LOG_ERRORS) && !defined(GLATTER_LOG_CALLS)
     #ifndef NDEBUG
-        //#define GLATTER_LOG_ERRORS
+        #define GLATTER_LOG_ERRORS
     #endif
 #endif
 

@@ -51,9 +51,6 @@
     <ClCompile Include="graphics\Camera.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="glatter\glatter.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="graphics\Texture.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
@@ -71,6 +68,12 @@
     </ClCompile>
     <ClCompile Include="graphics\WorldMatrix.cpp">
       <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\Model.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\glatter\glatter.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -95,12 +98,6 @@
     <ClInclude Include="graphics\Camera.h">
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="stb_image.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="glatter\glatter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="graphics\Texture.h">
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
@@ -119,7 +116,10 @@
     <ClInclude Include="graphics\WorldMatrix.h">
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="glatter\glatter_config.h">
+    <ClInclude Include="graphics\Model.h">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\glatter\glatter_config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

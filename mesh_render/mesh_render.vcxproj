@@ -151,15 +151,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="glatter\glatter.c" />
     <ClCompile Include="graphics\Camera.cpp" />
     <ClCompile Include="graphics\Light.cpp" />
     <ClCompile Include="graphics\Matrix.cpp" />
     <ClCompile Include="graphics\Mesh.cpp" />
+    <ClCompile Include="graphics\Model.cpp" />
     <ClCompile Include="graphics\Shader.cpp" />
     <ClCompile Include="graphics\Texture.cpp" />
     <ClCompile Include="graphics\Vector.cpp" />
     <ClCompile Include="graphics\WorldMatrix.cpp" />
+    <ClCompile Include="libraries\glatter\glatter.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="utility\Keyboard.cpp" />
     <ClCompile Include="utility\Mouse.cpp" />
@@ -167,18 +168,17 @@
     <ClCompile Include="utility\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="glatter\glatter.h" />
-    <ClInclude Include="glatter\glatter_config.h" />
     <ClInclude Include="graphics\Camera.h" />
     <ClInclude Include="graphics\Light.h" />
     <ClInclude Include="graphics\Matrix.h" />
     <ClInclude Include="graphics\Mesh.h" />
+    <ClInclude Include="graphics\Model.h" />
     <ClInclude Include="graphics\Shader.h" />
     <ClInclude Include="graphics\Texture.h" />
     <ClInclude Include="graphics\Vector.h" />
     <ClInclude Include="graphics\WorldMatrix.h" />
+    <ClInclude Include="libraries\glatter\glatter_config.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="stb_image.h" />
     <ClInclude Include="utility\Keyboard.h" />
     <ClInclude Include="utility\Mouse.h" />
     <ClInclude Include="utility\Text.h" />

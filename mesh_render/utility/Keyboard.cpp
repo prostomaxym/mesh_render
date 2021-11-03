@@ -14,11 +14,16 @@ Keyboard::Keyboard() :
 	keyBinding["moveForward"] = 'w';
 	keyBinding["moveBackward"] = 's';
 
-	keyBinding["moveUp"] = 32;
+	keyBinding["moveUp"] = ' ';
 	keyBinding["moveDown"] = 'c';
 
 	keyBinding["toggleZoom"] = 'g';
 	keyBinding["toggleFullscreen"] = 'f';
+
+	keyBinding["selectLevel1"] = '1';
+	keyBinding["selectLevel2"] = '2';
+	keyBinding["selectLevel3"] = '3';
+	keyBinding["selectLevel4"] = '4';
 }
 
 void Keyboard::setKeyState(unsigned char keycode, bool state)
@@ -73,6 +78,23 @@ void Keyboard::processInput(Camera& cam)
 			window.enterFullscreen(kFullWidth, kFullHeight);
 			fullscreen = true;
 		}
+	}
+
+	if (isPressed(keyBinding["selectLevel1"]))
+	{
+		demoLevel = 1;
+	}
+	else if (isPressed(keyBinding["selectLevel2"]))
+	{
+		demoLevel = 2;
+	}
+	else if (isPressed(keyBinding["selectLevel3"]))
+	{
+		demoLevel = 3;
+	}
+	else if (isPressed(keyBinding["selectLevel4"]))
+	{
+		demoLevel = 4;
 	}
 }
 

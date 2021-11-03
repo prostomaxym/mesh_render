@@ -1,6 +1,6 @@
 #include "Texture.h"
 
-#include "../stb_image.h"
+#include "../libraries/stb_image.h"
 
 Texture::Texture()
 {
@@ -66,11 +66,7 @@ void Texture::load(std::string fname)
 
 void Texture::use()
 {
-	if (texID_ != NULL)
-	{
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texID_);
-	}
+	glBindTexture(GL_TEXTURE_2D, texID_);
 }
 
 void Texture::clear()

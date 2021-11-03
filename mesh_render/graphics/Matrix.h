@@ -3,7 +3,7 @@
 
 #include "Vector.h"
 
-#include "../glatter/glatter.h"
+#include "../libraries/glatter/glatter.h"
 
 struct mat4
 {
