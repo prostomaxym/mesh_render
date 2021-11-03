@@ -119,6 +119,9 @@
     <ClInclude Include="graphics\WorldMatrix.h">
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="glatter\glatter_config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\blinnphong.frag">

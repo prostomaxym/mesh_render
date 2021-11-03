@@ -90,4 +90,7 @@ void Light::updateDynamicLight(Shader& shader, Camera& cam)
 	//Camera position
 	viewPos_ = cam.getCameraPos();
 	glUniform3f(viewPosUniform_, viewPos_.x, viewPos_.y, viewPos_.z);
+
+	//Day time based light power 
+	glUniform1f(lightPowerUniform_, lightPower_ * lightPos_.y / lightDistance_);
 }

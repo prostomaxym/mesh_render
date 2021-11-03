@@ -168,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="glatter\glatter.h" />
+    <ClInclude Include="glatter\glatter_config.h" />
     <ClInclude Include="graphics\Camera.h" />
     <ClInclude Include="graphics\Light.h" />
     <ClInclude Include="graphics\Matrix.h" />

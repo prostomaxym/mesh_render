@@ -17,7 +17,7 @@ Window::Window(int w, int h, std::string winname)
 	width_ = w;
 	height_ = h;
 	window_name_ = winname;
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_MULTISAMPLE);
 	glutInitWindowSize(width_, height_);
 	glutCreateWindow(window_name_.c_str());
 }

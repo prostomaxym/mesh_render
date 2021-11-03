@@ -36,7 +36,7 @@ const int kWidth = 1280, kHeight = 720;  //default window resolution
 bool fullscreen = false;  //default screen mode
 Window window(kWidth, kHeight, "Mesh Render");
 
-const float maxfps = 1000;  //max fps lock
+const float maxfps = 250;  //max fps lock
 int frametime_lock = 1000 / maxfps;  //min frametime lock
 int t, old_t, dt;  //elapsed time, deltatime between frames
 int fps = 0;  //fps counter
@@ -71,15 +71,13 @@ Mesh lightSphere("objects/sun.obj");
 Mesh* lev1;
 Mesh* lev2;
 Mesh* lev3;
-//Mesh* lev4;
-//Mesh* enemy;
+Mesh* lev4;
 
 //Textures
 Texture* tex1;
 Texture* tex2;
 Texture* tex3;
-//Texture* tex4;
-Texture* enemyTex;
+Texture* tex4;
 
 //Shaders
 //Shader texShader("shaders/phong.vert", "shaders/phong.frag");
@@ -104,21 +102,16 @@ int main()
 	sun.initLight(texShader, camera);
 
 	//Load meshes
-	lev1 = new Mesh("objects/Hurricos/Hurricos.obj");
+	//lev1 = new Mesh("objects/Hurricos/Hurricos.obj");
 	lev2 = new Mesh("objects/Autumn Plains/Autumn Plains.obj");
-	lev3 = new Mesh("objects/Summer Forest/Summer Forest.obj");
-	//lev4 = new Mesh("objects/Anor Londo/Anor Londo.obj");
-	//enemy = new Mesh("objects/enemy/enemy.obj");
+	//lev3 = new Mesh("objects/Summer Forest/Summer Forest.obj");
+	//lev4 = new Mesh("objects/Anor Londo/Anor Londo3.obj");
 	
-	// 
 	//Load textures
-	tex1 = new Texture("objects/Hurricos/s2-1_024-n.T.png");
+	//tex1 = new Texture("objects/Hurricos/s2-1_024-n.T.png");
 	tex2 = new Texture("objects/Autumn Plains/spyro_autumn_plains.png");
-	tex3 = new Texture("objects/Summer Forest/s2-1_016-n.png");
-	//tex4 = new Texture("objects/Anor Londo/texture2.png");
-	//enemyTex = new Texture("objects/enemy/enemy.png");
-
-	tex2->use();
+	//tex3 = new Texture("objects/Summer Forest/s2-1_016-n.png");
+	//tex4 = new Texture("objects/Anor Londo/texture.png");
 	
 	old_t = glutGet(GLUT_ELAPSED_TIME);
 	glutMainLoop();
@@ -170,8 +163,9 @@ void update()
 void initGL(float POV, float zNear, float zFar)
 {
 	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_LINE_SMOOTH);
-	glEnable(GL_POLYGON_SMOOTH);
+	glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);
+	glEnable(GL_MULTISAMPLE);
+	glHint(GL_MULTISAMPLE_FILTER_HINT_NV, GL_NICEST);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClearDepth(1.0);
 	glDepthFunc(GL_LESS);
