@@ -3,6 +3,7 @@
 
 #include "Matrix.h"
 #include "Shader.h"
+#include "Vector.h"
 
 class WorldMatrix
 {
@@ -12,9 +13,10 @@ public:
 	void init(Shader& shader);
 	void update(Shader& shader);
 
-	void translate(Shader& shader, float x, float y, float z);
+	void translate(Shader& shader, vec3f vTranslate);
 	void rotate(Shader& shader, float angle, vec3f vRotateAround);
-	void scale(Shader& shader,  float scaleX, float scaleY, float scaleZ);
+	void scale(Shader& shader,  vec3f vScale);
+
 private:
 	mat4 matProj;
 	mat4 matModelView;

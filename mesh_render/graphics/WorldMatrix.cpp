@@ -34,10 +34,10 @@ void WorldMatrix::update(Shader& shader)
 	glUniformMatrix4fv(MVPmatUniform, 1, GL_FALSE, &MVP.m[0][0]);
 }
 
-void WorldMatrix::translate(Shader& shader, float x, float y, float z)
+void WorldMatrix::translate(Shader& shader, vec3f vTranslate)
 {
 	GLfloat m[16];
-	glTranslatef(x, y, z);
+	glTranslatef(vTranslate.x, vTranslate.y, vTranslate.z);
 
 	glGetFloatv(GL_PROJECTION_MATRIX, m);
 	matProj.convertArrayToMatrix(m);
@@ -64,10 +64,10 @@ void WorldMatrix::rotate(Shader& shader, float angle, vec3f vRotateAround)
 	glUniformMatrix4fv(MVPmatUniform, 1, GL_FALSE, &MVP.m[0][0]);
 }
 
-void WorldMatrix::scale(Shader& shader, float scaleX, float scaleY, float scaleZ)
+void WorldMatrix::scale(Shader& shader, vec3f vScale)
 {
 	GLfloat m[16];
-	glScalef(scaleX, scaleY, scaleZ);
+	glScalef(vScale.x, vScale.y, vScale.z);
 
 	glGetFloatv(GL_PROJECTION_MATRIX, m);
 	matProj.convertArrayToMatrix(m);

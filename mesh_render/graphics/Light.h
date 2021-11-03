@@ -19,7 +19,7 @@ public:
 	vec3f getLightPos();
 
 	void updateStaticLight(Shader& shader, Camera& cam);
-	void updateDynamicLight(Shader& shader, Camera& cam);
+	void updateDynamicLight(Shader& shader, Camera& cam, int deltatime);
 
 private:
 	vec3f lightPos_;

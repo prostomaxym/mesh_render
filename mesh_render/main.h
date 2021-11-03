@@ -1,10 +1,6 @@
 #ifndef MESH_RENDER_MAIN_H_
 #define MESH_RENDER_MAIN_H_
 
-#include <string>
-
-#include "graphics/Texture.h"
-#include "graphics/Shader.h"
 #include "utility/Window.h"
 
 //Resolution related variables

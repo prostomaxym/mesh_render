@@ -17,9 +17,9 @@ public:
 	void clear();
 
 	void draw();
+
 private:
 	Mesh modelMesh_;
 	Texture modelTexture_;
-
 };
 #endif  // MESH_RENDER_GRAPHICS_MODEL_H_

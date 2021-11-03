@@ -6,8 +6,8 @@ Window::Window()
 {
 	width_ = 1280;
 	height_ = 720;
-	window_name_ = "Pathfinding algorithms visualizer";
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+	window_name_ = "Mesh render";
+	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA | GLUT_MULTISAMPLE | GLUT_DEPTH);
 	glutInitWindowSize(width_, height_);
 	glutCreateWindow(this->window_name_.c_str());
 }
@@ -17,7 +17,7 @@ Window::Window(int w, int h, std::string winname)
 	width_ = w;
 	height_ = h;
 	window_name_ = winname;
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_MULTISAMPLE);
+	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA | GLUT_MULTISAMPLE | GLUT_DEPTH);
 	glutInitWindowSize(width_, height_);
 	glutCreateWindow(window_name_.c_str());
 }

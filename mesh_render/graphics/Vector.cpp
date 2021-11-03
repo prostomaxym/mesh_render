@@ -76,7 +76,7 @@ vec3f vec3f::operator^(vec3f& other)
 
 float vec3f::getLength()
 {
-	return sqrtf((*this) * (*this));
+	return sqrtf(x * x + y * y + z * z);
 }
 
 void vec3f::normalise()

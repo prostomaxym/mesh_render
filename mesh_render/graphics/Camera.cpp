@@ -26,12 +26,12 @@ Camera::Camera(float camspd)
 }
 
 Camera::Camera(vec3f cameraPos = { 0.0f, 0.0f, 0.0f }, 
-							 float yaw = 0.0f, float pitch = 0.0f, float camspd = 1.0f)
+							 float yawDeg = 0.0f, float pitchDeg = 0.0f, float camspd = 1.0f)
 {
-	yaw *= M_PI / 180.0f;
-	pitch *= M_PI / 180.0f;
-	fPitch_ = pitch;
-	fYaw_ = yaw;
+	yawDeg *= M_PI / 180.0f;
+	pitchDeg *= M_PI / 180.0f;
+	fPitch_ = pitchDeg;
+	fYaw_ = yawDeg;
 	camspeed_ = camspd;
 	vCamera_ = cameraPos;
 	vLookDir_ = { cosf(fPitch_) * cosf(fYaw_), sinf(fPitch_) , cosf(fPitch_) * sinf(fYaw_) };
@@ -57,11 +57,11 @@ void Camera::setAngle(float yaw, float pitch)
 	fYaw_ += yaw;
 	fPitch_ -= pitch;
 
-	if (fPitch_ > 1.57f)
+	if (fPitch_ > M_PI_2)
 	{
 		fPitch_ = 1.57f;
 	}
-	else if (fPitch_ < -1.57f)
+	else if (fPitch_ < -M_PI_2)
 	{
 		fPitch_ = -1.57f;
 	}

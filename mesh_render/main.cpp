@@ -6,15 +6,13 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include <glut.h> 
-#include "libraries/glatter/glatter.h"  //load glext function pointers
+#include "libraries/glatter/glatter.h"  //load glext functions pointers
 
 #include "main.h"
 #include "graphics/Camera.h"
 #include "graphics/Light.h"
-#include "graphics/Matrix.h"
 #include "graphics/Mesh.h"
 #include "graphics/Model.h"
-#include "graphics/Texture.h"
 #include "graphics/Shader.h"
 #include "graphics/WorldMatrix.h"
 #include "utility/Keyboard.h"
@@ -35,14 +33,14 @@ const int kFullWidth = glutGet(GLUT_SCREEN_WIDTH) * DPIscale;  //fullscreen widt
 const int kFullHeight = glutGet(GLUT_SCREEN_HEIGHT) * DPIscale;  //fullscreen height resolution
 const int kWidth = 1280, kHeight = 720;  //default window resolution
 bool fullscreen = false;  //default screen mode
-Window window(kWidth, kHeight, "Mesh Render");
+Window window(kWidth, kHeight, "Mesh Render"); //window construction
 
-const float maxfps = 250;  //max fps lock
+const float maxfps = 500;  //max fps lock
 int frametime_lock = 1000 / maxfps;  //min frametime lock
 int t, old_t, dt;  //elapsed time, deltatime between frames
 int fps = 0;  //fps counter
 float POV = 85.0f, zNear = 0.1f, zFar = 120000.0f;  //perspective params
-int demoLevel = 2;  //keyboard switch for demo levels
+int demoLevel = 2;  //keyboard switch value for demo levels
 
 Camera camera(/*camera speed=*/1.0f);
 Mouse mouse(/*mouse sensitivity =*/1.0f);
@@ -76,8 +74,8 @@ Model* level3;
 Model* level4;
 
 //Shaders
-//Shader texShader("shaders/phong.vert", "shaders/phong.frag");
-Shader texShader("shaders/blinnphong.vert", "shaders/blinnphong.frag");
+//Shader texShader("shaders/phong.vert", "shaders/phong.frag");  //Phong reflection shader
+Shader texShader("shaders/blinnphong.vert", "shaders/blinnphong.frag");  // Blinn-Phong reflection shader
 Shader lightSphereShader("shaders/lightSphere.vert", "shaders/lightSphere.frag");
 
 //TODO:
@@ -102,7 +100,8 @@ int main()
 	level1 = new Model("models/Hurricos/Hurricos.obj", "models/Hurricos/s2-1_024-n.T.png");
 	level2 = new Model("models/Autumn Plains/Autumn Plains.obj", "models/Autumn Plains/spyro_autumn_plains.png");
 	level3 = new Model("models/Summer Forest/Summer Forest.obj", "models/Summer Forest/s2-1_016-n.png");
-	level4 = new Model("models/Anor Londo/Anor Londo3.obj", "models/Anor Londo/texture.png");  //very big model
+	level4 = new Model("models/Anor Londo/Anor Londo.obj", "models/Anor Londo/texture.png");  
+	//>100MB models are not included in github repo
 
 	old_t = glutGet(GLUT_ELAPSED_TIME);
 	glutMainLoop();
@@ -133,7 +132,7 @@ void render()
 	texShader.use();
 	matWorld.update(texShader);
 	//sun.updateStaticLight(texShader, camera);
-	sun.updateDynamicLight(texShader, camera);
+	sun.updateDynamicLight(texShader, camera, dt);
 
 	switch (demoLevel)
 	{
@@ -152,9 +151,8 @@ void render()
 	}
 	
 	lightSphereShader.use();
-	vec3f pos = sun.getLightPos();
-	matWorld.translate(lightSphereShader, pos.x, pos.y, pos.z);
-	matWorld.scale(lightSphereShader, 10.0f, 10.0f, 10.0f);
+	matWorld.translate(lightSphereShader, sun.getLightPos());
+	matWorld.scale(lightSphereShader, { 10.0f, 10.0f, 10.0f });
 	lightSphere.draw();
 
 	glFlush();

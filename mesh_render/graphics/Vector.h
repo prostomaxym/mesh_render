@@ -1,14 +1,6 @@
 #ifndef MESH_RENDER_GRAPHICS_VECTOR_H_
 #define MESH_RENDER_GRAPHICS_VECTOR_H_
 
-struct vec2f
-{
-	float u = 0.0f;
-	float v = 0.0f;
-	float w = 1.0f;
-};
-
-
 struct vec3f
 {
 	float x;

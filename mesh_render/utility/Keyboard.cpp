@@ -1,7 +1,5 @@
 #include "Keyboard.h"
 
-#include <algorithm>
-
 #include <glut.h>
 #include "../main.h"
 
@@ -105,6 +103,7 @@ bool Keyboard::isHeld(unsigned char keycode)
 	else 
 		return false;
 }
+
 bool Keyboard::isPressed(unsigned char keycode)
 {
 	if (lastState[keycode] == false && currentState[keycode] == true)

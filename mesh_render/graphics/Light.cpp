@@ -1,12 +1,10 @@
 #include "Light.h"
 
-#include "..\main.h"
-
 Light::Light()
 {
-	lightPos_ = { 0.0f,0.0f,0.0f };
-	viewPos_ = { 0.0f,0.0f,0.0f };
-	lightColor_ = { 0.0f,0.0f,0.0f };
+	lightPos_ = { 0.0f,0.0f, 0.0f };
+	viewPos_ = { 0.0f, 0.0f, 0.0f };
+	lightColor_ = { 0.0f, 0.0f, 0.0f };
 	lightDistance_ = 0.0f;
 	lightPower_ = 0.0f;
 	dayPeriod_ = 0.0f;
@@ -20,7 +18,7 @@ Light::Light()
 Light::Light(vec3f lightPos, float power, vec3f color, float period)
 {
 	lightPos_ = lightPos;
-	viewPos_ = {0.0f, 0.0f, 0.0f };
+	viewPos_ = { 0.0f, 0.0f, 0.0f };
 	lightColor_ = color;
 	lightPower_ = power;
 	lightDistance_ = sqrtf(lightPos_.x * lightPos_.x + lightPos_.y * lightPos_.y + lightPos_.z * lightPos_.z);
@@ -79,11 +77,11 @@ void Light::updateStaticLight(Shader& shader, Camera& cam)
 	glUniform3f(viewPosUniform_, viewPos_.x, viewPos_.y, viewPos_.z);
 }
 
-void Light::updateDynamicLight(Shader& shader, Camera& cam)
+void Light::updateDynamicLight(Shader& shader, Camera& cam, int deltatime)
 {
 	//Day time based light position
 	if (lightPos_.x > lightDistance_) lightPos_.x = -lightDistance_;
-	lightPos_.x += dt * dayPeriod_;
+	lightPos_.x += deltatime * dayPeriod_;
 	lightPos_.y = sqrtf(lightDistance_ * lightDistance_ - lightPos_.x * lightPos_.x);
 	glUniform3f(lightPosUniform_, lightPos_.x, lightPos_.y, lightPos_.z);
 

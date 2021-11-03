@@ -1,8 +1,6 @@
 #ifndef MESH_RENDER_GRAPHICS_MATRIX_H_
 #define MESH_RENDER_GRAPHICS_MATRIX_H_
 
-#include "Vector.h"
-
 #include "../libraries/glatter/glatter.h"
 
 struct mat4

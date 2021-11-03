@@ -2,8 +2,6 @@
 
 #include <cmath>
 
-
-
 mat4 mat4::operator*(mat4& other)
 {
 	mat4 matrix;
@@ -207,7 +205,7 @@ void invertMatrix(GLfloat (&m)[16], GLfloat(&inv)[16])
 	if (det == 0)
 		return;
 
-	det = 1.0 / det;
+	det = 1.0f / det;
 
 	for (i = 0; i < 16; i++)
 		inv[i] = inv[i] * det;

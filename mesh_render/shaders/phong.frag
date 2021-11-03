@@ -4,13 +4,13 @@ in vec3 ex_pos;
 in vec2 ex_uv;
 in vec3 ex_normal;
 
-out vec4 color;
-
 uniform sampler2D tex;
 uniform vec3 lightPos; 
 uniform vec3 viewPos; 
 uniform vec3 lightColor;
 uniform float lightPower;
+
+out vec4 color;
 
 const float specularStrength = 0.5;
 const float ambientStrength = 0.1;
