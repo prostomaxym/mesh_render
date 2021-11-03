@@ -4,6 +4,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 *.mtl
+mesh_render/models/Anor Londo/
 
 # User-specific files
 *.rsuser
