@@ -26,4 +26,5 @@ void initGLUT();
 void passiveMouseMotionCallback(int x, int y);
 void pressKeyCallback(unsigned char key, int x, int y);
 void releaseKeyCallback(unsigned char key, int x, int y);
+void joystickCallback(unsigned int buttonMask, int x, int y, int z);
 #endif  // MESH_RENDER_MAIN_H_

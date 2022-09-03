@@ -1,4 +1,5 @@
 #include <cmath>
+#include <bitset>
 #include <Windows.h>
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -81,6 +82,13 @@ Shader lightSphereShader("shaders/lightSphere.vert", "shaders/lightSphere.frag")
 //TODO:
 // cleanup
 
+
+struct PrevJoystickState
+{
+	int x = 0;
+	int y = 0;
+} state;
+
 int main()
 {
 	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
@@ -100,7 +108,7 @@ int main()
 	level1 = new Model("models/Hurricos/Hurricos.obj", "models/Hurricos/s2-1_024-n.T.png");
 	level2 = new Model("models/Autumn Plains/Autumn Plains.obj", "models/Autumn Plains/spyro_autumn_plains.png");
 	level3 = new Model("models/Summer Forest/Summer Forest.obj", "models/Summer Forest/s2-1_016-n.png");
-	level4 = new Model("models/Anor Londo/Anor Londo.obj", "models/Anor Londo/texture.png");  
+	//level4 = new Model("models/Anor Londo/Anor Londo.obj", "models/Anor Londo/texture.png");  
 	//>100MB models are not included in github repo
 
 	old_t = glutGet(GLUT_ELAPSED_TIME);
@@ -146,7 +154,7 @@ void render()
 		level3->draw();
 		break;
 	case 4:
-		level4->draw();
+		//level4->draw();
 		break;
 	}
 	
@@ -187,6 +195,7 @@ void initGLUT()
 	glutTimerFunc(frametime_lock, gameloop, 0);
 	glutKeyboardFunc(pressKeyCallback);
 	glutKeyboardUpFunc(releaseKeyCallback);
+	glutJoystickFunc(joystickCallback,2);
 	glutIgnoreKeyRepeat(true);
 	glutPassiveMotionFunc(passiveMouseMotionCallback);
 	glutSetCursor(GLUT_CURSOR_NONE);
@@ -205,6 +214,49 @@ void pressKeyCallback(unsigned char key, int x, int y)
 void releaseKeyCallback(unsigned char key, int x, int y)
 {
 	keyboard.setKeyState(key, false);
+}
+
+void joystickCallback(unsigned int buttonMask, int x, int y, int z)
+{
+	// TODO: implement stick deadzone
+	//if (std::abs(x) < 100 || std::abs(y) < 100)
+	//	return;
+
+	std::bitset<4> mask(buttonMask);
+	if (mask[0])
+		keyboard.setKeyState('a', true);
+	else
+		keyboard.setKeyState('a', false);
+
+	if (mask[1])
+		keyboard.setKeyState('s', true);
+	else
+		keyboard.setKeyState('s', false);
+
+	if (mask[2])
+		keyboard.setKeyState('d', true);
+	else
+		keyboard.setKeyState('d', false);
+
+	if (mask[3])
+		keyboard.setKeyState('w', true);
+	else
+		keyboard.setKeyState('w', false);
+
+	// Manual sensetivity controll
+	x /= 10;
+	y /= 10;
+
+	int deltax = state.x - x;
+	int deltay = state.y - y;
+
+	deltax = deltax * 1000 / glutGet(GLUT_WINDOW_WIDTH);
+	deltay = deltay * 1000 / glutGet(GLUT_WINDOW_HEIGHT);
+
+	int xpos = glutGet(GLUT_WINDOW_WIDTH) / 2;
+	int ypos = glutGet(GLUT_WINDOW_HEIGHT) / 2;
+
+	mouse.passiveMotionMouseHandler(xpos - deltax, ypos - deltay, camera);
 }
 
 
